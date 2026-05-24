@@ -1,4 +1,11 @@
-.body {
+* {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", "Roboto", system-ui, sans-serif;
+  background-color: #f0f4f8;
+  color: #1a202c;
 }
