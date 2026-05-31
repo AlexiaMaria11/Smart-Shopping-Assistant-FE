@@ -1,7 +1,189 @@
-import { Box } from "@mui/material";
+import {
+  Box,
+  Container,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Tooltip,
+  IconButton,
+  CircularProgress,
+  Paper,
+  Alert,
+  Chip,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import type { Promotion } from "../shared/types/Promotion";
+import {
+  PROMOTION_REWARD_LABELS,
+  PROMOTION_TYPE_LABELS,
+} from "../shared/types/Promotion";
+import { promotionsApi } from "../../api/clients/PromotionApiClient";
+import PageHeader from "../common/PageHeader";
+import PromotionFormDialog from "./PromotionFormDialog";
+import ConfirmDialog from "../common/ConfirmDialog";
+import "../common/DataTable/DataTable.css";
 
 function Promotions() {
-  return <Box>This is the Promotions box</Box>;
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<Promotion | null>(null);
+
+  const [deleting, setDeleting] = useState<Promotion | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  function loadPromotions() {
+    promotionsApi
+      .getAll()
+      .then((data) => {
+        setPromotions(data);
+        setError("");
+      })
+      .catch((err) => setError((err as Error).message))
+      .finally(() => setLoading(false));
+  }
+
+  function handleAdd() {
+    setEditing(null);
+    setFormOpen(true);
+  }
+
+  function handleEdit(promotion: Promotion) {
+    setEditing(promotion);
+    setFormOpen(true);
+  }
+
+  function handleDeleteClick(promotion: Promotion) {
+    setDeleting(promotion);
+    setConfirmOpen(true);
+  }
+
+  async function handleDelete() {
+    if (deleting === null) return;
+    setConfirmOpen(false);
+    try {
+      await promotionsApi.remove(deleting.id);
+      loadPromotions();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
+  useEffect(() => {
+    loadPromotions();
+  }, []);
+
+  return (
+    <Container max-width="xl" sx={{ py: 4 }}>
+      <PageHeader
+        title="Promotions"
+        actionLabel="Add Promotion"
+        onAction={handleAdd}
+      />
+      {error !== "" && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableContainer component={Paper} className="data-table-container">
+          <Table>
+            <TableHead className="data-table-head">
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Threshold</TableCell>
+                <TableCell>Reward</TableCell>
+                <TableCell>Reward Value</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className="data-table-body">
+              {promotions.map((promotion) => (
+                <TableRow key={promotion.id}>
+                  <TableCell>{promotion.name}</TableCell>
+                  <TableCell>{PROMOTION_TYPE_LABELS[promotion.type]}</TableCell>
+                  <TableCell>{promotion.threshold.toFixed(2)}</TableCell>
+                  <TableCell>
+                    {PROMOTION_REWARD_LABELS[promotion.reward]}
+                  </TableCell>
+                  <TableCell>{promotion.rewardValue}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={promotion.isActive ? "Active" : "Inactive"}
+                      size="small"
+                      sx={{
+                        backgroundColor: promotion.isActive
+                          ? "#e6f4ea"
+                          : "#fce8e6",
+                        color: promotion.isActive ? "#2e7d32" : "#c62828",
+                        fontWeight: 600,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                    <Tooltip title="Edit">
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleEdit(promotion)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton
+                        color="error"
+                        onClick={() => handleDeleteClick(promotion)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {promotions.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={7} align="center" className="data-table-empty">
+                    No promotions yet.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+      {formOpen && (
+        <PromotionFormDialog
+          promotion={editing}
+          onClose={() => setFormOpen(false)}
+          onSaved={() => {
+            setFormOpen(false);
+            loadPromotions();
+          }}
+        />
+      )}
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete promotion"
+        description={`Are you sure you want to delete "${deleting?.name}"?`}
+        confirmLabel="Delete"
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmOpen(false)}
+      />
+    </Container>
+  );
 }
 
 export default Promotions;
