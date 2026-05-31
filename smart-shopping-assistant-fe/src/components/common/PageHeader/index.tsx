@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
+import "../DataTable/DataTable.css";
 
 interface PageHeaderProps {
   title: string;
@@ -8,9 +9,9 @@ interface PageHeaderProps {
 
 function PageHeader({ title, actionLabel, onAction }: PageHeaderProps) {
   return (
-    <Box>
-      <Typography>{title}</Typography>
-      <Button onClick={onAction}>{actionLabel}</Button>
+    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+      <Typography variant="h5" className="page-header-title">{title}</Typography>
+      <Button className="page-header-btn" onClick={onAction}>{actionLabel}</Button>
     </Box>
   );
 }

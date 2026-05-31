@@ -21,6 +21,7 @@ import { categoriesApi } from "../../api/clients/CategoryApiClient";
 import PageHeader from "../common/PageHeader";
 import CategoryFormDialog from "./CategoryFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
+import "../common/DataTable/DataTable.css";
 
 function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -90,22 +91,21 @@ function Categories() {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className="data-table-container">
           <Table>
-            <TableHead>
+            <TableHead className="data-table-head">
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody className="data-table-body">
               {categories.map((category) => (
-                <TableRow key={category.id} hover>
+                <TableRow key={category.id}>
                   <TableCell>{category.name}</TableCell>
                   <TableCell>{category.description}</TableCell>
-
-                  <TableCell align="right">
+                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
                         color="primary"
@@ -127,7 +127,7 @@ function Categories() {
               ))}
               {categories.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={3} align="center">
+                  <TableCell colSpan={3} align="center" className="data-table-empty">
                     No categories yet.
                   </TableCell>
                 </TableRow>
