@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { promotionsApi } from "../../../api/clients/PromotionApiClient";
+import { categoriesApi } from "../../../api/clients/CategoryApiClient";
+import { productsApi } from "../../../api/clients/ProductApiClient";
 import {
   PromotionReward,
   PromotionType,
@@ -19,13 +21,26 @@ import {
   Select,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
-import type { PromotionModel } from "../../../api/models/PromotionModel";
+import type { Category } from "../../shared/types/Category";
+import type { Product } from "../../shared/types/Product";
+import type { Promotion } from "../../shared/types/Promotion";
 
 interface PromotionFormDialogProps {
-  promotion: PromotionModel | null;
+  promotion: Promotion | null;
   onClose: () => void;
   onSaved: () => void;
+}
+
+type AppliesTo = "none" | "product" | "category";
+
+function getInitialAppliesTo(promotion: Promotion | null): AppliesTo {
+  if (!promotion) return "none";
+  if (promotion.productId) return "product";
+  if (promotion.categoryId) return "category";
+  return "none";
 }
 
 function PromotionFormDialog({
@@ -48,15 +63,25 @@ function PromotionFormDialog({
   const [rewardValue, setRewardValue] = useState(
     promotion?.rewardValue?.toString() ?? ""
   );
-  const [productId, setProductId] = useState(
-    promotion?.productId?.toString() ?? ""
+  const [appliesTo, setAppliesTo] = useState<AppliesTo>(getInitialAppliesTo(promotion));
+  const [selectedProductId, setSelectedProductId] = useState<number | "">(
+    promotion?.productId ?? ""
   );
-  const [categoryId, setCategoryId] = useState(
-    promotion?.categoryId?.toString() ?? ""
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | "">(
+    promotion?.categoryId ?? ""
   );
+
   const [isActive, setIsActive] = useState(promotion?.isActive ?? true);
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    productsApi.getAll().then(setProducts).catch(() => {});
+    categoriesApi.getAll().then(setCategories).catch(() => {});
+  }, []);
 
   async function handleSave() {
     if (name.trim() === "") {
@@ -73,6 +98,14 @@ function PromotionFormDialog({
       setError("Reward value must be a valid positive number.");
       return;
     }
+    if (appliesTo === "product" && selectedProductId === "") {
+      setError("Please select a product.");
+      return;
+    }
+    if (appliesTo === "category" && selectedCategoryId === "") {
+      setError("Please select a category.");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
@@ -82,8 +115,8 @@ function PromotionFormDialog({
         threshold: parsedThreshold,
         reward,
         rewardValue: parsedRewardValue,
-        productId: productId !== "" ? parseInt(productId) : undefined,
-        categoryId: categoryId !== "" ? parseInt(categoryId) : undefined,
+        productId: appliesTo === "product" && selectedProductId !== "" ? selectedProductId : undefined,
+        categoryId: appliesTo === "category" && selectedCategoryId !== "" ? selectedCategoryId : undefined,
         isActive,
       };
       if (isEditing) {
@@ -129,7 +162,6 @@ function PromotionFormDialog({
             onChange={(e) => setThreshold(e.target.value)}
             fullWidth
             type="number"
-            inputProps={{ min: 0, step: "0.01" }}
           />
           <FormControl fullWidth>
             <InputLabel>Reward</InputLabel>
@@ -150,24 +182,49 @@ function PromotionFormDialog({
             onChange={(e) => setRewardValue(e.target.value)}
             fullWidth
             type="number"
-            inputProps={{ min: 0 }}
           />
-          <TextField
-            label="Product ID (optional)"
-            value={productId}
-            onChange={(e) => setProductId(e.target.value)}
-            fullWidth
-            type="number"
-            inputProps={{ min: 1 }}
-          />
-          <TextField
-            label="Category ID (optional)"
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            fullWidth
-            type="number"
-            inputProps={{ min: 1 }}
-          />
+          <ToggleButtonGroup
+            value={appliesTo}
+            exclusive
+            onChange={(_, val) => { if (val !== null) setAppliesTo(val); }}
+            size="small"
+          >
+            <ToggleButton value="none">None</ToggleButton>
+            <ToggleButton value="product">Product</ToggleButton>
+            <ToggleButton value="category">Category</ToggleButton>
+          </ToggleButtonGroup>
+          {appliesTo === "product" && (
+            <FormControl fullWidth>
+              <InputLabel>Product</InputLabel>
+              <Select
+                value={selectedProductId}
+                label="Product"
+                onChange={(e) => setSelectedProductId(e.target.value as number)}
+              >
+                {products.map((p) => (
+                  <MenuItem key={p.id} value={p.id}>
+                    {p.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+          {appliesTo === "category" && (
+            <FormControl fullWidth>
+              <InputLabel>Category</InputLabel>
+              <Select
+                value={selectedCategoryId}
+                label="Category"
+                onChange={(e) => setSelectedCategoryId(e.target.value as number)}
+              >
+                {categories.map((c) => (
+                  <MenuItem key={c.id} value={c.id}>
+                    {c.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <FormControlLabel
             control={
               <Checkbox

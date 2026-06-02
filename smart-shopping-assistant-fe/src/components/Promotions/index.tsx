@@ -22,7 +22,11 @@ import {
   PROMOTION_REWARD_LABELS,
   PROMOTION_TYPE_LABELS,
 } from "../shared/types/Promotion";
+import type { Product } from "../shared/types/Product";
+import type { Category } from "../shared/types/Category";
 import { promotionsApi } from "../../api/clients/PromotionApiClient";
+import { productsApi } from "../../api/clients/ProductApiClient";
+import { categoriesApi } from "../../api/clients/CategoryApiClient";
 import PageHeader from "../common/PageHeader";
 import PromotionFormDialog from "./PromotionFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
@@ -30,6 +34,8 @@ import "../common/DataTable/DataTable.css";
 
 function Promotions() {
   const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -78,6 +84,8 @@ function Promotions() {
 
   useEffect(() => {
     loadPromotions();
+    productsApi.getAll().then(setProducts).catch(() => {});
+    categoriesApi.getAll().then(setCategories).catch(() => {});
   }, []);
 
   return (
@@ -106,6 +114,7 @@ function Promotions() {
                 <TableCell>Threshold</TableCell>
                 <TableCell>Reward</TableCell>
                 <TableCell>Reward Value</TableCell>
+                <TableCell>Applies To</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
@@ -120,6 +129,13 @@ function Promotions() {
                     {PROMOTION_REWARD_LABELS[promotion.reward]}
                   </TableCell>
                   <TableCell>{promotion.rewardValue}</TableCell>
+                  <TableCell>
+                    {promotion.productId
+                      ? `Product: ${products.find((p) => p.id === promotion.productId)?.name ?? promotion.productId}`
+                      : promotion.categoryId
+                      ? `Category: ${categories.find((c) => c.id === promotion.categoryId)?.name ?? promotion.categoryId}`
+                      : "—"}
+                  </TableCell>
                   <TableCell>
                     <Chip
                       label={promotion.isActive ? "Active" : "Inactive"}
@@ -155,7 +171,7 @@ function Promotions() {
               ))}
               {promotions.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} align="center" className="data-table-empty">
+                  <TableCell colSpan={8} align="center" className="data-table-empty">
                     No promotions yet.
                   </TableCell>
                 </TableRow>
