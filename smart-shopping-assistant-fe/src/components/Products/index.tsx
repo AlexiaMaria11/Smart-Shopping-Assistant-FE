@@ -97,6 +97,7 @@ function Products() {
             <TableHead className="data-table-head">
               <TableRow>
                 <TableCell>Name</TableCell>
+                <TableCell>Category</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Image URL</TableCell>
@@ -107,9 +108,25 @@ function Products() {
               {products.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell>{product.name}</TableCell>
+                  <TableCell>
+                    {product.categories.length > 0
+                      ? product.categories.map((c) => c.name).join(", ")
+                      : "—"}
+                  </TableCell>
                   <TableCell>{product.description}</TableCell>
                   <TableCell>{product.price.toFixed(2)}</TableCell>
-                  <TableCell>{product.imageUrl}</TableCell>
+                  <TableCell>
+                    {product.imageUrl ? (
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        style={{ height: 48, width: 48, objectFit: "cover", borderRadius: 4 }}
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                      />
+                    ) : (
+                      "—"
+                    )}
+                  </TableCell>
                   <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
@@ -132,7 +149,7 @@ function Products() {
               ))}
               {products.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} align="center" className="data-table-empty">
+                  <TableCell colSpan={6} align="center" className="data-table-empty">
                     No products yet.
                   </TableCell>
                 </TableRow>

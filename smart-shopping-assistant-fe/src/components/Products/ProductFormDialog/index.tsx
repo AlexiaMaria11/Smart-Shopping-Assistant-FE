@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { productsApi } from "../../../api/clients/ProductApiClient";
+import { categoriesApi } from "../../../api/clients/CategoryApiClient";
 import {
   Alert,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Select,
   Stack,
   TextField,
 } from "@mui/material";
-import type { ProductModel } from "../../../api/models/ProductModel";
+import type { Product } from "../../shared/types/Product";
+import type { Category } from "../../shared/types/Category";
 
 interface ProductFormDialogProps {
-  product: ProductModel | null;
+  product: Product | null;
   onClose: () => void;
   onSaved: () => void;
 }
@@ -25,8 +33,16 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
   const [description, setDescription] = useState(product?.description ?? "");
   const [price, setPrice] = useState(product?.price?.toString() ?? "");
   const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? "");
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
+    product?.categories.map((c) => c.id) ?? []
+  );
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    categoriesApi.getAll().then(setCategories).catch(() => {});
+  }, []);
 
   async function handleSave() {
     if (name.trim() === "") {
@@ -41,7 +57,13 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
     setSaving(true);
     setError("");
     try {
-      const data = { name, description, price: parsedPrice, imageUrl };
+      const data = {
+        name,
+        description,
+        price: parsedPrice,
+        imageUrl,
+        categoryIds: selectedCategoryIds.length > 0 ? selectedCategoryIds : undefined,
+      };
       if (isEditing) {
         await productsApi.update(product.id, data);
       } else {
@@ -80,7 +102,6 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             onChange={(e) => setPrice(e.target.value)}
             fullWidth
             type="number"
-            inputProps={{ min: 0, step: "0.01" }}
           />
           <TextField
             label="Image URL"
@@ -88,6 +109,28 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             onChange={(e) => setImageUrl(e.target.value)}
             fullWidth
           />
+          <FormControl fullWidth>
+            <InputLabel>Categories</InputLabel>
+            <Select
+              multiple
+              value={selectedCategoryIds}
+              label="Categories"
+              onChange={(e) => setSelectedCategoryIds(e.target.value as number[])}
+              renderValue={(selected) =>
+                categories
+                  .filter((c) => (selected as number[]).includes(c.id))
+                  .map((c) => c.name)
+                  .join(", ")
+              }
+            >
+              {categories.map((cat) => (
+                <MenuItem key={cat.id} value={cat.id}>
+                  <Checkbox checked={selectedCategoryIds.includes(cat.id)} />
+                  <ListItemText primary={cat.name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Stack>
       </DialogContent>
       <DialogActions>

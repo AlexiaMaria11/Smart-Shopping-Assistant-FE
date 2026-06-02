@@ -1,4 +1,5 @@
 import type { ProductModel } from "../../../api/models/ProductModel";
+import { toCategory, type Category } from "./Category";
 
 export interface Product {
   id: number;
@@ -6,6 +7,7 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string;
+  categories: Category[];
 }
 
 export function toProduct(dto: ProductModel): Product {
@@ -15,5 +17,6 @@ export function toProduct(dto: ProductModel): Product {
     description: dto.description ?? "",
     price: dto.price,
     imageUrl: dto.imageUrl ?? "",
+    categories: dto.categories?.map(toCategory) ?? [],
   };
 }
