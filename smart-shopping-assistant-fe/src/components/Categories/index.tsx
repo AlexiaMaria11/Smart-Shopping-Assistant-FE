@@ -21,7 +21,6 @@ import { categoriesApi } from "../../api/clients/CategoryApiClient";
 import PageHeader from "../common/PageHeader";
 import CategoryFormDialog from "./CategoryFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
-import "../common/DataTable/DataTable.css";
 
 function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -75,7 +74,7 @@ function Categories() {
   }, []);
 
   return (
-    <Container max-width="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       <PageHeader
         title={"Categories"}
         actionLabel={"Add Category"}
@@ -95,20 +94,19 @@ function Categories() {
           <Table>
             <TableHead className="data-table-head">
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                <TableCell sx={{ width: "25%" }}>Name</TableCell>
+                <TableCell sx={{ width: "60%" }}>Description</TableCell>
+                <TableCell sx={{ width: "15%" }} align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="data-table-body">
               {categories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.description}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{category.name}</TableCell>
+                  <TableCell sx={{ color: "text.secondary" }}>{category.description || "—"}</TableCell>
                   <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
-                        color="primary"
                         onClick={() => handleEdit(category)}
                       >
                         <EditIcon />

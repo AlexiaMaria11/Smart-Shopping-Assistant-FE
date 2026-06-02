@@ -95,7 +95,7 @@ function NavBar() {
           </ToggleButtonGroup>
           {mode === "user" && (
             <IconButton color="inherit" onClick={openCart}>
-              <Badge badgeContent={cart?.itemCount ?? 0} color="primary">
+              <Badge badgeContent={cart?.itemCount ?? 0} color="warning">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

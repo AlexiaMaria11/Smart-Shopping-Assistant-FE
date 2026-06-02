@@ -238,7 +238,7 @@ function PromotionFormDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSave} disabled={saving}>
+        <Button variant="contained" color="success" onClick={handleSave} disabled={saving}>
           Save
         </Button>
       </DialogActions>

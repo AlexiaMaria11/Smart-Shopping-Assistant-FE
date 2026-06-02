@@ -114,6 +114,7 @@ function Shop() {
                 <Button
                   fullWidth
                   variant="contained"
+                  color="success"
                   startIcon={<AddShoppingCartIcon />}
                   onClick={() => handleAddToCart(product)}
                 >

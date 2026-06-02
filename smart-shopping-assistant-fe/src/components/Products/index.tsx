@@ -21,7 +21,6 @@ import { productsApi } from "../../api/clients/ProductApiClient";
 import PageHeader from "../common/PageHeader";
 import ProductFormDialog from "./ProductFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
-import "../common/DataTable/DataTable.css";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -76,7 +75,7 @@ function Products() {
   }, []);
 
   return (
-    <Container max-width="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       <PageHeader
         title="Products"
         actionLabel="Add Product"
@@ -96,31 +95,33 @@ function Products() {
           <Table>
             <TableHead className="data-table-head">
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Image URL</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                <TableCell sx={{ width: "20%" }}>Name</TableCell>
+                <TableCell sx={{ width: "15%" }}>Category</TableCell>
+                <TableCell sx={{ width: "35%" }}>Description</TableCell>
+                <TableCell sx={{ width: "8%" }} align="right">Price</TableCell>
+                <TableCell sx={{ width: "8%" }} align="center">Image</TableCell>
+                <TableCell sx={{ width: "14%" }} align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="data-table-body">
               {products.map((product) => (
                 <TableRow key={product.id}>
-                  <TableCell>{product.name}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{product.name}</TableCell>
                   <TableCell>
                     {product.categories.length > 0
                       ? product.categories.map((c) => c.name).join(", ")
                       : "—"}
                   </TableCell>
-                  <TableCell>{product.description}</TableCell>
-                  <TableCell>{product.price.toFixed(2)}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{ maxWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "text.secondary" }}>
+                    {product.description || "—"}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 600 }}>{product.price.toFixed(2)} RON</TableCell>
+                  <TableCell align="center">
                     {product.imageUrl ? (
                       <img
                         src={product.imageUrl}
                         alt={product.name}
-                        style={{ height: 48, width: 48, objectFit: "cover", borderRadius: 4 }}
+                        style={{ height: 48, width: 48, objectFit: "cover", borderRadius: 8, display: "block", margin: "0 auto" }}
                         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                       />
                     ) : (
@@ -130,7 +131,6 @@ function Products() {
                   <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
-                        color="primary"
                         onClick={() => handleEdit(product)}
                       >
                         <EditIcon />
