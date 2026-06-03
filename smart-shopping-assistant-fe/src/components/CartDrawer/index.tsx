@@ -1,6 +1,5 @@
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -11,90 +10,136 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import { useCart } from "../../context/CartContext/cart-context";
+import "./CartDrawer.css";
 
 function CartDrawer() {
   const { cart, open, closeCart, updateQuantity, removeProduct } = useCart();
-
   const isEmpty = cart === null || cart.items.length === 0;
 
   return (
     <Drawer anchor="right" open={open} onClose={closeCart}>
       <Box
         sx={{
-          width: 800,
-          p: 2,
+          width: { xs: 340, sm: 420 },
           height: "100%",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 1,
-          }}
-        >
-          <Typography variant="h6">Your Cart</Typography>
-          <IconButton onClick={closeCart}>
-            <CloseIcon />
+        <Box className="cart-header">
+          <Box className="cart-header-info">
+            <ShoppingBagOutlinedIcon
+              sx={{ color: "var(--accent)", fontSize: 22 }}
+            />
+            <Typography className="cart-header-title">Cart</Typography>
+            {!isEmpty && (
+              <Box className="cart-item-badge">{cart!.itemCount}</Box>
+            )}
+          </Box>
+          <IconButton
+            onClick={closeCart}
+            size="small"
+            sx={{
+              color: "rgba(255,255,255,0.7)",
+              "&:hover": {
+                color: "var(--accent)",
+                background: "rgba(196,144,124,0.12)",
+              },
+            }}
+          >
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
 
         {isEmpty ? (
-          <Typography color="text.secondary">Your cart is empty.</Typography>
+          <Box className="cart-empty">
+            <Box className="cart-empty-icon">
+              <ShoppingBagOutlinedIcon
+                sx={{ color: "var(--accent)", fontSize: 32 }}
+              />
+            </Box>
+            <Typography className="cart-empty-title">
+              Your cart is empty
+            </Typography>
+            <Typography className="cart-empty-desc">
+              Browse our collection and add something you love.
+            </Typography>
+          </Box>
         ) : (
           <>
-            <List sx={{ flexGrow: 1, overflowY: "auto" }}>
-              {cart.items.map((item) => (
+            <List sx={{ flex: 1, overflowY: "auto", px: 2, py: 1.5 }}>
+              {cart!.items.map((item, idx) => (
                 <ListItem
                   key={item.id}
-                  divider
                   disableGutters
-                  sx={{ display: "block", py: 1.5 }}
+                  sx={{
+                    display: "block",
+                    py: 2,
+                    borderBottom:
+                      idx < cart!.items.length - 1
+                        ? "1px solid #EAD9CC"
+                        : "none",
+                  }}
                 >
                   <Box
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
-                      alignItems: "center",
+                      alignItems: "flex-start",
+                      mb: 0.5,
                     }}
                   >
-                    <Typography>{item.productName}</Typography>
+                    <Typography className="cart-item-name">
+                      {item.productName}
+                    </Typography>
                     <IconButton
                       size="small"
-                      color="error"
                       onClick={() => removeProduct(item.id)}
+                      sx={{
+                        color: "#9A6855",
+                        p: 0.5,
+                        "&:hover": {
+                          color: "var(--primary)",
+                          background: "rgba(114,47,55,0.07)",
+                        },
+                      }}
                     >
-                      <DeleteIcon fontSize="small" />
+                      <DeleteIcon sx={{ fontSize: 17 }} />
                     </IconButton>
                   </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.unitPriceLabel} each
+
+                  <Typography className="cart-item-unit-price">
+                    {item.unitPriceLabel} / piece
                   </Typography>
+
                   <Box
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      mt: 1,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box className="cart-qty-control">
                       <IconButton
                         size="small"
                         onClick={() =>
                           updateQuantity(item.id, item.quantity - 1)
                         }
                         disabled={item.quantity <= 1}
+                        sx={{
+                          color: "var(--primary)",
+                          p: "4px 8px",
+                          borderRadius: 0,
+                          "&:disabled": { color: "#C4B08A" },
+                          "&:hover": { background: "rgba(114,47,55,0.10)" },
+                        }}
                       >
-                        <RemoveIcon fontSize="small" />
+                        <RemoveIcon sx={{ fontSize: 14 }} />
                       </IconButton>
-                      <Typography
-                        sx={{ mx: 1, minWidth: 24, textAlign: "center" }}
-                      >
+                      <Typography className="cart-qty-value">
                         {item.quantity}
                       </Typography>
                       <IconButton
@@ -102,50 +147,57 @@ function CartDrawer() {
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
+                        sx={{
+                          color: "var(--primary)",
+                          p: "4px 8px",
+                          borderRadius: 0,
+                          "&:hover": { background: "rgba(114,47,55,0.10)" },
+                        }}
                       >
-                        <AddIcon fontSize="small" />
+                        <AddIcon sx={{ fontSize: 14 }} />
                       </IconButton>
                     </Box>
-                    <Typography>{item.subtotalLabel}</Typography>
+                    <Typography className="cart-item-subtotal">
+                      {item.subtotalLabel}
+                    </Typography>
                   </Box>
                 </ListItem>
               ))}
             </List>
 
-            <Divider />
-
-            <Box sx={{ pt: 2 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mb: 0.5,
-                }}
-              >
-                <Typography>Subtotal</Typography>
-                <Typography>{cart.subtotalLabel}</Typography>
+            <Box className="cart-totals">
+              <Box className="cart-totals-row">
+                <Typography className="cart-subtotal-label">
+                  Subtotal
+                </Typography>
+                <Typography className="cart-subtotal-value">
+                  {cart!.subtotalLabel}
+                </Typography>
               </Box>
-              {cart.appliedPromotions.map((promotion) => (
-                <Box
-                  key={promotion.promotionId}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 0.5,
-                  }}
-                >
-                  <Typography color="success.main">
-                    {promotion.promotionName}
-                  </Typography>
-                  <Typography color="success.main">
+
+              {cart!.appliedPromotions.map((promotion) => (
+                <Box key={promotion.promotionId} className="cart-promo-row">
+                  <Box className="cart-promo-info">
+                    <LocalOfferOutlinedIcon
+                      sx={{ fontSize: 14, color: "#5C8A4E" }}
+                    />
+                    <Typography className="cart-promo-label">
+                      {promotion.promotionName}
+                    </Typography>
+                  </Box>
+                  <Typography className="cart-promo-value">
                     {promotion.discountLabel}
                   </Typography>
                 </Box>
               ))}
-              <Divider sx={{ my: 1 }} />
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="h6">Total</Typography>
-                <Typography variant="h6">{cart.totalLabel}</Typography>
+
+              <Box className="cart-accent-rule" />
+
+              <Box className="cart-total-row">
+                <Typography className="cart-total-label">Total</Typography>
+                <Typography className="cart-total-amount">
+                  {cart!.totalLabel}
+                </Typography>
               </Box>
             </Box>
           </>

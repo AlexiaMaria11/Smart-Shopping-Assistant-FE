@@ -1,0 +1,190 @@
+.cart-header {
+  background: linear-gradient(135deg, #5A2430 0%, #722F37 60%, #4A1520 100%);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(196, 144, 124, 0.35);
+}
+
+.cart-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-header-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+}
+
+.cart-item-badge {
+  background: var(--accent);
+  color: var(--text-primary);
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border-radius: 50px;
+  padding: 1px 8px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.cart-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  gap: 16px;
+}
+
+.cart-empty-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-pale), #F0D4C8);
+  border: 1.5px solid var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-empty-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.cart-empty-desc {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.cart-item-name {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  line-height: 1.35;
+  flex: 1;
+  padding-right: 8px;
+}
+
+.cart-item-unit-price {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.79rem;
+  color: #9A6855;
+  margin-bottom: 12px;
+}
+
+.cart-qty-control {
+  display: flex;
+  align-items: center;
+  background: var(--accent-pale);
+  border: 1px solid var(--accent-light);
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.cart-qty-value {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  min-width: 28px;
+  text-align: center;
+}
+
+.cart-item-subtotal {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--primary);
+}
+
+.cart-totals {
+  background: #ffffff;
+  border-top: 1px solid #EAD9CC;
+  padding: 20px 24px 24px;
+}
+
+.cart-totals-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cart-subtotal-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.cart-subtotal-value {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.cart-promo-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cart-promo-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-promo-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.83rem;
+  color: #5C8A4E;
+  font-weight: 500;
+}
+
+.cart-promo-value {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.83rem;
+  color: #5C8A4E;
+  font-weight: 600;
+}
+
+.cart-accent-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent) 40%, var(--accent) 60%, transparent);
+  margin: 12px 0;
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.cart-total-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cart-total-amount {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--primary);
+}

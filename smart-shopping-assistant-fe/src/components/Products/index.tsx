@@ -98,9 +98,15 @@ function Products() {
                 <TableCell sx={{ width: "20%" }}>Name</TableCell>
                 <TableCell sx={{ width: "15%" }}>Category</TableCell>
                 <TableCell sx={{ width: "35%" }}>Description</TableCell>
-                <TableCell sx={{ width: "8%" }} align="right">Price</TableCell>
-                <TableCell sx={{ width: "8%" }} align="center">Image</TableCell>
-                <TableCell sx={{ width: "14%" }} align="right">Actions</TableCell>
+                <TableCell sx={{ width: "8%" }} align="right">
+                  Price
+                </TableCell>
+                <TableCell sx={{ width: "8%" }} align="center">
+                  Image
+                </TableCell>
+                <TableCell sx={{ width: "14%" }} align="right">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="data-table-body">
@@ -112,17 +118,37 @@ function Products() {
                       ? product.categories.map((c) => c.name).join(", ")
                       : "—"}
                   </TableCell>
-                  <TableCell sx={{ maxWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "text.secondary" }}>
+                  <TableCell
+                    sx={{
+                      maxWidth: 0,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      color: "text.secondary",
+                    }}
+                  >
                     {product.description || "—"}
                   </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>{product.price.toFixed(2)} RON</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 600 }}>
+                    {product.price.toFixed(2)} RON
+                  </TableCell>
                   <TableCell align="center">
                     {product.imageUrl ? (
                       <img
                         src={product.imageUrl}
                         alt={product.name}
-                        style={{ height: 48, width: 48, objectFit: "cover", borderRadius: 8, display: "block", margin: "0 auto" }}
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                        style={{
+                          height: 48,
+                          width: 48,
+                          objectFit: "cover",
+                          borderRadius: 8,
+                          display: "block",
+                          margin: "0 auto",
+                        }}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
                       />
                     ) : (
                       "—"
@@ -131,6 +157,7 @@ function Products() {
                   <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
+                        color="info"
                         onClick={() => handleEdit(product)}
                       >
                         <EditIcon />
@@ -149,7 +176,11 @@ function Products() {
               ))}
               {products.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} align="center" className="data-table-empty">
+                  <TableCell
+                    colSpan={6}
+                    align="center"
+                    className="data-table-empty"
+                  >
                     No products yet.
                   </TableCell>
                 </TableRow>

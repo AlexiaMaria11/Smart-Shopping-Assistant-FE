@@ -96,17 +96,24 @@ function Categories() {
               <TableRow>
                 <TableCell sx={{ width: "25%" }}>Name</TableCell>
                 <TableCell sx={{ width: "60%" }}>Description</TableCell>
-                <TableCell sx={{ width: "15%" }} align="right">Actions</TableCell>
+                <TableCell sx={{ width: "15%" }} align="right">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="data-table-body">
               {categories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell sx={{ fontWeight: 600 }}>{category.name}</TableCell>
-                  <TableCell sx={{ color: "text.secondary" }}>{category.description || "—"}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>
+                    {category.name}
+                  </TableCell>
+                  <TableCell sx={{ color: "text.secondary" }}>
+                    {category.description || "—"}
+                  </TableCell>
                   <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
+                        color="info"
                         onClick={() => handleEdit(category)}
                       >
                         <EditIcon />
@@ -125,7 +132,11 @@ function Categories() {
               ))}
               {categories.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={3} align="center" className="data-table-empty">
+                  <TableCell
+                    colSpan={3}
+                    align="center"
+                    className="data-table-empty"
+                  >
                     No categories yet.
                   </TableCell>
                 </TableRow>

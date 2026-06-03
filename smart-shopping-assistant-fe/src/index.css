@@ -4,28 +4,72 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary: #722f37;
+  --primary-dark: #4a1520;
+  --primary-light: #9b4a55;
+  --accent: #c4907c;
+  --accent-light: #e8c0b0;
+  --accent-pale: #f8ede8;
+  --cream: #fbf5ee;
+  --cream-dark: #f0e6d8;
+  --text-primary: #1c0a08;
+  --text-secondary: #7a4f3a;
+  --border: #e4cebc;
+  --white: #ffffff;
+  --shadow-sm: 0 2px 10px rgba(114, 47, 55, 0.07);
+  --shadow-md: 0 6px 24px rgba(114, 47, 55, 0.11);
+  --shadow-lg: 0 12px 42px rgba(114, 47, 55, 0.15);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: "Inter", "Roboto", system-ui, sans-serif;
-  background-color: #fdf6f6;
-  color: #1a1a1a;
+  font-family: "Poppins", "Inter", system-ui, sans-serif;
+  background-color: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+::selection {
+  background: rgba(196, 144, 124, 0.28);
+  color: var(--primary-dark);
 }
 
 .data-table-container {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(128, 0, 32, 0.1);
-  border: 1px solid #f0e0e5;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
 .data-table-head .MuiTableCell-root {
-  background-color: #800020;
+  background-color: #722f37;
   color: #ffffff;
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-weight: 600;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-bottom: none;
-  padding: 16px 20px;
+  padding: 14px 20px;
+  font-family: "Poppins", sans-serif;
 }
 
 .data-table-body .MuiTableRow-root {
@@ -33,15 +77,20 @@ body {
   transition: background-color 0.15s ease;
 }
 
+.data-table-body .MuiTableRow-root:nth-child(even) {
+  background-color: #fdf8f5;
+}
+
 .data-table-body .MuiTableRow-root:hover {
-  background-color: #fff0f3;
+  background-color: var(--accent-pale);
 }
 
 .data-table-body .MuiTableCell-root {
-  color: #2d2d2d;
-  font-size: 0.91rem;
-  padding: 14px 20px;
-  border-bottom: 1px solid #f5eaed;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: "Poppins", sans-serif;
+  padding: 13px 20px;
+  border-bottom: 1px solid #f0e6dd;
 }
 
 .data-table-body .MuiTableRow-root:last-child .MuiTableCell-root {
@@ -49,52 +98,65 @@ body {
 }
 
 .data-table-empty {
-  color: #bbb;
+  color: var(--text-secondary);
   font-style: italic;
-  padding: 48px 0;
+  font-family: "Poppins", sans-serif;
+  padding: 56px 0;
 }
 
 .page-header-title {
-  font-weight: 800;
-  color: #800020;
-  font-size: 1.75rem;
-  letter-spacing: -0.03em;
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+  font-size: 1.85rem !important;
+  letter-spacing: -0.02em !important;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.page-header-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 44px;
+  height: 2.5px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 .page-header-btn {
-  font-weight: 700;
+  font-weight: 600;
   border-radius: 50px;
-  padding: 10px 28px;
-  font-size: 0.95rem;
+  padding: 9px 28px;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
 }
 
 .MuiDialog-paper {
-  border-radius: 24px;
-  box-shadow: 0 12px 48px rgba(128, 0, 32, 0.15);
-  background-color: #ffffff;
-  overflow: hidden;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border) !important;
 }
 
-.MuiDialogTitle-root {
-  font-weight: 800;
+.price-tag {
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 1.2rem;
-  color: #ffffff;
-  background-color: #800020;
-  padding: 20px 28px;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-.MuiDialogContent-root {
-  padding: 24px 28px;
-  background-color: #ffffff;
+.card-image-wrap {
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
 }
 
-.MuiDialogActions-root {
-  padding: 12px 28px 24px;
-  gap: 10px;
-  background-color: #ffffff;
+.card-image-wrap img {
+  transition: transform 0.4s ease;
+  width: 100%;
+  display: block;
 }
 
-.MuiDrawer-paper {
-  border-radius: 24px 0 0 24px;
-  box-shadow: -6px 0 48px rgba(128, 0, 32, 0.14);
+.MuiCard-root:hover .card-image-wrap img {
+  transform: scale(1.06);
 }

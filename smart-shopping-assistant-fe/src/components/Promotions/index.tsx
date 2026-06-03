@@ -83,8 +83,14 @@ function Promotions() {
 
   useEffect(() => {
     loadPromotions();
-    productsApi.getAll().then(setProducts).catch(() => {});
-    categoriesApi.getAll().then(setCategories).catch(() => {});
+    productsApi
+      .getAll()
+      .then(setProducts)
+      .catch(() => {});
+    categoriesApi
+      .getAll()
+      .then(setCategories)
+      .catch(() => {});
   }, []);
 
   return (
@@ -110,28 +116,42 @@ function Promotions() {
               <TableRow>
                 <TableCell sx={{ width: "20%" }}>Name</TableCell>
                 <TableCell sx={{ width: "10%" }}>Type</TableCell>
-                <TableCell sx={{ width: "10%" }} align="right">Threshold</TableCell>
+                <TableCell sx={{ width: "10%" }} align="right">
+                  Threshold
+                </TableCell>
                 <TableCell sx={{ width: "13%" }}>Reward</TableCell>
-                <TableCell sx={{ width: "10%" }} align="right">Reward Value</TableCell>
+                <TableCell sx={{ width: "10%" }} align="right">
+                  Reward Value
+                </TableCell>
                 <TableCell sx={{ width: "17%" }}>Applies To</TableCell>
-                <TableCell sx={{ width: "10%" }} align="center">Status</TableCell>
-                <TableCell sx={{ width: "10%" }} align="right">Actions</TableCell>
+                <TableCell sx={{ width: "10%" }} align="center">
+                  Status
+                </TableCell>
+                <TableCell sx={{ width: "10%" }} align="right">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="data-table-body">
               {promotions.map((promotion) => (
                 <TableRow key={promotion.id}>
-                  <TableCell sx={{ fontWeight: 600 }}>{promotion.name}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>
+                    {promotion.name}
+                  </TableCell>
                   <TableCell>{PROMOTION_TYPE_LABELS[promotion.type]}</TableCell>
-                  <TableCell align="right">{promotion.threshold.toFixed(2)} RON</TableCell>
-                  <TableCell>{PROMOTION_REWARD_LABELS[promotion.reward]}</TableCell>
+                  <TableCell align="right">
+                    {promotion.threshold.toFixed(2)} RON
+                  </TableCell>
+                  <TableCell>
+                    {PROMOTION_REWARD_LABELS[promotion.reward]}
+                  </TableCell>
                   <TableCell align="right">{promotion.rewardValue}</TableCell>
                   <TableCell sx={{ color: "text.secondary" }}>
                     {promotion.productId
                       ? `Product: ${products.find((p) => p.id === promotion.productId)?.name ?? promotion.productId}`
                       : promotion.categoryId
-                      ? `Category: ${categories.find((c) => c.id === promotion.categoryId)?.name ?? promotion.categoryId}`
-                      : "—"}
+                        ? `Category: ${categories.find((c) => c.id === promotion.categoryId)?.name ?? promotion.categoryId}`
+                        : "—"}
                   </TableCell>
                   <TableCell align="center">
                     <Chip
@@ -149,6 +169,7 @@ function Promotions() {
                   <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     <Tooltip title="Edit">
                       <IconButton
+                        color="info"
                         onClick={() => handleEdit(promotion)}
                       >
                         <EditIcon />
@@ -167,7 +188,11 @@ function Promotions() {
               ))}
               {promotions.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={8} align="center" className="data-table-empty">
+                  <TableCell
+                    colSpan={8}
+                    align="center"
+                    className="data-table-empty"
+                  >
                     No promotions yet.
                   </TableCell>
                 </TableRow>

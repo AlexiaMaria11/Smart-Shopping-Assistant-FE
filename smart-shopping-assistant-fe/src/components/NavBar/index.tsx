@@ -37,7 +37,7 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="sticky" className="navbar">
+    <AppBar position="sticky" className="navbar" elevation={0}>
       <Container maxWidth="xl">
         <Toolbar className="navbar-toolbar">
           <Link to="/">
@@ -65,7 +65,7 @@ function NavBar() {
             </Box>
           ) : (
             <Box className="navbar-links">
-              <Button component={NavLink} to="/" className="nav-btn">
+              <Button component={NavLink} to="/" end className="nav-btn">
                 Home
               </Button>
               <Button component={NavLink} to="/shop" className="nav-btn">
@@ -73,29 +73,37 @@ function NavBar() {
               </Button>
             </Box>
           )}
+
           <ToggleButtonGroup
             value={mode}
             exclusive
             size="small"
-            sx={{ mr: 2 }}
+            sx={{ mr: 1.5 }}
             onChange={handleModeChange}
           >
-            <ToggleButton
-              value="user"
-              sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
-            >
+            <ToggleButton value="user" sx={{ color: "rgba(255,255,255,0.8)" }}>
               User
             </ToggleButton>
-            <ToggleButton
-              value="admin"
-              sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
-            >
+            <ToggleButton value="admin" sx={{ color: "rgba(255,255,255,0.8)" }}>
               Admin
             </ToggleButton>
           </ToggleButtonGroup>
+
           {mode === "user" && (
-            <IconButton color="inherit" onClick={openCart}>
-              <Badge badgeContent={cart?.itemCount ?? 0} color="warning">
+            <IconButton className="cart-icon-btn" onClick={openCart}>
+              <Badge
+                badgeContent={cart?.itemCount ?? 0}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    backgroundColor: "#C9A84C",
+                    color: "#1C0A08",
+                    fontWeight: 700,
+                    fontSize: "0.68rem",
+                    minWidth: 18,
+                    height: 18,
+                  },
+                }}
+              >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

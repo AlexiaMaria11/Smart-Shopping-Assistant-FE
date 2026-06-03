@@ -1,22 +1,44 @@
 .app {
   min-height: 100vh;
-  background-color: #fdf6f6;
+  background-color: #fbf5ee;
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #800020;
+  border-color: #722f37;
   border-width: 2px;
 }
 
 .MuiInputLabel-root.Mui-focused {
-  color: #800020;
+  color: #722f37;
 }
 
 .MuiCheckbox-root.Mui-checked {
-  color: #800020;
+  color: #722f37;
+}
+
+.MuiToggleButtonGroup-root {
+  border-radius: 50px !important;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 2px;
+  gap: 2px;
+}
+
+.MuiToggleButton-root {
+  border-radius: 50px !important;
+  border: none !important;
+  padding: 4px 16px !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.03em !important;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease !important;
 }
 
 .MuiToggleButton-root.Mui-selected {
-  background-color: rgba(128, 0, 32, 0.12);
-  font-weight: 700;
+  background: #c4907c !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(196, 144, 124, 0.35) !important;
 }
