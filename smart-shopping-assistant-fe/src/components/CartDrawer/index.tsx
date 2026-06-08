@@ -10,7 +10,6 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import { useCart } from "../../context/CartContext/cart-context";
 import "./CartDrawer.css";
@@ -31,9 +30,6 @@ function CartDrawer() {
       >
         <Box className="cart-header">
           <Box className="cart-header-info">
-            <ShoppingBagOutlinedIcon
-              sx={{ color: "var(--accent)", fontSize: 22 }}
-            />
             <Typography className="cart-header-title">Cart</Typography>
             {!isEmpty && (
               <Box className="cart-item-badge">{cart!.itemCount}</Box>
@@ -56,11 +52,6 @@ function CartDrawer() {
 
         {isEmpty ? (
           <Box className="cart-empty">
-            <Box className="cart-empty-icon">
-              <ShoppingBagOutlinedIcon
-                sx={{ color: "var(--accent)", fontSize: 32 }}
-              />
-            </Box>
             <Typography className="cart-empty-title">
               Your cart is empty
             </Typography>

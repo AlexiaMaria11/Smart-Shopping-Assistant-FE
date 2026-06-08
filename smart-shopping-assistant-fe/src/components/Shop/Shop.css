@@ -3,15 +3,16 @@
   min-height: 100vh;
 }
 
+/* ── Header ── */
 .shop-header {
   margin-bottom: 32px;
 }
 
 .shop-title-row {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 4px;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
 }
 
 .shop-title {
@@ -31,10 +32,77 @@
   font-family: "Poppins", sans-serif;
   font-size: 0.84rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
-  margin-left: 30px;
 }
 
+.shop-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ── Body: sidebar + main ── */
+.shop-body {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+/* ── Sidebar ── */
+.shop-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 18px 24px;
+  position: sticky;
+  top: 24px;
+}
+
+.sidebar-section-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 18px !important;
+}
+
+.sidebar-section {
+  margin-bottom: 22px;
+}
+
+.sidebar-label {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary) !important;
+  margin-bottom: 10px !important;
+}
+
+/* ── Price range labels ── */
+.price-range-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.price-range-value {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.78rem !important;
+  color: var(--text-secondary) !important;
+}
+
+/* ── Main area ── */
+.shop-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Loading / empty ── */
 .shop-loading {
   display: flex;
   justify-content: center;
@@ -59,12 +127,14 @@
   color: #9a6855;
 }
 
+/* ── Product grid ── */
 .shop-grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }
 
+/* ── Product card ── */
 .product-card-name {
   font-family: "Playfair Display", Georgia, serif;
   font-weight: 600;
@@ -109,4 +179,21 @@
   font-size: 0.78rem;
   color: #9a6855;
   font-weight: 500;
+}
+
+/* ── Responsive: collapse sidebar on small screens ── */
+@media (max-width: 768px) {
+  .shop-body {
+    flex-direction: column;
+  }
+
+  .shop-sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .shop-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
