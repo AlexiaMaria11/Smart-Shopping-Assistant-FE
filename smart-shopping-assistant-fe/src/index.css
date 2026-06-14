@@ -1,25 +1,9 @@
+/* CSS vars are generated from theme in main.tsx — do not add color values here */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-:root {
-  --primary: #722f37;
-  --primary-dark: #4a1520;
-  --primary-light: #9b4a55;
-  --accent: #c4907c;
-  --accent-light: #e8c0b0;
-  --accent-pale: #f8ede8;
-  --cream: #fbf5ee;
-  --cream-dark: #f0e6d8;
-  --text-primary: #1c0a08;
-  --text-secondary: #7a4f3a;
-  --border: #e4cebc;
-  --white: #ffffff;
-  --shadow-sm: 0 2px 10px rgba(114, 47, 55, 0.07);
-  --shadow-md: 0 6px 24px rgba(114, 47, 55, 0.11);
-  --shadow-lg: 0 12px 42px rgba(114, 47, 55, 0.15);
 }
 
 html {
@@ -53,16 +37,19 @@ body {
   color: var(--primary-dark);
 }
 
+/* ── Shared table styles ── */
+
 .data-table-container {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
+  overflow-x: auto;
 }
 
 .data-table-head .MuiTableCell-root {
-  background-color: #722f37;
-  color: #ffffff;
+  background-color: var(--primary);
+  color: var(--white);
   font-weight: 600;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
@@ -70,10 +57,11 @@ body {
   border-bottom: none;
   padding: 14px 20px;
   font-family: "Poppins", sans-serif;
+  white-space: nowrap;
 }
 
 .data-table-body .MuiTableRow-root {
-  background-color: #ffffff;
+  background-color: var(--white);
   transition: background-color 0.15s ease;
 }
 
@@ -97,11 +85,25 @@ body {
   border-bottom: none;
 }
 
-.data-table-empty {
-  color: var(--text-secondary);
-  font-style: italic;
-  font-family: "Poppins", sans-serif;
-  padding: 56px 0;
+.data-table-cell-bold {
+  font-weight: 600 !important;
+}
+
+.data-table-cell-muted {
+  color: var(--text-secondary) !important;
+}
+
+.data-table-cell-nowrap {
+  white-space: nowrap !important;
+}
+
+/* ── Shared page header ── */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
 }
 
 .page-header-title {
@@ -133,22 +135,12 @@ body {
   letter-spacing: 0.02em;
 }
 
-.MuiDialog-paper {
-  border-radius: 20px !important;
-  overflow: hidden !important;
-  border: 1px solid var(--border) !important;
-}
-
-.price-tag {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary);
-}
+/* ── Shared card image ── */
 
 .card-image-wrap {
   overflow: hidden;
   border-radius: 18px 18px 0 0;
+  position: relative;
 }
 
 .card-image-wrap img {
@@ -159,4 +151,102 @@ body {
 
 .MuiCard-root:hover .card-image-wrap img {
   transform: scale(1.06);
+}
+
+/* ── Shared price tag ── */
+
+.price-tag {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ── Admin product thumbnail ── */
+
+.product-thumb {
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ── Shared product card styles (Shop + Favorites) ── */
+
+.product-card-name {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.product-card-desc {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-light),
+    transparent
+  );
+  margin-bottom: 12px;
+}
+
+.product-card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.product-card-currency {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+}
+
+.shop-add-btn {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+  transition: background 0.25s ease, color 0.25s ease !important;
+}
+
+/* ── Favorite button on product card ── */
+.product-fav-btn {
+  position: absolute !important;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(4px);
+  color: var(--accent) !important;
+  transition: transform 0.15s ease, color 0.15s ease, background 0.15s ease !important;
+}
+
+.product-fav-btn:hover {
+  background: var(--white) !important;
+  transform: scale(1.12);
+  color: var(--primary) !important;
+}
+
+.product-fav-btn--active {
+  color: var(--primary) !important;
 }

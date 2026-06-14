@@ -1,21 +1,9 @@
 .app {
   min-height: 100vh;
-  background-color: #fbf5ee;
+  background-color: var(--cream);
 }
 
-.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #722f37;
-  border-width: 2px;
-}
-
-.MuiInputLabel-root.Mui-focused {
-  color: #722f37;
-}
-
-.MuiCheckbox-root.Mui-checked {
-  color: #722f37;
-}
-
+/* ── Toggle button group pill shape (used in NavBar) ── */
 .MuiToggleButtonGroup-root {
   border-radius: 50px !important;
   overflow: hidden;
@@ -37,8 +25,8 @@
 }
 
 .MuiToggleButton-root.Mui-selected {
-  background: #c4907c !important;
-  color: #ffffff !important;
+  background: var(--accent) !important;
+  color: var(--white) !important;
   font-weight: 700 !important;
   box-shadow: 0 2px 8px rgba(196, 144, 124, 0.35) !important;
 }

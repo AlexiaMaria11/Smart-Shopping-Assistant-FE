@@ -1,6 +1,68 @@
 import { createTheme } from "@mui/material/styles";
 
+declare module "@mui/material/styles" {
+  interface Theme {
+    tokens: {
+      accentPale: string;
+      creamDark: string;
+      border: string;
+      gradients: {
+        navbar: string;
+        cartHeader: string;
+        dialogTitle: string;
+        buttonPrimary: string;
+        buttonPrimaryHover: string;
+      };
+      shadows: {
+        sm: string;
+        md: string;
+        lg: string;
+      };
+    };
+  }
+  interface ThemeOptions {
+    tokens?: {
+      accentPale?: string;
+      creamDark?: string;
+      border?: string;
+      gradients?: {
+        navbar?: string;
+        cartHeader?: string;
+        dialogTitle?: string;
+        buttonPrimary?: string;
+        buttonPrimaryHover?: string;
+      };
+      shadows?: {
+        sm?: string;
+        md?: string;
+        lg?: string;
+      };
+    };
+  }
+}
+
 const theme = createTheme({
+  tokens: {
+    accentPale: "#F8EDE8",
+    creamDark: "#F0E6D8",
+    border: "#E4CEBC",
+    gradients: {
+      navbar: "linear-gradient(135deg, #5A2430 0%, #722F37 50%, #4A1520 100%)",
+      cartHeader:
+        "linear-gradient(135deg, #5A2430 0%, #722F37 60%, #4A1520 100%)",
+      dialogTitle:
+        "linear-gradient(135deg, #8B3A44 0%, #722F37 60%, #4A1520 100%)",
+      buttonPrimary:
+        "linear-gradient(135deg, #8B3A44 0%, #722F37 50%, #5A2430 100%)",
+      buttonPrimaryHover:
+        "linear-gradient(135deg, #9B4A54 0%, #8B3A44 50%, #722F37 100%)",
+    },
+    shadows: {
+      sm: "0 2px 10px rgba(114, 47, 55, 0.07)",
+      md: "0 6px 24px rgba(114, 47, 55, 0.11)",
+      lg: "0 12px 42px rgba(114, 47, 55, 0.15)",
+    },
+  },
   palette: {
     primary: {
       main: "#722F37",
@@ -64,21 +126,19 @@ const theme = createTheme({
           padding: "9px 28px",
           fontSize: "0.9rem",
           "&.MuiButton-containedPrimary": {
-            background:
-              "linear-gradient(135deg, #8B3A44 0%, #722F37 50%, #5A2430 100%)",
+            background: "var(--gradient-btn-primary)",
             boxShadow: "0 4px 18px rgba(114, 47, 55, 0.28)",
             "&:hover": {
-              background:
-                "linear-gradient(135deg, #9B4A54 0%, #8B3A44 50%, #722F37 100%)",
+              background: "var(--gradient-btn-primary-hover)",
               boxShadow: "0 6px 24px rgba(114, 47, 55, 0.40)",
             },
           },
           "&.MuiButton-outlinedPrimary": {
-            borderColor: "#722F37",
+            borderColor: "var(--primary)",
             borderWidth: "1.5px",
-            color: "#722F37",
+            color: "var(--primary)",
             "&:hover": {
-              borderColor: "#4A1520",
+              borderColor: "var(--primary-dark)",
               backgroundColor: "rgba(114, 47, 55, 0.06)",
             },
           },
@@ -88,15 +148,15 @@ const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         colorError: {
-          color: "#C62828",
+          color: "var(--error)",
           "&:hover": { backgroundColor: "rgba(198, 40, 40, 0.08)" },
         },
         colorPrimary: {
-          color: "#722F37",
+          color: "var(--primary)",
           "&:hover": { backgroundColor: "rgba(114, 47, 55, 0.08)" },
         },
         colorInfo: {
-          color: "#2E7D9E",
+          color: "var(--info)",
           "&:hover": { backgroundColor: "rgba(46, 125, 158, 0.08)" },
         },
       },
@@ -107,12 +167,12 @@ const theme = createTheme({
           borderRadius: 18,
           boxShadow:
             "0 2px 16px rgba(114, 47, 55, 0.07), 0 1px 4px rgba(28, 10, 8, 0.05)",
-          border: "1px solid #EAD9CC",
+          border: "1px solid var(--border)",
           backgroundColor: "#ffffff",
           "&:hover": {
             transform: "translateY(-5px)",
             boxShadow: "0 10px 32px rgba(114, 47, 55, 0.12)",
-            borderColor: "#C4907C",
+            borderColor: "var(--accent)",
           },
           transition:
             "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
@@ -125,12 +185,12 @@ const theme = createTheme({
           borderRadius: 10,
           backgroundColor: "#ffffff",
           fontFamily: '"Poppins", sans-serif',
-          "& .MuiOutlinedInput-notchedOutline": { borderColor: "#E4CEBC" },
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: "var(--border)" },
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#C4907C",
+            borderColor: "var(--accent)",
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#722F37",
+            borderColor: "var(--primary)",
             borderWidth: "2px",
           },
         },
@@ -141,8 +201,8 @@ const theme = createTheme({
         root: {
           fontFamily: '"Poppins", sans-serif',
           fontSize: "0.9rem",
-          color: "#7A4F3A",
-          "&.Mui-focused": { color: "#722F37" },
+          color: "var(--text-secondary)",
+          "&.Mui-focused": { color: "var(--primary)" },
         },
       },
     },
@@ -152,7 +212,7 @@ const theme = createTheme({
           borderRadius: 20,
           boxShadow: "0 16px 56px rgba(114, 47, 55, 0.18)",
           overflow: "hidden",
-          border: "1px solid #EAD9CC",
+          border: "1px solid var(--border)",
         },
       },
     },
@@ -163,9 +223,11 @@ const theme = createTheme({
           fontWeight: 700,
           fontSize: "1.2rem",
           color: "#ffffff",
-          background:
-            "linear-gradient(135deg, #8B3A44 0%, #722F37 60%, #4A1520 100%)",
+          background: "var(--gradient-dialog-title)",
           padding: "20px 28px",
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
         },
       },
     },
@@ -188,7 +250,7 @@ const theme = createTheme({
         paper: {
           borderRadius: "20px 0 0 20px",
           boxShadow: "-8px 0 56px rgba(114, 47, 55, 0.16)",
-          backgroundColor: "#FBF5EE",
+          backgroundColor: "var(--cream)",
         },
       },
     },
@@ -207,7 +269,7 @@ const theme = createTheme({
         },
         colorError: {
           backgroundColor: "#FCE8E8",
-          color: "#C62828",
+          color: "var(--error)",
           fontWeight: 600,
           border: "1px solid #F0C0C0",
         },
@@ -235,7 +297,85 @@ const theme = createTheme({
     },
     MuiDivider: {
       styleOverrides: {
-        root: { borderColor: "#E4CEBC" },
+        root: { borderColor: "var(--border)" },
+      },
+    },
+    MuiSlider: {
+      styleOverrides: {
+        root: { color: "var(--primary)" },
+        thumb: {
+          backgroundColor: "var(--primary)",
+          border: "2px solid #fff",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+          "&:hover": { boxShadow: "0 0 0 8px rgba(156, 93, 72, 0.16)" },
+        },
+        track: { backgroundColor: "var(--primary)" },
+        rail: { backgroundColor: "var(--accent-light)" },
+        valueLabel: {
+          fontFamily: '"Poppins", sans-serif',
+          fontSize: "0.75rem",
+          backgroundColor: "var(--primary)",
+        },
+      },
+    },
+    MuiBadge: {
+      styleOverrides: {
+        badge: {
+          fontFamily: '"Poppins", sans-serif',
+          fontWeight: 700,
+          fontSize: "0.68rem",
+          minWidth: 18,
+          height: 18,
+        },
+      },
+    },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "rgba(114, 47, 55, 0.07)",
+          "&::after": {
+            background:
+              "linear-gradient(90deg, transparent, rgba(196, 144, 124, 0.15), transparent)",
+          },
+        },
+      },
+    },
+    MuiLinearProgress: {
+      styleOverrides: {
+        root: {
+          borderRadius: 6,
+          backgroundColor: "var(--accent-pale)",
+        },
+        bar: {
+          backgroundColor: "var(--primary)",
+          borderRadius: 6,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontFamily: '"Poppins", sans-serif',
+          fontSize: "0.88rem",
+        },
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontFamily: '"Poppins", sans-serif',
+          fontSize: "0.85rem",
+          color: "var(--text-primary)",
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: "var(--accent)",
+          padding: "4px 8px",
+          "&.Mui-checked": { color: "var(--primary)" },
+        },
       },
     },
   },
