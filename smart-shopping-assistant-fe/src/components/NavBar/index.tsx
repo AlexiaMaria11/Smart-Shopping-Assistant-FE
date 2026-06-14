@@ -35,7 +35,6 @@ const adminLinks = [
 const userLinks = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
-  { label: "Favorites", to: "/favorites" },
 ];
 
 function NavBar() {
@@ -124,16 +123,10 @@ function NavBar() {
               sx={{ mr: 1.5 }}
               onChange={handleModeChange}
             >
-              <ToggleButton
-                value="user"
-                className="navbar-toggle-btn"
-              >
+              <ToggleButton value="user" className="navbar-toggle-btn">
                 User
               </ToggleButton>
-              <ToggleButton
-                value="admin"
-                className="navbar-toggle-btn"
-              >
+              <ToggleButton value="admin" className="navbar-toggle-btn">
                 Admin
               </ToggleButton>
             </ToggleButtonGroup>
@@ -146,10 +139,7 @@ function NavBar() {
                   className="cart-icon-btn"
                   aria-label={`Favorites (${favorites.size})`}
                 >
-                  <Badge
-                    badgeContent={favorites.size}
-                    color="warning"
-                  >
+                  <Badge badgeContent={favorites.size} color="warning">
                     <FavoriteBorderIcon />
                   </Badge>
                 </IconButton>
@@ -159,10 +149,7 @@ function NavBar() {
                   onClick={openCart}
                   aria-label={`Cart (${cart?.itemCount ?? 0} items)`}
                 >
-                  <Badge
-                    badgeContent={cart?.itemCount ?? 0}
-                    color="warning"
-                  >
+                  <Badge badgeContent={cart?.itemCount ?? 0} color="warning">
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
