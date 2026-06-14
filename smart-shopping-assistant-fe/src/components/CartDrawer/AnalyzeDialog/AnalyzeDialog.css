@@ -1,0 +1,154 @@
+/* ── Loading state ── */
+.analyze-loading {
+  padding: 40px 0 24px;
+  text-align: center;
+}
+
+.analyze-loading-msg {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.93rem !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 20px !important;
+}
+
+.analyze-progress {
+  height: 6px !important;
+  border-radius: 6px !important;
+}
+
+/* ── Summary block ── */
+.analyze-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.analyze-summary-text {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.93rem !important;
+  color: var(--text-primary) !important;
+  line-height: 1.65 !important;
+}
+
+.analyze-savings-chip {
+  align-self: flex-start;
+}
+
+.analyze-no-suggestions {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.88rem !important;
+  color: var(--text-secondary) !important;
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.analyze-approve-all-btn {
+  align-self: flex-start;
+}
+
+/* ── Suggestion cards ── */
+.suggestion-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  background: var(--white);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.suggestion-card--approved {
+  border-color: #C4DEC0;
+  background: #F6FBF5;
+}
+
+.suggestion-card--declined {
+  border-color: #F0C0C0;
+  background: #FDF5F5;
+  opacity: 0.75;
+}
+
+.suggestion-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.suggestion-card-name {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 600 !important;
+  font-size: 0.98rem !important;
+  color: var(--text-primary) !important;
+  line-height: 1.3 !important;
+}
+
+.suggestion-card-price {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  color: var(--primary) !important;
+  white-space: nowrap;
+}
+
+.suggestion-card-reason {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.82rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin-bottom: 10px !important;
+}
+
+.suggestion-savings-chip {
+  margin-bottom: 12px !important;
+}
+
+.suggestion-card-actions {
+  margin-top: 4px;
+}
+
+/* ── Decision feedback ── */
+.suggestion-decision {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.suggestion-decision-icon {
+  font-size: 18px !important;
+}
+
+.suggestion-decision--approved .suggestion-decision-icon {
+  color: var(--success) !important;
+}
+
+.suggestion-decision--declined .suggestion-decision-icon {
+  color: var(--error) !important;
+}
+
+.suggestion-decision-text {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.83rem !important;
+  font-weight: 500 !important;
+}
+
+.suggestion-decision--approved .suggestion-decision-text {
+  color: var(--success) !important;
+}
+
+.suggestion-decision--declined .suggestion-decision-text {
+  color: var(--error) !important;
+}
+
+.suggestion-undo-btn {
+  margin-left: auto !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.78rem !important;
+  color: var(--text-secondary) !important;
+  padding: 2px 8px !important;
+  min-width: unset !important;
+}
+
+.suggestion-undo-btn:hover {
+  color: var(--primary) !important;
+}
