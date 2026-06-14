@@ -6,29 +6,53 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Checkbox,
-  CircularProgress,
   Container,
   FormControl,
-  FormControlLabel,
   FormGroup,
   InputLabel,
   MenuItem,
   Select,
+  Skeleton,
   Slider,
   TextField,
   Typography,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import CheckIcon from "@mui/icons-material/Check";
 import SearchIcon from "@mui/icons-material/Search";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useMemo, useState } from "react";
 import type { Product } from "../shared/types/Product";
 import { productsApi } from "../../api/clients/ProductApiClient";
 import { useCart } from "../../context/CartContext/cart-context";
+import { useFavorites } from "../../context/FavoritesContext/favorites-context";
 import "./Shop.css";
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "name-desc";
+
+function ShopSkeleton() {
+  return (
+    <Box className="shop-grid">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Box key={i} className="shop-skeleton-card">
+          <Skeleton variant="rectangular" height={190} />
+          <Box sx={{ p: 2.5 }}>
+            <Skeleton variant="text" width="70%" height={24} />
+            <Skeleton variant="text" width="100%" />
+            <Skeleton variant="text" width="80%" />
+            <Skeleton variant="text" width="40%" height={32} sx={{ mt: 1 }} />
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  );
+}
 
 function Shop() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -37,8 +61,10 @@ function Shop() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("price-asc");
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+  const [userPriceRange, setUserPriceRange] = useState<[number, number] | null>(null);
+  const [addedIds, setAddedIds] = useState<Set<number>>(new Set());
   const { addItem } = useCart();
+  const { isFavorite, toggle: toggleFavorite } = useFavorites();
 
   const allCategories = useMemo(() => {
     const map = new Map<number, string>();
@@ -48,7 +74,6 @@ function Shop() {
     return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
   }, [products]);
 
-  // Products after search + category filters only (used to compute price bounds)
   const preFilteredProducts = useMemo(() => {
     let result = products.filter((p) =>
       p.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()),
@@ -62,23 +87,35 @@ function Shop() {
   }, [products, search, selectedCategories]);
 
   const priceMin = useMemo(
-    () => (preFilteredProducts.length ? Math.floor(Math.min(...preFilteredProducts.map((p) => p.price))) : 0),
+    () =>
+      preFilteredProducts.length
+        ? Math.floor(Math.min(...preFilteredProducts.map((p) => p.price)))
+        : 0,
     [preFilteredProducts],
   );
   const priceMax = useMemo(
-    () => (preFilteredProducts.length ? Math.ceil(Math.max(...preFilteredProducts.map((p) => p.price))) : 10000),
+    () =>
+      preFilteredProducts.length
+        ? Math.ceil(Math.max(...preFilteredProducts.map((p) => p.price)))
+        : 10000,
     [preFilteredProducts],
   );
 
-  useEffect(() => {
-    setPriceRange([priceMin, priceMax]);
-  }, [priceMin, priceMax]);
+  const priceRange = useMemo<[number, number]>(
+    () =>
+      userPriceRange
+        ? [
+            Math.max(priceMin, userPriceRange[0]),
+            Math.min(priceMax, userPriceRange[1]),
+          ]
+        : [priceMin, priceMax],
+    [userPriceRange, priceMin, priceMax],
+  );
 
   const visibleProducts = useMemo(() => {
     let result = preFilteredProducts.filter(
       (p) => p.price >= priceRange[0] && p.price <= priceRange[1],
     );
-
     result = [...result].sort((a, b) => {
       if (sortBy === "price-asc") return a.price - b.price;
       if (sortBy === "price-desc") return b.price - a.price;
@@ -86,12 +123,19 @@ function Shop() {
       if (sortBy === "name-desc") return b.name.localeCompare(a.name);
       return 0;
     });
-
     return result;
   }, [preFilteredProducts, priceRange, sortBy]);
 
   const handleAddToCart = async (product: Product) => {
     await addItem(product.id, 1);
+    setAddedIds((prev) => new Set(prev).add(product.id));
+    setTimeout(() => {
+      setAddedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(product.id);
+        return next;
+      });
+    }, 1800);
   };
 
   const handleCategoryToggle = (id: number) => {
@@ -115,16 +159,14 @@ function Shop() {
     loadProducts();
   }, []);
 
-  const checkboxSx = {
-    color: "var(--accent)",
-    "&.Mui-checked": { color: "var(--primary)" },
-    padding: "4px 8px",
-  };
+  const hasActiveFilters =
+    selectedCategories.length > 0 ||
+    priceRange[0] !== priceMin ||
+    priceRange[1] !== priceMax;
 
   return (
     <Box className="shop-page">
       <Container maxWidth="xl" sx={{ pt: 5, pb: 6 }}>
-        {/* Header row: title + search + sort */}
         <Box className="shop-header">
           <Box className="shop-title-row">
             <Typography variant="h4" className="shop-title">
@@ -142,80 +184,29 @@ function Shop() {
               placeholder="Search products…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              className="shop-search"
               slotProps={{
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon sx={{ color: "#9A6855", fontSize: 20 }} />
+                      <SearchIcon className="shop-search-icon" />
                     </InputAdornment>
                   ),
                 },
               }}
-              sx={{
-                flex: 1,
-                maxWidth: 480,
-                "& .MuiOutlinedInput-root": {
-                  background: "#ffffff",
-                  borderRadius: "50px",
-                  "& fieldset": { borderColor: "var(--border)" },
-                  "&:hover fieldset": { borderColor: "var(--accent)" },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "var(--primary)",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiInputBase-input": {
-                  fontFamily: '"Poppins", sans-serif',
-                  fontSize: "0.9rem",
-                  py: 1.2,
-                },
-              }}
             />
 
-            <FormControl
-              size="small"
-              sx={{
-                minWidth: 200,
-                "& .MuiOutlinedInput-root": {
-                  background: "#ffffff",
-                  borderRadius: "50px",
-                  "& fieldset": { borderColor: "var(--border)" },
-                  "&:hover fieldset": { borderColor: "var(--accent)" },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "var(--primary)",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiSelect-select": {
-                  fontFamily: '"Poppins", sans-serif',
-                  fontSize: "0.88rem",
-                  color: "var(--text-primary)",
-                },
-                "& .MuiInputLabel-root": {
-                  fontFamily: '"Poppins", sans-serif',
-                  fontSize: "0.88rem",
-                  "&.Mui-focused": { color: "var(--primary)" },
-                },
-              }}
-            >
+            <FormControl size="small" className="shop-sort">
               <InputLabel>Sort by</InputLabel>
               <Select
                 label="Sort by"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
               >
-                <MenuItem value="price-asc" sx={{ fontFamily: '"Poppins", sans-serif', fontSize: "0.88rem" }}>
-                  Price: Low to High
-                </MenuItem>
-                <MenuItem value="price-desc" sx={{ fontFamily: '"Poppins", sans-serif', fontSize: "0.88rem" }}>
-                  Price: High to Low
-                </MenuItem>
-                <MenuItem value="name-asc" sx={{ fontFamily: '"Poppins", sans-serif', fontSize: "0.88rem" }}>
-                  Name: A → Z
-                </MenuItem>
-                <MenuItem value="name-desc" sx={{ fontFamily: '"Poppins", sans-serif', fontSize: "0.88rem" }}>
-                  Name: Z → A
-                </MenuItem>
+                <MenuItem value="price-asc">Price: Low to High</MenuItem>
+                <MenuItem value="price-desc">Price: High to Low</MenuItem>
+                <MenuItem value="name-asc">Name: A → Z</MenuItem>
+                <MenuItem value="name-desc">Name: Z → A</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -228,7 +219,6 @@ function Shop() {
         )}
 
         <Box className="shop-body">
-          {/* Sidebar filters */}
           <Box className="shop-sidebar">
             <Typography className="sidebar-section-title">Filters</Typography>
 
@@ -244,17 +234,8 @@ function Shop() {
                         <Checkbox
                           checked={selectedCategories.includes(cat.id)}
                           onChange={() => handleCategoryToggle(cat.id)}
-                          sx={checkboxSx}
                         />
                       }
-                      sx={{
-                        "& .MuiFormControlLabel-label": {
-                          fontFamily: '"Poppins", sans-serif',
-                          fontSize: "0.85rem",
-                          color: "var(--text-primary)",
-                        },
-                        marginLeft: 0,
-                      }}
                     />
                   ))}
                 </FormGroup>
@@ -265,55 +246,31 @@ function Shop() {
               <Typography className="sidebar-label">Price</Typography>
               <Slider
                 value={priceRange}
-                onChange={(_, val) => setPriceRange(val as [number, number])}
+                onChange={(_, val) => setUserPriceRange(val as [number, number])}
                 min={priceMin}
                 max={priceMax}
                 valueLabelDisplay="auto"
                 valueLabelFormat={(v) => `${v} RON`}
-                sx={{
-                  color: "var(--primary)",
-                  "& .MuiSlider-thumb": {
-                    backgroundColor: "var(--primary)",
-                    border: "2px solid #fff",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                    "&:hover": { boxShadow: "0 0 0 8px rgba(156,93,72,0.16)" },
-                  },
-                  "& .MuiSlider-track": { backgroundColor: "var(--primary)" },
-                  "& .MuiSlider-rail": { backgroundColor: "var(--accent-light)" },
-                  "& .MuiSlider-valueLabel": {
-                    fontFamily: '"Poppins", sans-serif',
-                    fontSize: "0.75rem",
-                    backgroundColor: "var(--primary)",
-                  },
-                }}
               />
               <Box className="price-range-labels">
-                <Typography className="price-range-value">{priceRange[0]} RON</Typography>
-                <Typography className="price-range-value">{priceRange[1]} RON</Typography>
+                <Typography className="price-range-value">
+                  {priceRange[0]} RON
+                </Typography>
+                <Typography className="price-range-value">
+                  {priceRange[1]} RON
+                </Typography>
               </Box>
             </Box>
 
-            {(selectedCategories.length > 0 || priceRange[0] !== priceMin || priceRange[1] !== priceMax) && (
+            {hasActiveFilters && (
               <Button
                 variant="outlined"
                 size="small"
                 fullWidth
+                className="shop-clear-btn"
                 onClick={() => {
                   setSelectedCategories([]);
-                  setPriceRange([priceMin, priceMax]);
-                }}
-                sx={{
-                  mt: 1,
-                  borderColor: "var(--accent)",
-                  color: "var(--primary)",
-                  fontFamily: '"Poppins", sans-serif',
-                  fontSize: "0.8rem",
-                  borderRadius: "50px",
-                  textTransform: "none",
-                  "&:hover": {
-                    borderColor: "var(--primary)",
-                    background: "rgba(156,93,72,0.06)",
-                  },
+                  setUserPriceRange(null);
                 }}
               >
                 Clear filters
@@ -321,84 +278,117 @@ function Shop() {
             )}
           </Box>
 
-          {/* Products area */}
           <Box className="shop-main">
             {loading ? (
-              <Box className="shop-loading">
-                <CircularProgress sx={{ color: "var(--primary)" }} />
-              </Box>
+              <ShopSkeleton />
             ) : visibleProducts.length === 0 ? (
               <Box className="shop-empty">
+                <Box className="shop-empty-icon">
+                  <StorefrontIcon className="shop-empty-icon-svg" />
+                </Box>
                 <Typography className="shop-empty-title">
                   No products found
                 </Typography>
                 <Typography className="shop-empty-subtitle">
                   Try adjusting your search or filters.
                 </Typography>
+                {hasActiveFilters && (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    className="shop-clear-btn"
+                    sx={{ mt: 2 }}
+                    onClick={() => {
+                      setSelectedCategories([]);
+                      setUserPriceRange(null);
+                    }}
+                  >
+                    Clear filters
+                  </Button>
+                )}
               </Box>
             ) : (
               <Box className="shop-grid">
-                {visibleProducts.map((product) => (
-                  <Card
-                    key={product.id}
-                    sx={{ display: "flex", flexDirection: "column" }}
-                  >
-                    <Box className="card-image-wrap">
-                      <CardMedia
-                        component="img"
-                        height="190"
-                        image={product.imageUrl}
-                        alt={product.name}
-                        sx={{ objectFit: "cover" }}
-                      />
-                    </Box>
-
-                    <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
-                      <Typography className="product-card-name">
-                        {product.name}
-                      </Typography>
-
-                      {product.description && (
-                        <Typography className="product-card-desc">
-                          {product.description}
-                        </Typography>
-                      )}
-
-                      <Box className="product-card-divider" />
-
-                      <Box className="product-card-price-row">
-                        <Typography className="price-tag">
-                          {product.price}
-                        </Typography>
-                        <Typography className="product-card-currency">
-                          RON
-                        </Typography>
+                {visibleProducts.map((product) => {
+                  const added = addedIds.has(product.id);
+                  const fav = isFavorite(product.id);
+                  return (
+                    <Card
+                      key={product.id}
+                      sx={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <Box className="card-image-wrap">
+                        <CardMedia
+                          component="img"
+                          height="190"
+                          image={product.imageUrl}
+                          alt={product.name}
+                          sx={{ objectFit: "cover" }}
+                        />
+                        <IconButton
+                          className={`product-fav-btn${fav ? " product-fav-btn--active" : ""}`}
+                          size="small"
+                          onClick={() => toggleFavorite(product.id)}
+                          aria-label={
+                            fav
+                              ? "Remove from favorites"
+                              : "Add to favorites"
+                          }
+                        >
+                          {fav ? (
+                            <FavoriteIcon fontSize="small" />
+                          ) : (
+                            <FavoriteBorderIcon fontSize="small" />
+                          )}
+                        </IconButton>
                       </Box>
-                    </CardContent>
 
-                    <CardActions sx={{ p: 2.5, pt: 0 }}>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        startIcon={
-                          <AddShoppingCartIcon
-                            sx={{ fontSize: "1rem !important" }}
-                          />
-                        }
-                        onClick={() => handleAddToCart(product)}
-                        sx={{
-                          fontFamily: '"Poppins", sans-serif',
-                          fontWeight: 600,
-                          fontSize: "0.85rem",
-                          py: 1.1,
-                        }}
-                      >
-                        Add to Cart
-                      </Button>
-                    </CardActions>
-                  </Card>
-                ))}
+                      <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
+                        <Typography className="product-card-name">
+                          {product.name}
+                        </Typography>
+                        {product.description && (
+                          <Typography className="product-card-desc">
+                            {product.description}
+                          </Typography>
+                        )}
+                        <Box className="product-card-divider" />
+                        <Box className="product-card-price-row">
+                          <Typography className="price-tag">
+                            {product.price}
+                          </Typography>
+                          <Typography className="product-card-currency">
+                            RON
+                          </Typography>
+                        </Box>
+                      </CardContent>
+
+                      <CardActions sx={{ p: 2.5, pt: 0 }}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color={added ? "success" : "primary"}
+                          startIcon={
+                            added ? (
+                              <CheckIcon sx={{ fontSize: "1rem !important" }} />
+                            ) : (
+                              <AddShoppingCartIcon
+                                sx={{ fontSize: "1rem !important" }}
+                              />
+                            )
+                          }
+                          onClick={() =>
+                            !added && handleAddToCart(product)
+                          }
+                          className="shop-add-btn"
+                          aria-label={`Add ${product.name} to cart`}
+                        >
+                          {added ? "Added!" : "Add to Cart"}
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  );
+                })}
               </Box>
             )}
           </Box>

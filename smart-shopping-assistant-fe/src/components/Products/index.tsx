@@ -1,5 +1,4 @@
 import {
-  Box,
   Container,
   TableContainer,
   Table,
@@ -9,9 +8,7 @@ import {
   TableBody,
   Tooltip,
   IconButton,
-  CircularProgress,
   Paper,
-  Alert,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,6 +18,8 @@ import { productsApi } from "../../api/clients/ProductApiClient";
 import PageHeader from "../common/PageHeader";
 import ProductFormDialog from "./ProductFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
+import LoadingState from "../common/LoadingState";
+import ErrorAlert from "../common/ErrorAlert";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -81,15 +80,9 @@ function Products() {
         actionLabel="Add Product"
         onAction={handleAdd}
       />
-      {error !== "" && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+      <ErrorAlert message={error} />
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
+        <LoadingState />
       ) : (
         <TableContainer component={Paper} className="data-table-container">
           <Table>
@@ -112,24 +105,26 @@ function Products() {
             <TableBody className="data-table-body">
               {products.map((product) => (
                 <TableRow key={product.id}>
-                  <TableCell sx={{ fontWeight: 600 }}>{product.name}</TableCell>
+                  <TableCell className="data-table-cell-bold">
+                    {product.name}
+                  </TableCell>
                   <TableCell>
                     {product.categories.length > 0
                       ? product.categories.map((c) => c.name).join(", ")
                       : "—"}
                   </TableCell>
                   <TableCell
+                    className="data-table-cell-muted"
                     sx={{
                       maxWidth: 0,
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
-                      color: "text.secondary",
                     }}
                   >
                     {product.description || "—"}
                   </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>
+                  <TableCell align="right" className="data-table-cell-bold">
                     {product.price.toFixed(2)} RON
                   </TableCell>
                   <TableCell align="center">
@@ -137,14 +132,7 @@ function Products() {
                       <img
                         src={product.imageUrl}
                         alt={product.name}
-                        style={{
-                          height: 48,
-                          width: 48,
-                          objectFit: "cover",
-                          borderRadius: 8,
-                          display: "block",
-                          margin: "0 auto",
-                        }}
+                        className="product-thumb"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).style.display =
                             "none";
@@ -154,11 +142,12 @@ function Products() {
                       "—"
                     )}
                   </TableCell>
-                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                  <TableCell align="right" className="data-table-cell-nowrap">
                     <Tooltip title="Edit">
                       <IconButton
                         color="info"
                         onClick={() => handleEdit(product)}
+                        aria-label={`Edit ${product.name}`}
                       >
                         <EditIcon />
                       </IconButton>
@@ -167,6 +156,7 @@ function Products() {
                       <IconButton
                         color="error"
                         onClick={() => handleDeleteClick(product)}
+                        aria-label={`Delete ${product.name}`}
                       >
                         <DeleteIcon />
                       </IconButton>

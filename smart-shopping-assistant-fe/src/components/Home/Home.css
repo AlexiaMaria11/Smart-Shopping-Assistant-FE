@@ -167,6 +167,11 @@
   margin-bottom: 20px;
 }
 
+.home-feature-icon-svg {
+  font-size: 28px !important;
+  color: var(--accent) !important;
+}
+
 .home-feature-name {
   font-family: "Playfair Display", Georgia, serif;
   font-weight: 600;

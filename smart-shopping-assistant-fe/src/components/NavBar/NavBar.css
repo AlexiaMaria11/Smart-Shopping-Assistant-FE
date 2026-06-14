@@ -1,10 +1,5 @@
 .navbar {
-  background: linear-gradient(
-    135deg,
-    #5a2430 0%,
-    #722f37 50%,
-    #4a1520 100%
-  ) !important;
+  background: var(--gradient-navbar) !important;
   box-shadow: 0 2px 24px rgba(74, 21, 32, 0.35) !important;
   border-bottom: 1.5px solid rgba(196, 144, 124, 0.28);
 }
@@ -49,14 +44,24 @@
 }
 
 .nav-btn:hover {
-  color: #ffffff !important;
+  color: var(--white) !important;
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 .nav-btn.active {
-  color: #ffffff !important;
+  color: var(--white) !important;
   background-color: rgba(196, 144, 124, 0.2) !important;
   font-weight: 600 !important;
+}
+
+.navbar-toggle-btn {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.navbar-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .cart-icon-btn {
@@ -65,6 +70,37 @@
 }
 
 .cart-icon-btn:hover {
-  color: #e8c0b0 !important;
+  color: var(--accent-light) !important;
   background-color: rgba(196, 144, 124, 0.12) !important;
+}
+
+/* Badge gold color */
+.cart-icon-btn .MuiBadge-badge {
+  background-color: #C9A84C !important;
+  color: var(--text-primary) !important;
+}
+
+/* ── Hamburger (mobile) ── */
+.navbar-hamburger {
+  color: rgba(255, 255, 255, 0.85) !important;
+  margin-right: 4px;
+}
+
+/* ── Mobile drawer ── */
+.navbar-mobile-drawer {
+  width: 240px;
+  padding-top: 16px;
+}
+
+.navbar-mobile-link {
+  font-family: "Poppins", sans-serif;
+  color: var(--text-primary);
+  border-radius: 8px;
+  margin: 2px 8px;
+}
+
+.navbar-mobile-link.active {
+  background-color: rgba(114, 47, 55, 0.08) !important;
+  color: var(--primary) !important;
+  font-weight: 600;
 }

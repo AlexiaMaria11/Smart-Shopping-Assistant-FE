@@ -12,28 +12,21 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { useCart } from "../../context/CartContext/cart-context";
 import "./CartDrawer.css";
 import { useState } from "react";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import AnalyzeDialog from "./AnalyzeDialog";
 
 function CartDrawer() {
   const { cart, open, closeCart, updateQuantity, removeProduct } = useCart();
   const isEmpty = cart === null || cart.items.length === 0;
-
   const [analyzeOpen, setAnalyzeOpen] = useState(false);
 
   return (
     <Drawer anchor="right" open={open} onClose={closeCart}>
-      <Box
-        sx={{
-          width: { xs: 340, sm: 420 },
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <Box className="cart-drawer">
         <Box className="cart-header">
           <Box className="cart-header-info">
             <Typography className="cart-header-title">Cart</Typography>
@@ -44,13 +37,8 @@ function CartDrawer() {
           <IconButton
             onClick={closeCart}
             size="small"
-            sx={{
-              color: "rgba(255,255,255,0.7)",
-              "&:hover": {
-                color: "var(--accent)",
-                background: "rgba(196,144,124,0.12)",
-              },
-            }}
+            className="cart-close-btn"
+            aria-label="Close cart"
           >
             <CloseIcon fontSize="small" />
           </IconButton>
@@ -58,6 +46,9 @@ function CartDrawer() {
 
         {isEmpty ? (
           <Box className="cart-empty">
+            <Box className="cart-empty-icon">
+              <ShoppingCartOutlinedIcon className="cart-empty-icon-svg" />
+            </Box>
             <Typography className="cart-empty-title">
               Your cart is empty
             </Typography>
@@ -67,42 +58,22 @@ function CartDrawer() {
           </Box>
         ) : (
           <>
-            <List sx={{ flex: 1, overflowY: "auto", px: 2, py: 1.5 }}>
+            <List className="cart-list">
               {cart!.items.map((item, idx) => (
                 <ListItem
                   key={item.id}
                   disableGutters
-                  sx={{
-                    display: "block",
-                    py: 2,
-                    borderBottom:
-                      idx < cart!.items.length - 1
-                        ? "1px solid #EAD9CC"
-                        : "none",
-                  }}
+                  className={`cart-item${idx < cart!.items.length - 1 ? " cart-item--bordered" : ""}`}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      mb: 0.5,
-                    }}
-                  >
+                  <Box className="cart-item-row cart-item-row--top">
                     <Typography className="cart-item-name">
                       {item.productName}
                     </Typography>
                     <IconButton
                       size="small"
                       onClick={() => removeProduct(item.id)}
-                      sx={{
-                        color: "#9A6855",
-                        p: 0.5,
-                        "&:hover": {
-                          color: "var(--primary)",
-                          background: "rgba(114,47,55,0.07)",
-                        },
-                      }}
+                      className="cart-remove-btn"
+                      aria-label={`Remove ${item.productName} from cart`}
                     >
                       <DeleteIcon sx={{ fontSize: 17 }} />
                     </IconButton>
@@ -112,13 +83,7 @@ function CartDrawer() {
                     {item.unitPriceLabel} / piece
                   </Typography>
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
+                  <Box className="cart-item-row">
                     <Box className="cart-qty-control">
                       <IconButton
                         size="small"
@@ -126,13 +91,8 @@ function CartDrawer() {
                           updateQuantity(item.id, item.quantity - 1)
                         }
                         disabled={item.quantity <= 1}
-                        sx={{
-                          color: "var(--primary)",
-                          p: "4px 8px",
-                          borderRadius: 0,
-                          "&:disabled": { color: "#C4B08A" },
-                          "&:hover": { background: "rgba(114,47,55,0.10)" },
-                        }}
+                        className="cart-qty-btn"
+                        aria-label="Decrease quantity"
                       >
                         <RemoveIcon sx={{ fontSize: 14 }} />
                       </IconButton>
@@ -144,12 +104,8 @@ function CartDrawer() {
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
-                        sx={{
-                          color: "var(--primary)",
-                          p: "4px 8px",
-                          borderRadius: 0,
-                          "&:hover": { background: "rgba(114,47,55,0.10)" },
-                        }}
+                        className="cart-qty-btn"
+                        aria-label="Increase quantity"
                       >
                         <AddIcon sx={{ fontSize: 14 }} />
                       </IconButton>
@@ -175,9 +131,7 @@ function CartDrawer() {
               {cart!.appliedPromotions.map((promotion) => (
                 <Box key={promotion.promotionId} className="cart-promo-row">
                   <Box className="cart-promo-info">
-                    <LocalOfferOutlinedIcon
-                      sx={{ fontSize: 14, color: "#5C8A4E" }}
-                    />
+                    <LocalOfferOutlinedIcon className="cart-promo-icon" />
                     <Typography className="cart-promo-label">
                       {promotion.promotionName}
                     </Typography>
@@ -202,7 +156,7 @@ function CartDrawer() {
                 variant="outlined"
                 startIcon={<AutoAwesomeIcon />}
                 onClick={() => setAnalyzeOpen(true)}
-                sx={{ mt: 2 }}
+                className="cart-analyze-btn"
               >
                 AI Analyze
               </Button>

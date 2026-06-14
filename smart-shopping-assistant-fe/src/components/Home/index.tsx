@@ -7,19 +7,19 @@ import "./Home.css";
 
 const features = [
   {
-    icon: <StorefrontIcon sx={{ fontSize: 28, color: "var(--accent)" }} />,
+    icon: <StorefrontIcon className="home-feature-icon-svg" />,
     title: "Curated products",
     description:
       "Every product in the catalog goes through a selection process before it reaches you.",
   },
   {
-    icon: <LocalOfferIcon sx={{ fontSize: 28, color: "var(--accent)" }} />,
+    icon: <LocalOfferIcon className="home-feature-icon-svg" />,
     title: "Promotions applied automatically",
     description:
       "No hunting for codes. Valid discounts apply themselves at checkout.",
   },
   {
-    icon: <TrendingUpIcon sx={{ fontSize: 28, color: "var(--accent)" }} />,
+    icon: <TrendingUpIcon className="home-feature-icon-svg" />,
     title: "Fair prices",
     description:
       "We track prices and always show you the best available option.",

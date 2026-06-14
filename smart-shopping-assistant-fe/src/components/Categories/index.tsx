@@ -1,5 +1,4 @@
 import {
-  Box,
   Container,
   TableContainer,
   Table,
@@ -9,9 +8,7 @@ import {
   TableBody,
   Tooltip,
   IconButton,
-  CircularProgress,
   Paper,
-  Alert,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,6 +18,8 @@ import { categoriesApi } from "../../api/clients/CategoryApiClient";
 import PageHeader from "../common/PageHeader";
 import CategoryFormDialog from "./CategoryFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
+import LoadingState from "../common/LoadingState";
+import ErrorAlert from "../common/ErrorAlert";
 
 function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -48,6 +47,7 @@ function Categories() {
     setEditing(null);
     setFormOpen(true);
   }
+
   function handleEdit(category: Category) {
     setEditing(category);
     setFormOpen(true);
@@ -76,19 +76,13 @@ function Categories() {
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <PageHeader
-        title={"Categories"}
-        actionLabel={"Add Category"}
+        title="Categories"
+        actionLabel="Add Category"
         onAction={handleAdd}
       />
-      {error !== "" && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+      <ErrorAlert message={error} />
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
+        <LoadingState />
       ) : (
         <TableContainer component={Paper} className="data-table-container">
           <Table>
@@ -104,17 +98,18 @@ function Categories() {
             <TableBody className="data-table-body">
               {categories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell sx={{ fontWeight: 600 }}>
+                  <TableCell className="data-table-cell-bold">
                     {category.name}
                   </TableCell>
-                  <TableCell sx={{ color: "text.secondary" }}>
+                  <TableCell className="data-table-cell-muted">
                     {category.description || "—"}
                   </TableCell>
-                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                  <TableCell align="right" className="data-table-cell-nowrap">
                     <Tooltip title="Edit">
                       <IconButton
                         color="info"
                         onClick={() => handleEdit(category)}
+                        aria-label={`Edit ${category.name}`}
                       >
                         <EditIcon />
                       </IconButton>
@@ -123,6 +118,7 @@ function Categories() {
                       <IconButton
                         color="error"
                         onClick={() => handleDeleteClick(category)}
+                        aria-label={`Delete ${category.name}`}
                       >
                         <DeleteIcon />
                       </IconButton>

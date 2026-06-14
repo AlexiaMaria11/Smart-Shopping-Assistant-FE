@@ -1,5 +1,4 @@
 import {
-  Box,
   Container,
   TableContainer,
   Table,
@@ -9,9 +8,7 @@ import {
   TableBody,
   Tooltip,
   IconButton,
-  CircularProgress,
   Paper,
-  Alert,
   Chip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -30,6 +27,8 @@ import { categoriesApi } from "../../api/clients/CategoryApiClient";
 import PageHeader from "../common/PageHeader";
 import PromotionFormDialog from "./PromotionFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
+import LoadingState from "../common/LoadingState";
+import ErrorAlert from "../common/ErrorAlert";
 
 function Promotions() {
   const [promotions, setPromotions] = useState<Promotion[]>([]);
@@ -83,14 +82,8 @@ function Promotions() {
 
   useEffect(() => {
     loadPromotions();
-    productsApi
-      .getAll()
-      .then(setProducts)
-      .catch(() => {});
-    categoriesApi
-      .getAll()
-      .then(setCategories)
-      .catch(() => {});
+    productsApi.getAll().then(setProducts).catch(() => {});
+    categoriesApi.getAll().then(setCategories).catch(() => {});
   }, []);
 
   return (
@@ -100,15 +93,9 @@ function Promotions() {
         actionLabel="Add Promotion"
         onAction={handleAdd}
       />
-      {error !== "" && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+      <ErrorAlert message={error} />
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
+        <LoadingState />
       ) : (
         <TableContainer component={Paper} className="data-table-container">
           <Table>
@@ -135,7 +122,7 @@ function Promotions() {
             <TableBody className="data-table-body">
               {promotions.map((promotion) => (
                 <TableRow key={promotion.id}>
-                  <TableCell sx={{ fontWeight: 600 }}>
+                  <TableCell className="data-table-cell-bold">
                     {promotion.name}
                   </TableCell>
                   <TableCell>{PROMOTION_TYPE_LABELS[promotion.type]}</TableCell>
@@ -146,7 +133,7 @@ function Promotions() {
                     {PROMOTION_REWARD_LABELS[promotion.reward]}
                   </TableCell>
                   <TableCell align="right">{promotion.rewardValue}</TableCell>
-                  <TableCell sx={{ color: "text.secondary" }}>
+                  <TableCell className="data-table-cell-muted">
                     {promotion.productId
                       ? `Product: ${products.find((p) => p.id === promotion.productId)?.name ?? promotion.productId}`
                       : promotion.categoryId
@@ -157,20 +144,15 @@ function Promotions() {
                     <Chip
                       label={promotion.isActive ? "Active" : "Inactive"}
                       size="small"
-                      sx={{
-                        backgroundColor: promotion.isActive
-                          ? "#e6f4ea"
-                          : "#fce8e6",
-                        color: promotion.isActive ? "#2e7d32" : "#c62828",
-                        fontWeight: 600,
-                      }}
+                      color={promotion.isActive ? "success" : "error"}
                     />
                   </TableCell>
-                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                  <TableCell align="right" className="data-table-cell-nowrap">
                     <Tooltip title="Edit">
                       <IconButton
                         color="info"
                         onClick={() => handleEdit(promotion)}
+                        aria-label={`Edit ${promotion.name}`}
                       >
                         <EditIcon />
                       </IconButton>
@@ -179,6 +161,7 @@ function Promotions() {
                       <IconButton
                         color="error"
                         onClick={() => handleDeleteClick(promotion)}
+                        aria-label={`Delete ${promotion.name}`}
                       >
                         <DeleteIcon />
                       </IconButton>

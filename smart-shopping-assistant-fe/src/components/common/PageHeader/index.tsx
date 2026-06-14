@@ -9,14 +9,7 @@ interface PageHeaderProps {
 
 function PageHeader({ title, actionLabel, onAction }: PageHeaderProps) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        mb: 4,
-      }}
-    >
+    <Box className="page-header">
       <Box>
         <Typography variant="h5" className="page-header-title">
           {title}
