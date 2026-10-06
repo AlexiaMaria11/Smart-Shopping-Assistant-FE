@@ -6,9 +6,10 @@ export interface CartContextValue {
   open: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (productId: number, quantity: number) => Promise<void>;
-  updateQuantity: (productId: number, quantity: number) => Promise<void>;
-  removeProduct: (productId: number) => Promise<void>;
+  // Resolves to false when the user had to be sent to the login page first
+  addItem: (productId: number, quantity: number) => Promise<boolean>;
+  updateQuantity: (itemId: number, quantity: number) => Promise<void>;
+  removeProduct: (itemId: number) => Promise<void>;
 }
 
 export const CartContext = createContext<CartContextValue | null>(null);
