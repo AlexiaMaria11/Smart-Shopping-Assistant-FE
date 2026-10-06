@@ -20,6 +20,8 @@ import ProductFormDialog from "./ProductFormDialog";
 import ConfirmDialog from "../common/ConfirmDialog";
 import LoadingState from "../common/LoadingState";
 import ErrorAlert from "../common/ErrorAlert";
+import { useAuth } from "../../context/AuthContext/auth-context";
+import { Role } from "../../api/models/AuthModel";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -31,10 +33,12 @@ function Products() {
 
   const [deleting, setDeleting] = useState<Product | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const { hasRole } = useAuth();
+  const isSeller = hasRole(Role.Seller);
 
   function loadProducts() {
     productsApi
-      .getAll()
+      .getManaged()
       .then((data) => {
         setProducts(data);
         setError("");
@@ -76,7 +80,7 @@ function Products() {
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <PageHeader
-        title="Products"
+        title={isSeller ? "My products" : "Products"}
         actionLabel="Add Product"
         onAction={handleAdd}
       />
@@ -89,8 +93,9 @@ function Products() {
             <TableHead className="data-table-head">
               <TableRow>
                 <TableCell sx={{ width: "20%" }}>Name</TableCell>
+                {!isSeller && <TableCell sx={{ width: "12%" }}>Sold by</TableCell>}
                 <TableCell sx={{ width: "15%" }}>Category</TableCell>
-                <TableCell sx={{ width: "35%" }}>Description</TableCell>
+                <TableCell sx={{ width: "23%" }}>Description</TableCell>
                 <TableCell sx={{ width: "8%" }} align="right">
                   Price
                 </TableCell>
@@ -108,6 +113,7 @@ function Products() {
                   <TableCell className="data-table-cell-bold">
                     {product.name}
                   </TableCell>
+                  {!isSeller && <TableCell>{product.companyName}</TableCell>}
                   <TableCell>
                     {product.categories.length > 0
                       ? product.categories.map((c) => c.name).join(", ")
@@ -167,7 +173,7 @@ function Products() {
               {products.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={isSeller ? 6 : 7}
                     align="center"
                     className="data-table-empty"
                   >

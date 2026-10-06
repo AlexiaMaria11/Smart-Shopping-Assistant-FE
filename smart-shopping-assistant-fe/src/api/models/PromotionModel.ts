@@ -19,6 +19,7 @@ export interface PromotionModel {
   rewardValue: number;
   productId?: number;
   categoryId?: number;
+  companyId?: number;
   isActive: boolean;
 }
 
@@ -30,5 +31,6 @@ export interface PromotionInput {
   rewardValue: number;
   productId?: number;
   categoryId?: number;
+  companyId?: number;
   isActive: boolean;
 }

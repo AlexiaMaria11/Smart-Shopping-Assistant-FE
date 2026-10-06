@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { promotionsApi } from "../../../api/clients/PromotionApiClient";
 import { categoriesApi } from "../../../api/clients/CategoryApiClient";
 import { productsApi } from "../../../api/clients/ProductApiClient";
+import { companiesApi } from "../../../api/clients/CompanyApiClient";
+import type { Company } from "../../shared/types/Company";
+import { useAuth } from "../../../context/AuthContext/auth-context";
+import { Role } from "../../../api/models/AuthModel";
 import {
   PromotionReward,
   PromotionType,
@@ -49,6 +53,8 @@ function PromotionFormDialog({
   onSaved,
 }: PromotionFormDialogProps) {
   const isEditing = promotion !== null;
+  const { hasRole } = useAuth();
+  const isSeller = hasRole(Role.Seller);
 
   const [name, setName] = useState(promotion?.name ?? "");
   const [type, setType] = useState<PromotionType>(
@@ -71,7 +77,11 @@ function PromotionFormDialog({
     promotion?.categoryId ?? ""
   );
 
+  const [companyId, setCompanyId] = useState<number | "">(
+    promotion?.companyId ?? ""
+  );
   const [isActive, setIsActive] = useState(promotion?.isActive ?? true);
+  const [companies, setCompanies] = useState<Company[]>([]);
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -79,9 +89,12 @@ function PromotionFormDialog({
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    productsApi.getAll().then(setProducts).catch(() => {});
+    productsApi.getManaged().then(setProducts).catch(() => {});
     categoriesApi.getAll().then(setCategories).catch(() => {});
-  }, []);
+    if (!isSeller) {
+      companiesApi.getAll(true).then(setCompanies).catch(() => {});
+    }
+  }, [isSeller]);
 
   async function handleSave() {
     if (name.trim() === "") {
@@ -117,6 +130,7 @@ function PromotionFormDialog({
         rewardValue: parsedRewardValue,
         productId: appliesTo === "product" && selectedProductId !== "" ? selectedProductId : undefined,
         categoryId: appliesTo === "category" && selectedCategoryId !== "" ? selectedCategoryId : undefined,
+        companyId: companyId !== "" ? companyId : undefined,
         isActive,
       };
       if (isEditing) {
@@ -201,7 +215,9 @@ function PromotionFormDialog({
                 label="Product"
                 onChange={(e) => setSelectedProductId(e.target.value as number)}
               >
-                {products.map((p) => (
+                {products
+                  .filter((p) => companyId === "" || p.companyId === companyId)
+                  .map((p) => (
                   <MenuItem key={p.id} value={p.id}>
                     {p.name}
                   </MenuItem>
@@ -224,6 +240,23 @@ function PromotionFormDialog({
                 ))}
               </Select>
             </FormControl>
+          )}
+          {!isSeller && (
+          <FormControl fullWidth>
+            <InputLabel>Seller (optional)</InputLabel>
+            <Select
+              value={companyId}
+              label="Seller (optional)"
+              onChange={(e) => setCompanyId(e.target.value as number | "")}
+            >
+              <MenuItem value="">All sellers (platform promotion)</MenuItem>
+              {companies.map((c) => (
+                <MenuItem key={c.id} value={c.id}>
+                  {c.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           )}
           <FormControlLabel
             control={

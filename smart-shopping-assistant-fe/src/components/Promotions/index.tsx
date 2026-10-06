@@ -45,7 +45,7 @@ function Promotions() {
 
   function loadPromotions() {
     promotionsApi
-      .getAll()
+      .getManaged()
       .then((data) => {
         setPromotions(data);
         setError("");
@@ -82,7 +82,7 @@ function Promotions() {
 
   useEffect(() => {
     loadPromotions();
-    productsApi.getAll().then(setProducts).catch(() => {});
+    productsApi.getManaged().then(setProducts).catch(() => {});
     categoriesApi.getAll().then(setCategories).catch(() => {});
   }, []);
 

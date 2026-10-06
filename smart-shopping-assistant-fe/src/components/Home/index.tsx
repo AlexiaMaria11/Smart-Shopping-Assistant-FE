@@ -59,6 +59,13 @@ function Home() {
             >
               Browse products
             </Button>
+
+            <Typography className="home-hero-subtitle" sx={{ mt: 3, mb: 0 }}>
+              Have something to sell?{" "}
+              <Link to="/register/seller" className="home-sell-link">
+                Open your store on Smart Shop
+              </Link>
+            </Typography>
           </Box>
         </Container>
       </Box>

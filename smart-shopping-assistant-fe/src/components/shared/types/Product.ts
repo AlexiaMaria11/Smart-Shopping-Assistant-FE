@@ -7,6 +7,9 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string;
+  companyId: number;
+  companyName: string;
+  companySlug: string;
   categories: Category[];
 }
 
@@ -17,6 +20,9 @@ export function toProduct(dto: ProductModel): Product {
     description: dto.description ?? "",
     price: dto.price,
     imageUrl: dto.imageUrl ?? "",
+    companyId: dto.companyId,
+    companyName: dto.companyName,
+    companySlug: dto.companySlug,
     categories: dto.categories?.map(toCategory) ?? [],
   };
 }

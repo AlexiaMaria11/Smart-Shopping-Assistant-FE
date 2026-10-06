@@ -15,6 +15,7 @@ export interface Promotion {
   rewardValue: number;
   productId: number | null;
   categoryId: number | null;
+  companyId: number | null;
   isActive: boolean;
 }
 
@@ -28,6 +29,7 @@ export function toPromotion(dto: PromotionModel): Promotion {
     rewardValue: dto.rewardValue,
     productId: dto.productId ?? null,
     categoryId: dto.categoryId ?? null,
+    companyId: dto.companyId ?? null,
     isActive: dto.isActive,
   };
 }

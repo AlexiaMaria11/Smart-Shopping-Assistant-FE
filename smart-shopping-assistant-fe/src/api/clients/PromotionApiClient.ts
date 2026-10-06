@@ -10,6 +10,10 @@ export const promotionsApi = {
     const data = await http.get<PromotionModel[]>("/promotions");
     return data.map(toPromotion);
   },
+  getManaged: async (): Promise<Promotion[]> => {
+    const data = await http.get<PromotionModel[]>("/promotions/manage");
+    return data.map(toPromotion);
+  },
   create: async (data: PromotionInput): Promise<Promotion> => {
     return toPromotion(await http.post<PromotionModel>("/promotions", data));
   },

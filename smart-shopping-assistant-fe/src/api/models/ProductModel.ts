@@ -6,6 +6,9 @@ export interface ProductModel {
   description?: string;
   price: number;
   imageUrl?: string;
+  companyId: number;
+  companyName: string;
+  companySlug: string;
   categories?: CategoryModel[];
 }
 
@@ -14,5 +17,6 @@ export interface ProductInput {
   description?: string;
   price: number;
   imageUrl?: string;
+  companyId: number;
   categoryIds?: number[];
 }

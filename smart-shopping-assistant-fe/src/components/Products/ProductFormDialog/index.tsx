@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { productsApi } from "../../../api/clients/ProductApiClient";
 import { categoriesApi } from "../../../api/clients/CategoryApiClient";
+import { companiesApi } from "../../../api/clients/CompanyApiClient";
 import {
   Alert,
   Button,
@@ -19,6 +20,9 @@ import {
 } from "@mui/material";
 import type { Product } from "../../shared/types/Product";
 import type { Category } from "../../shared/types/Category";
+import type { Company } from "../../shared/types/Company";
+import { useAuth } from "../../../context/AuthContext/auth-context";
+import { Role } from "../../../api/models/AuthModel";
 
 interface ProductFormDialogProps {
   product: Product | null;
@@ -28,6 +32,9 @@ interface ProductFormDialogProps {
 
 function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps) {
   const isEditing = product !== null;
+  const { user, hasRole } = useAuth();
+  // Sellers always sell under their own company, the server enforces it too
+  const isSeller = hasRole(Role.Seller);
 
   const [name, setName] = useState(product?.name ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
@@ -36,13 +43,20 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
     product?.categories.map((c) => c.id) ?? []
   );
+  const [companyId, setCompanyId] = useState<number | "">(
+    product?.companyId ?? (isSeller ? (user?.companyId ?? "") : "")
+  );
   const [categories, setCategories] = useState<Category[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     categoriesApi.getAll().then(setCategories).catch(() => {});
-  }, []);
+    if (!isSeller) {
+      companiesApi.getAll(true).then(setCompanies).catch(() => {});
+    }
+  }, [isSeller]);
 
   async function handleSave() {
     if (name.trim() === "") {
@@ -54,6 +68,10 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
       setError("Price must be a valid positive number.");
       return;
     }
+    if (companyId === "") {
+      setError("Please choose the company that sells this product.");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
@@ -62,7 +80,8 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
         description,
         price: parsedPrice,
         imageUrl,
-        categoryIds: selectedCategoryIds.length > 0 ? selectedCategoryIds : undefined,
+        companyId,
+        categoryIds: selectedCategoryIds,
       };
       if (isEditing) {
         await productsApi.update(product.id, data);
@@ -109,6 +128,22 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             onChange={(e) => setImageUrl(e.target.value)}
             fullWidth
           />
+          {!isSeller && (
+          <FormControl fullWidth>
+            <InputLabel>Sold by</InputLabel>
+            <Select
+              value={companyId}
+              label="Sold by"
+              onChange={(e) => setCompanyId(e.target.value as number)}
+            >
+              {companies.map((company) => (
+                <MenuItem key={company.id} value={company.id}>
+                  {company.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          )}
           <FormControl fullWidth>
             <InputLabel>Categories</InputLabel>
             <Select

@@ -2,10 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
   Container,
   FormControl,
   FormGroup,
@@ -17,21 +13,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import CheckIcon from "@mui/icons-material/Check";
 import SearchIcon from "@mui/icons-material/Search";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useMemo, useState } from "react";
 import type { Product } from "../shared/types/Product";
 import { productsApi } from "../../api/clients/ProductApiClient";
-import { useCart } from "../../context/CartContext/cart-context";
-import { useFavorites } from "../../context/FavoritesContext/favorites-context";
+import ProductCard from "../common/ProductCard";
 import "./Shop.css";
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "name-desc";
@@ -62,9 +52,7 @@ function Shop() {
   const [sortBy, setSortBy] = useState<SortOption>("price-asc");
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [userPriceRange, setUserPriceRange] = useState<[number, number] | null>(null);
-  const [addedIds, setAddedIds] = useState<Set<number>>(new Set());
-  const { addItem } = useCart();
-  const { isFavorite, toggle: toggleFavorite } = useFavorites();
+  const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
 
   const allCategories = useMemo(() => {
     const map = new Map<number, string>();
@@ -72,6 +60,14 @@ function Shop() {
       p.categories.forEach((c) => map.set(c.id, c.name)),
     );
     return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+  }, [products]);
+
+  const allCompanies = useMemo(() => {
+    const map = new Map<number, string>();
+    products.forEach((p) => map.set(p.companyId, p.companyName));
+    return Array.from(map.entries())
+      .map(([id, name]) => ({ id, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [products]);
 
   const preFilteredProducts = useMemo(() => {
@@ -83,8 +79,11 @@ function Shop() {
         p.categories.some((c) => selectedCategories.includes(c.id)),
       );
     }
+    if (selectedCompanies.length > 0) {
+      result = result.filter((p) => selectedCompanies.includes(p.companyId));
+    }
     return result;
-  }, [products, search, selectedCategories]);
+  }, [products, search, selectedCategories, selectedCompanies]);
 
   const priceMin = useMemo(
     () =>
@@ -126,20 +125,14 @@ function Shop() {
     return result;
   }, [preFilteredProducts, priceRange, sortBy]);
 
-  const handleAddToCart = async (product: Product) => {
-    await addItem(product.id, 1);
-    setAddedIds((prev) => new Set(prev).add(product.id));
-    setTimeout(() => {
-      setAddedIds((prev) => {
-        const next = new Set(prev);
-        next.delete(product.id);
-        return next;
-      });
-    }, 1800);
-  };
-
   const handleCategoryToggle = (id: number) => {
     setSelectedCategories((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id],
+    );
+  };
+
+  const handleCompanyToggle = (id: number) => {
+    setSelectedCompanies((prev) =>
       prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id],
     );
   };
@@ -161,6 +154,7 @@ function Shop() {
 
   const hasActiveFilters =
     selectedCategories.length > 0 ||
+    selectedCompanies.length > 0 ||
     priceRange[0] !== priceMin ||
     priceRange[1] !== priceMax;
 
@@ -242,6 +236,26 @@ function Shop() {
               </Box>
             )}
 
+            {allCompanies.length > 0 && (
+              <Box className="sidebar-section">
+                <Typography className="sidebar-label">Sold by</Typography>
+                <FormGroup>
+                  {allCompanies.map((company) => (
+                    <FormControlLabel
+                      key={company.id}
+                      label={company.name}
+                      control={
+                        <Checkbox
+                          checked={selectedCompanies.includes(company.id)}
+                          onChange={() => handleCompanyToggle(company.id)}
+                        />
+                      }
+                    />
+                  ))}
+                </FormGroup>
+              </Box>
+            )}
+
             <Box className="sidebar-section">
               <Typography className="sidebar-label">Price</Typography>
               <Slider
@@ -270,6 +284,7 @@ function Shop() {
                 className="shop-clear-btn"
                 onClick={() => {
                   setSelectedCategories([]);
+                  setSelectedCompanies([]);
                   setUserPriceRange(null);
                 }}
               >
@@ -300,6 +315,7 @@ function Shop() {
                     sx={{ mt: 2 }}
                     onClick={() => {
                       setSelectedCategories([]);
+                      setSelectedCompanies([]);
                       setUserPriceRange(null);
                     }}
                   >
@@ -309,86 +325,9 @@ function Shop() {
               </Box>
             ) : (
               <Box className="shop-grid">
-                {visibleProducts.map((product) => {
-                  const added = addedIds.has(product.id);
-                  const fav = isFavorite(product.id);
-                  return (
-                    <Card
-                      key={product.id}
-                      sx={{ display: "flex", flexDirection: "column" }}
-                    >
-                      <Box className="card-image-wrap">
-                        <CardMedia
-                          component="img"
-                          height="190"
-                          image={product.imageUrl}
-                          alt={product.name}
-                          sx={{ objectFit: "cover" }}
-                        />
-                        <IconButton
-                          className={`product-fav-btn${fav ? " product-fav-btn--active" : ""}`}
-                          size="small"
-                          onClick={() => toggleFavorite(product.id)}
-                          aria-label={
-                            fav
-                              ? "Remove from favorites"
-                              : "Add to favorites"
-                          }
-                        >
-                          {fav ? (
-                            <FavoriteIcon fontSize="small" />
-                          ) : (
-                            <FavoriteBorderIcon fontSize="small" />
-                          )}
-                        </IconButton>
-                      </Box>
-
-                      <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
-                        <Typography className="product-card-name">
-                          {product.name}
-                        </Typography>
-                        {product.description && (
-                          <Typography className="product-card-desc">
-                            {product.description}
-                          </Typography>
-                        )}
-                        <Box className="product-card-divider" />
-                        <Box className="product-card-price-row">
-                          <Typography className="price-tag">
-                            {product.price}
-                          </Typography>
-                          <Typography className="product-card-currency">
-                            RON
-                          </Typography>
-                        </Box>
-                      </CardContent>
-
-                      <CardActions sx={{ p: 2.5, pt: 0 }}>
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          color={added ? "success" : "primary"}
-                          startIcon={
-                            added ? (
-                              <CheckIcon sx={{ fontSize: "1rem !important" }} />
-                            ) : (
-                              <AddShoppingCartIcon
-                                sx={{ fontSize: "1rem !important" }}
-                              />
-                            )
-                          }
-                          onClick={() =>
-                            !added && handleAddToCart(product)
-                          }
-                          className="shop-add-btn"
-                          aria-label={`Add ${product.name} to cart`}
-                        >
-                          {added ? "Added!" : "Add to Cart"}
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  );
-                })}
+                {visibleProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
               </Box>
             )}
           </Box>
