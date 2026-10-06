@@ -1,17 +1,21 @@
 import {
   AppBar,
+  Avatar,
   Badge,
   Box,
   Button,
   Container,
+  Divider,
   Drawer,
   IconButton,
   List,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
-  ToggleButton,
-  ToggleButtonGroup,
+  Menu,
+  MenuItem,
   Toolbar,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -21,41 +25,62 @@ import "./NavBar.css";
 import { useState } from "react";
 import { useCart } from "../../context/CartContext/cart-context";
 import { useFavorites } from "../../context/FavoritesContext/favorites-context";
+import { useAuth } from "../../context/AuthContext/auth-context";
+import { Role } from "../../api/models/AuthModel";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-const adminLinks = [
+interface NavLinkItem {
+  label: string;
+  to: string;
+}
+
+const customerLinks: NavLinkItem[] = [
   { label: "Home", to: "/" },
-  { label: "Categories", to: "/categories" },
-  { label: "Products", to: "/products" },
-  { label: "Promotions", to: "/promotions" },
+  { label: "Shop", to: "/shop" },
+  { label: "Sellers", to: "/sellers" },
 ];
 
-const userLinks = [
-  { label: "Home", to: "/" },
+const sellerLinks: NavLinkItem[] = [
+  { label: "My store", to: "/seller/store" },
+  { label: "Products", to: "/seller/products" },
+  { label: "Promotions", to: "/seller/promotions" },
+  { label: "Shop", to: "/shop" },
+];
+
+const adminLinks: NavLinkItem[] = [
+  { label: "Companies", to: "/admin/companies" },
+  { label: "Categories", to: "/admin/categories" },
+  { label: "Products", to: "/admin/products" },
+  { label: "Promotions", to: "/admin/promotions" },
   { label: "Shop", to: "/shop" },
 ];
 
 function NavBar() {
-  const [mode, setMode] = useState<"user" | "admin">("user");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [accountAnchor, setAccountAnchor] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
   const { cart, openCart } = useCart();
   const { favorites } = useFavorites();
+  const { user, logout } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const links = mode === "admin" ? adminLinks : userLinks;
+  const links =
+    user?.role === Role.Admin
+      ? adminLinks
+      : user?.role === Role.Seller
+        ? sellerLinks
+        : customerLinks;
+  const showShoppingActions = user === null || user.role === Role.Customer;
 
-  const handleModeChange = (
-    _event: React.MouseEvent<HTMLElement>,
-    value: "user" | "admin",
-  ) => {
-    setMode(value);
+  function handleLogout() {
+    setAccountAnchor(null);
+    logout();
     navigate("/");
-    setMobileOpen(false);
-  };
+  }
 
   const mobileDrawer = (
     <Box className="navbar-mobile-drawer">
@@ -100,7 +125,7 @@ function NavBar() {
               />
             </Link>
 
-            {!isMobile && (
+            {!isMobile ? (
               <Box className="navbar-links">
                 {links.map(({ label, to }) => (
                   <Button
@@ -114,50 +139,82 @@ function NavBar() {
                   </Button>
                 ))}
               </Box>
+            ) : (
+              <Box sx={{ flexGrow: 1 }} />
             )}
 
-            <ToggleButtonGroup
-              value={mode}
-              exclusive
-              size="small"
-              sx={{ mr: 1.5 }}
-              onChange={handleModeChange}
-            >
-              <ToggleButton value="user" className="navbar-toggle-btn">
-                User
-              </ToggleButton>
-              <ToggleButton value="admin" className="navbar-toggle-btn">
-                Admin
-              </ToggleButton>
-            </ToggleButtonGroup>
+            <Box className="navbar-user-actions">
+              {showShoppingActions && (
+                <>
+                  <IconButton
+                    component={Link}
+                    to="/favorites"
+                    className="cart-icon-btn"
+                    aria-label={`Favorites (${favorites.size})`}
+                  >
+                    <Badge badgeContent={favorites.size} color="warning">
+                      <FavoriteBorderIcon />
+                    </Badge>
+                  </IconButton>
 
-            {mode === "user" && (
-              <Box className="navbar-user-actions">
-                <IconButton
-                  component={Link}
-                  to="/favorites"
-                  className="cart-icon-btn"
-                  aria-label={`Favorites (${favorites.size})`}
-                >
-                  <Badge badgeContent={favorites.size} color="warning">
-                    <FavoriteBorderIcon />
-                  </Badge>
-                </IconButton>
+                  <IconButton
+                    className="cart-icon-btn"
+                    onClick={openCart}
+                    aria-label={`Cart (${cart?.itemCount ?? 0} items)`}
+                  >
+                    <Badge badgeContent={cart?.itemCount ?? 0} color="warning">
+                      <ShoppingCartIcon />
+                    </Badge>
+                  </IconButton>
+                </>
+              )}
 
+              {user === null ? (
+                <Button component={Link} to="/login" className="nav-btn navbar-signin-btn">
+                  Sign in
+                </Button>
+              ) : (
                 <IconButton
-                  className="cart-icon-btn"
-                  onClick={openCart}
-                  aria-label={`Cart (${cart?.itemCount ?? 0} items)`}
+                  onClick={(e) => setAccountAnchor(e.currentTarget)}
+                  aria-label="Account menu"
+                  className="navbar-account-btn"
                 >
-                  <Badge badgeContent={cart?.itemCount ?? 0} color="warning">
-                    <ShoppingCartIcon />
-                  </Badge>
+                  <Avatar className="navbar-avatar">
+                    {user.fullName.charAt(0).toUpperCase()}
+                  </Avatar>
                 </IconButton>
-              </Box>
-            )}
+              )}
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
+
+      <Menu
+        anchorEl={accountAnchor}
+        open={accountAnchor !== null}
+        onClose={() => setAccountAnchor(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        {user !== null && (
+          <Box className="navbar-account-header">
+            <Typography className="navbar-account-name">{user.fullName}</Typography>
+            <Typography className="navbar-account-email">{user.email}</Typography>
+            <Typography className="navbar-account-role">
+              {user.role === Role.Seller && user.companyName
+                ? `Seller · ${user.companyName}`
+                : user.role}
+            </Typography>
+          </Box>
+        )}
+        <Divider />
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          Sign out
+        </MenuItem>
+      </Menu>
 
       <Drawer
         anchor="left"

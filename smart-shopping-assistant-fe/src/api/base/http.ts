@@ -5,17 +5,56 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+function extractMessage(error: {
+  message?: string;
+  response?: { data?: unknown };
+}): string {
+  const data = error.response?.data;
+  if (typeof data === "string" && data !== "") return data;
+  if (data && typeof data === "object") {
+    const body = data as {
+      message?: string;
+      title?: string;
+      errors?: Record<string, string[]>;
+    };
+    if (body.message) return body.message;
+    if (body.errors) {
+      const first = Object.values(body.errors).flat()[0];
+      if (first) return first;
+    }
+    if (body.title) return body.title;
+  }
+  return error.message || "Request failed";
+}
+
+// The AuthProvider keeps these in sync with the signed-in user
+let authToken: string | null = null;
+let onUnauthorized: (() => void) | null = null;
+
+export function setAuthToken(token: string | null) {
+  authToken = token;
+}
+
+export function setUnauthorizedHandler(handler: (() => void) | null) {
+  onUnauthorized = handler;
+}
+
+api.interceptors.request.use((config) => {
+  if (authToken) {
+    config.headers.Authorization = `Bearer ${authToken}`;
+  }
+  return config;
+});
+
 api.interceptors.response.use(
-  //success
   (response) => response,
-  //error
   (error) => {
-    const data = error.message?.data;
-    const message =
-      typeof data === "string" && data !== ""
-        ? data
-        : error.message || "Request failed";
-    return Promise.reject(new Error(message));
+    // An expired or invalid token: sign the user out instead of failing silently
+    if (error.response?.status === 401 && authToken && onUnauthorized) {
+      onUnauthorized();
+      return Promise.reject(new Error("Your session has expired. Please sign in again."));
+    }
+    return Promise.reject(new Error(extractMessage(error)));
   },
 );
 
