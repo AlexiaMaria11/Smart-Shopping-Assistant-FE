@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Chip,
   Container,
   IconButton,
   MenuItem,
@@ -29,13 +28,6 @@ import ConfirmDialog from "../common/ConfirmDialog";
 import LoadingState from "../common/LoadingState";
 import ErrorAlert from "../common/ErrorAlert";
 import CompanyFormDialog from "./CompanyFormDialog";
-
-const STATUS_COLORS: Record<CompanyStatus, "warning" | "success" | "error" | "default"> = {
-  [CompanyStatus.Pending]: "warning",
-  [CompanyStatus.Approved]: "success",
-  [CompanyStatus.Rejected]: "error",
-  [CompanyStatus.Suspended]: "default",
-};
 
 function Companies() {
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -143,28 +135,21 @@ function Companies() {
                   <TableCell align="center">{company.productCount}</TableCell>
                   <TableCell align="center">{company.commissionPercent}%</TableCell>
                   <TableCell>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <Chip
-                        size="small"
-                        label={COMPANY_STATUS_LABELS[company.status]}
-                        color={STATUS_COLORS[company.status]}
-                      />
-                      <Select
-                        size="small"
-                        value={company.status}
-                        onChange={(e) =>
-                          handleStatusChange(company, e.target.value as CompanyStatus)
-                        }
-                        sx={{ minWidth: 120, fontSize: "0.82rem" }}
-                        aria-label={`Change status of ${company.name}`}
-                      >
-                        {Object.values(CompanyStatus).map((status) => (
-                          <MenuItem key={status} value={status}>
-                            {COMPANY_STATUS_LABELS[status]}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Box>
+                    <Select
+                      size="small"
+                      value={company.status}
+                      onChange={(e) =>
+                        handleStatusChange(company, e.target.value as CompanyStatus)
+                      }
+                      sx={{ minWidth: 120, fontSize: "0.82rem" }}
+                      aria-label={`Change status of ${company.name}`}
+                    >
+                      {Object.values(CompanyStatus).map((status) => (
+                        <MenuItem key={status} value={status}>
+                          {COMPANY_STATUS_LABELS[status]}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </TableCell>
                   <TableCell align="right" className="data-table-cell-nowrap">
                     <Tooltip title="Edit">
