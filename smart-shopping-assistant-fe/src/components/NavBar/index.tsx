@@ -31,6 +31,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 
 interface NavLinkItem {
   label: string;
@@ -45,12 +46,14 @@ const customerLinks: NavLinkItem[] = [
 
 const sellerLinks: NavLinkItem[] = [
   { label: "My store", to: "/seller/store" },
+  { label: "Orders", to: "/seller/orders" },
   { label: "Products", to: "/seller/products" },
   { label: "Promotions", to: "/seller/promotions" },
   { label: "Shop", to: "/shop" },
 ];
 
 const adminLinks: NavLinkItem[] = [
+  { label: "Orders", to: "/admin/orders" },
   { label: "Companies", to: "/admin/companies" },
   { label: "Categories", to: "/admin/categories" },
   { label: "Products", to: "/admin/products" },
@@ -208,6 +211,19 @@ function NavBar() {
           </Box>
         )}
         <Divider />
+        {user?.role === Role.Customer && (
+          <MenuItem
+            onClick={() => {
+              setAccountAnchor(null);
+              navigate("/orders");
+            }}
+          >
+            <ListItemIcon>
+              <ReceiptLongOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            My orders
+          </MenuItem>
+        )}
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

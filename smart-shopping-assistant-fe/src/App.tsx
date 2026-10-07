@@ -21,6 +21,11 @@ import Register from "./components/Auth/Register";
 import SellerRegister from "./components/Auth/SellerRegister";
 import RequireRole from "./components/common/RequireRole";
 import { Role } from "./api/models/AuthModel";
+import Checkout from "./components/Checkout";
+import Orders from "./components/Orders";
+import OrderDetails from "./components/Orders/OrderDetails";
+import SellerOrders from "./components/SellerOrders";
+import AdminOrders from "./components/AdminOrders";
 
 const adminOnly = [Role.Admin];
 const sellerOnly = [Role.Seller];
@@ -44,10 +49,26 @@ function App() {
                 path="/favorites"
                 element={<RequireRole><Favorites /></RequireRole>}
               />
+              <Route
+                path="/checkout"
+                element={<RequireRole><Checkout /></RequireRole>}
+              />
+              <Route
+                path="/orders"
+                element={<RequireRole><Orders /></RequireRole>}
+              />
+              <Route
+                path="/orders/:id"
+                element={<RequireRole><OrderDetails /></RequireRole>}
+              />
 
               <Route
                 path="/admin/companies"
                 element={<RequireRole roles={adminOnly}><Companies /></RequireRole>}
+              />
+              <Route
+                path="/admin/orders"
+                element={<RequireRole roles={adminOnly}><AdminOrders /></RequireRole>}
               />
               <Route
                 path="/admin/categories"
@@ -65,6 +86,10 @@ function App() {
               <Route
                 path="/seller/store"
                 element={<RequireRole roles={sellerOnly}><SellerStore /></RequireRole>}
+              />
+              <Route
+                path="/seller/orders"
+                element={<RequireRole roles={sellerOnly}><SellerOrders /></RequireRole>}
               />
               <Route
                 path="/seller/products"

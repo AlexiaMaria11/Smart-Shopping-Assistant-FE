@@ -10,6 +10,7 @@ export interface CartContextValue {
   addItem: (productId: number, quantity: number) => Promise<boolean>;
   updateQuantity: (itemId: number, quantity: number) => Promise<void>;
   removeProduct: (itemId: number) => Promise<void>;
+  refreshCart: () => void;
 }
 
 export const CartContext = createContext<CartContextValue | null>(null);

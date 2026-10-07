@@ -32,6 +32,12 @@ export interface Cart {
   totalDiscountLabel: string;
   total: number;
   totalLabel: string;
+  shippingCost: number;
+  shippingLabel: string;
+  freeShippingRemaining: number;
+  freeShippingRemainingLabel: string;
+  totalWithShipping: number;
+  totalWithShippingLabel: string;
   itemCount: number;
 }
 
@@ -60,6 +66,12 @@ export function toCartModel(dto: CartModel): Cart {
     totalDiscountLabel: money(dto.totalDiscount),
     total: dto.total,
     totalLabel: money(dto.total),
+    shippingCost: dto.shippingCost,
+    shippingLabel: dto.shippingCost === 0 ? "Free" : money(dto.shippingCost),
+    freeShippingRemaining: dto.freeShippingRemaining,
+    freeShippingRemainingLabel: money(dto.freeShippingRemaining),
+    totalWithShipping: dto.totalWithShipping,
+    totalWithShippingLabel: money(dto.totalWithShipping),
     itemCount: dto.items.reduce((sum, item) => sum + item.quantity, 0),
   };
 }

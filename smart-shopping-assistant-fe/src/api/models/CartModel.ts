@@ -20,6 +20,9 @@ export interface CartModel {
   appliedPromotions: AppliedPromotion[];
   totalDiscount: number;
   total: number;
+  shippingCost: number;
+  freeShippingRemaining: number;
+  totalWithShipping: number;
 }
 
 export interface AddCartItemInput {

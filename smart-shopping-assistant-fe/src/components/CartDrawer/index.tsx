@@ -17,12 +17,17 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { useCart } from "../../context/CartContext/cart-context";
 import "./CartDrawer.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import AnalyzeDialog from "./AnalyzeDialog";
 
 function CartDrawer() {
   const { cart, open, closeCart, updateQuantity, removeProduct } = useCart();
   const isEmpty = cart === null || cart.items.length === 0;
   const [analyzeOpen, setAnalyzeOpen] = useState(false);
+  const navigate = useNavigate();
+  const hasStockProblem =
+    cart !== null && cart.items.some((i) => i.quantity > i.availableStock);
 
   return (
     <Drawer anchor="right" open={open} onClose={closeCart}>
@@ -150,14 +155,42 @@ function CartDrawer() {
                 </Box>
               ))}
 
+              <Box className="cart-totals-row">
+                <Typography className="cart-subtotal-label">Delivery</Typography>
+                <Typography className="cart-subtotal-value">
+                  {cart!.shippingLabel}
+                </Typography>
+              </Box>
+
+              {cart!.freeShippingRemaining > 0 && (
+                <Box className="cart-free-shipping">
+                  <LocalShippingOutlinedIcon sx={{ fontSize: 18 }} />
+                  Add {cart!.freeShippingRemainingLabel} more for free delivery
+                </Box>
+              )}
+
               <Box className="cart-accent-rule" />
 
               <Box className="cart-total-row">
                 <Typography className="cart-total-label">Total</Typography>
                 <Typography className="cart-total-amount">
-                  {cart!.totalLabel}
+                  {cart!.totalWithShippingLabel}
                 </Typography>
               </Box>
+
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={hasStockProblem}
+                onClick={() => {
+                  closeCart();
+                  navigate("/checkout");
+                }}
+                className="cart-checkout-btn"
+              >
+                {hasStockProblem ? "Fix the quantities above" : "Checkout"}
+              </Button>
 
               <Button
                 fullWidth

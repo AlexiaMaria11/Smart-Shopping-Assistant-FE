@@ -1,0 +1,196 @@
+.orders-page {
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.orders-title {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 700 !important;
+  color: var(--text-primary);
+  margin-bottom: 24px !important;
+}
+
+.orders-empty {
+  text-align: center;
+  padding: 64px 0;
+  color: var(--text-secondary);
+  font-family: "Poppins", sans-serif;
+}
+
+.order-card {
+  display: block;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+a.order-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.order-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.order-number {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.98rem !important;
+  color: var(--text-primary);
+}
+
+.order-meta {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.8rem !important;
+  color: var(--text-secondary);
+}
+
+.order-thumbs {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 10px;
+  flex-wrap: wrap;
+}
+
+.order-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--cream-dark);
+}
+
+.order-total {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  color: var(--primary);
+}
+
+/* ── Details ── */
+.order-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+.order-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.order-box-title {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 14px !important;
+}
+
+.order-package-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.order-package-seller {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+}
+
+.order-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.order-line--cancelled {
+  opacity: 0.55;
+}
+
+.order-line--cancelled .order-line-name {
+  text-decoration: line-through;
+}
+
+.order-line-name {
+  flex: 1;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.88rem !important;
+}
+
+.order-line-price {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+}
+
+.order-text {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.86rem !important;
+  color: var(--text-secondary);
+  line-height: 1.7 !important;
+}
+
+.order-sum-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  padding: 3px 0;
+}
+
+.order-sum-row--discount {
+  color: var(--success);
+}
+
+.order-sum-row--total {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--primary);
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+.order-stepper {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .order-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.order-number a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.order-number a:hover {
+  text-decoration: underline;
+}

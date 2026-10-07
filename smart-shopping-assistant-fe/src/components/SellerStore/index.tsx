@@ -107,7 +107,10 @@ function SellerStore() {
         </Typography>
 
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <Button component={Link} to="/seller/products" variant="contained" color="primary">
+          <Button component={Link} to="/seller/orders" variant="contained" color="primary">
+            Orders to fulfil
+          </Button>
+          <Button component={Link} to="/seller/products" variant="outlined" color="primary">
             Manage products
           </Button>
           <Button component={Link} to="/seller/promotions" variant="outlined" color="primary">
