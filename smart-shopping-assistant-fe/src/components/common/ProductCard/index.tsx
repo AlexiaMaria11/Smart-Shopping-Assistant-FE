@@ -6,6 +6,7 @@ import {
   CardContent,
   CardMedia,
   IconButton,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -15,7 +16,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { Product } from "../../shared/types/Product";
+import { LOW_STOCK_THRESHOLD, type Product } from "../../shared/types/Product";
 import { useCart } from "../../../context/CartContext/cart-context";
 import { useFavorites } from "../../../context/FavoritesContext/favorites-context";
 import "./ProductCard.css";
@@ -27,19 +28,36 @@ interface ProductCardProps {
 
 function ProductCard({ product, hideSeller = false }: ProductCardProps) {
   const [added, setAdded] = useState(false);
+  const [error, setError] = useState("");
   const { addItem } = useCart();
   const { isFavorite, toggle } = useFavorites();
   const fav = isFavorite(product.id);
+  const outOfStock = product.stockQuantity <= 0;
+  const lowStock = !outOfStock && product.stockQuantity <= LOW_STOCK_THRESHOLD;
 
   async function handleAddToCart() {
-    if (!(await addItem(product.id, 1))) return;
+    try {
+      if (!(await addItem(product.id, 1))) return;
+    } catch (err) {
+      setError((err as Error).message);
+      return;
+    }
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
 
   return (
-    <Card sx={{ display: "flex", flexDirection: "column" }}>
+    <Card
+      sx={{ display: "flex", flexDirection: "column" }}
+      className={outOfStock ? "product-card--sold-out" : undefined}
+    >
       <Box className="card-image-wrap">
+        {outOfStock && <Box className="product-stock-badge">Out of stock</Box>}
+        {lowStock && (
+          <Box className="product-stock-badge product-stock-badge--low">
+            Only {product.stockQuantity} left
+          </Box>
+        )}
         <CardMedia
           component="img"
           height="190"
@@ -89,6 +107,7 @@ function ProductCard({ product, hideSeller = false }: ProductCardProps) {
           fullWidth
           variant="contained"
           color={added ? "success" : "primary"}
+          disabled={outOfStock}
           startIcon={
             added ? (
               <CheckIcon sx={{ fontSize: "1rem !important" }} />
@@ -100,9 +119,16 @@ function ProductCard({ product, hideSeller = false }: ProductCardProps) {
           className="shop-add-btn"
           aria-label={`Add ${product.name} to cart`}
         >
-          {added ? "Added!" : "Add to Cart"}
+          {outOfStock ? "Out of stock" : added ? "Added!" : "Add to Cart"}
         </Button>
       </CardActions>
+      <Snackbar
+        open={error !== ""}
+        autoHideDuration={4000}
+        onClose={() => setError("")}
+        message={error}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      />
     </Card>
   );
 }

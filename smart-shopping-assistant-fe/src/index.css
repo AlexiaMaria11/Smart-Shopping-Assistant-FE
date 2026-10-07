@@ -250,3 +250,16 @@ body {
 .product-fav-btn--active {
   color: var(--primary) !important;
 }
+
+/* ── Stock column (back office) ── */
+.stock-cell {
+  font-weight: 600 !important;
+}
+
+.stock-cell--low {
+  color: #c46a1b !important;
+}
+
+.stock-cell--out {
+  color: var(--error) !important;
+}

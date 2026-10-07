@@ -18,3 +18,26 @@
 .product-card-seller-icon {
   font-size: 14px !important;
 }
+
+.product-stock-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--white);
+  background: rgba(28, 10, 8, 0.72);
+}
+
+.product-stock-badge--low {
+  background: #c46a1b;
+}
+
+.product-card--sold-out .MuiCardMedia-root {
+  filter: grayscale(0.85);
+  opacity: 0.75;
+}

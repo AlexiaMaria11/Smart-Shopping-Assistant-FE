@@ -82,6 +82,13 @@ function CartDrawer() {
                   <Typography className="cart-item-unit-price">
                     {item.unitPriceLabel} / piece
                   </Typography>
+                  {item.quantity > item.availableStock && (
+                    <Typography className="cart-item-stock-warning">
+                      {item.availableStock === 0
+                        ? "Sold out since you added it. Please remove it."
+                        : `Only ${item.availableStock} left. Please lower the quantity.`}
+                    </Typography>
+                  )}
 
                   <Box className="cart-item-row">
                     <Box className="cart-qty-control">
@@ -104,6 +111,7 @@ function CartDrawer() {
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
+                        disabled={item.quantity >= item.availableStock}
                         className="cart-qty-btn"
                         aria-label="Increase quantity"
                       >

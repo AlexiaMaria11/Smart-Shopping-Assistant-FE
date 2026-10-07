@@ -13,6 +13,7 @@ export interface CartItem {
   quantity: number;
   subtotal: number;
   subtotalLabel: string;
+  availableStock: number;
 }
 
 export interface AppliedPromotion {
@@ -45,6 +46,7 @@ export function toCartModel(dto: CartModel): Cart {
       quantity: item.quantity,
       subtotal: item.subtotal,
       subtotalLabel: money(item.subtotal),
+      availableStock: item.availableStock,
     })),
     subtotal: dto.subtotal,
     subtotalLabel: money(dto.subtotal),

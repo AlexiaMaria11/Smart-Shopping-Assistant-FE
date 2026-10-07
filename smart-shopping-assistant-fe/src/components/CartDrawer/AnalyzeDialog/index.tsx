@@ -73,7 +73,12 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
   }, [loading]);
 
   async function handleApprove(suggestion: Suggestion) {
-    await addItem(suggestion.productId, suggestion.quantity);
+    try {
+      await addItem(suggestion.productId, suggestion.quantity);
+    } catch (err) {
+      setError((err as Error).message);
+      return;
+    }
     setDecisions((current) => ({
       ...current,
       [suggestion.productId]: "approved",
@@ -100,12 +105,18 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
     const pending = analysis.suggestions.filter(
       (s) => decisions[s.productId] === undefined,
     );
+    const added: Suggestion[] = [];
     for (const s of pending) {
-      await addItem(s.productId, s.quantity);
+      try {
+        await addItem(s.productId, s.quantity);
+        added.push(s);
+      } catch (err) {
+        setError((err as Error).message);
+      }
     }
     setDecisions((current) => {
       const next = { ...current };
-      pending.forEach((s) => {
+      added.forEach((s) => {
         next[s.productId] = "approved";
       });
       return next;
@@ -145,7 +156,7 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
         )}
 
         {error !== "" && !loading && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError("")}>
             {error}
           </Alert>
         )}

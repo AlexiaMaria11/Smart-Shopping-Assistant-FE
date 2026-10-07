@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  stockQuantity: number;
   imageUrl: string;
   companyId: number;
   companyName: string;
@@ -19,6 +20,7 @@ export function toProduct(dto: ProductModel): Product {
     name: dto.name,
     description: dto.description ?? "",
     price: dto.price,
+    stockQuantity: dto.stockQuantity,
     imageUrl: dto.imageUrl ?? "",
     companyId: dto.companyId,
     companyName: dto.companyName,
@@ -26,3 +28,6 @@ export function toProduct(dto: ProductModel): Product {
     categories: dto.categories?.map(toCategory) ?? [],
   };
 }
+
+// Below this many units the shop warns that the product is almost sold out
+export const LOW_STOCK_THRESHOLD = 5;

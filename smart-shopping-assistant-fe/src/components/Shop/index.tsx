@@ -53,6 +53,7 @@ function Shop() {
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [userPriceRange, setUserPriceRange] = useState<[number, number] | null>(null);
   const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
+  const [inStockOnly, setInStockOnly] = useState(false);
 
   const allCategories = useMemo(() => {
     const map = new Map<number, string>();
@@ -82,8 +83,11 @@ function Shop() {
     if (selectedCompanies.length > 0) {
       result = result.filter((p) => selectedCompanies.includes(p.companyId));
     }
+    if (inStockOnly) {
+      result = result.filter((p) => p.stockQuantity > 0);
+    }
     return result;
-  }, [products, search, selectedCategories, selectedCompanies]);
+  }, [products, search, selectedCategories, selectedCompanies, inStockOnly]);
 
   const priceMin = useMemo(
     () =>
@@ -155,6 +159,7 @@ function Shop() {
   const hasActiveFilters =
     selectedCategories.length > 0 ||
     selectedCompanies.length > 0 ||
+    inStockOnly ||
     priceRange[0] !== priceMin ||
     priceRange[1] !== priceMax;
 
@@ -257,6 +262,19 @@ function Shop() {
             )}
 
             <Box className="sidebar-section">
+              <Typography className="sidebar-label">Availability</Typography>
+              <FormControlLabel
+                label="In stock only"
+                control={
+                  <Checkbox
+                    checked={inStockOnly}
+                    onChange={(e) => setInStockOnly(e.target.checked)}
+                  />
+                }
+              />
+            </Box>
+
+            <Box className="sidebar-section">
               <Typography className="sidebar-label">Price</Typography>
               <Slider
                 value={priceRange}
@@ -285,6 +303,7 @@ function Shop() {
                 onClick={() => {
                   setSelectedCategories([]);
                   setSelectedCompanies([]);
+                  setInStockOnly(false);
                   setUserPriceRange(null);
                 }}
               >
@@ -316,6 +335,7 @@ function Shop() {
                     onClick={() => {
                       setSelectedCategories([]);
                       setSelectedCompanies([]);
+                      setInStockOnly(false);
                       setUserPriceRange(null);
                     }}
                   >

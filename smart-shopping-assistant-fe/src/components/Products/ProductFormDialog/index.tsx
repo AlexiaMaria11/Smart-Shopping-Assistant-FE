@@ -39,6 +39,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
   const [name, setName] = useState(product?.name ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [price, setPrice] = useState(product?.price?.toString() ?? "");
+  const [stock, setStock] = useState(product?.stockQuantity?.toString() ?? "0");
   const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? "");
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
     product?.categories.map((c) => c.id) ?? []
@@ -68,6 +69,11 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
       setError("Price must be a valid positive number.");
       return;
     }
+    const parsedStock = Number(stock);
+    if (!Number.isInteger(parsedStock) || parsedStock < 0) {
+      setError("Stock must be a whole number, 0 or more.");
+      return;
+    }
     if (companyId === "") {
       setError("Please choose the company that sells this product.");
       return;
@@ -79,6 +85,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
         name,
         description,
         price: parsedPrice,
+        stockQuantity: parsedStock,
         imageUrl,
         companyId,
         categoryIds: selectedCategoryIds,
@@ -121,6 +128,14 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             onChange={(e) => setPrice(e.target.value)}
             fullWidth
             type="number"
+          />
+          <TextField
+            label="Units in stock"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+            fullWidth
+            type="number"
+            slotProps={{ htmlInput: { min: 0, step: 1 } }}
           />
           <TextField
             label="Image URL"

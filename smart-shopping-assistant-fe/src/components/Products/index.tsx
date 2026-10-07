@@ -13,7 +13,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import type { Product } from "../shared/types/Product";
+import { LOW_STOCK_THRESHOLD, type Product } from "../shared/types/Product";
 import { productsApi } from "../../api/clients/ProductApiClient";
 import PageHeader from "../common/PageHeader";
 import ProductFormDialog from "./ProductFormDialog";
@@ -99,6 +99,9 @@ function Products() {
                 <TableCell sx={{ width: "8%" }} align="right">
                   Price
                 </TableCell>
+                <TableCell sx={{ width: "7%" }} align="right">
+                  Stock
+                </TableCell>
                 <TableCell sx={{ width: "8%" }} align="center">
                   Image
                 </TableCell>
@@ -132,6 +135,18 @@ function Products() {
                   </TableCell>
                   <TableCell align="right" className="data-table-cell-bold">
                     {product.price.toFixed(2)} RON
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    className={
+                      product.stockQuantity === 0
+                        ? "stock-cell stock-cell--out"
+                        : product.stockQuantity <= LOW_STOCK_THRESHOLD
+                          ? "stock-cell stock-cell--low"
+                          : "stock-cell"
+                    }
+                  >
+                    {product.stockQuantity}
                   </TableCell>
                   <TableCell align="center">
                     {product.imageUrl ? (
@@ -173,7 +188,7 @@ function Products() {
               {products.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={isSeller ? 6 : 7}
+                    colSpan={isSeller ? 7 : 8}
                     align="center"
                     className="data-table-empty"
                   >
