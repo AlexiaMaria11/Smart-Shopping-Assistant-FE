@@ -1,33 +1,125 @@
 import { useEffect, useState } from "react";
-import { productsApi } from "../../../api/clients/ProductApiClient";
-import { categoriesApi } from "../../../api/clients/CategoryApiClient";
-import { companiesApi } from "../../../api/clients/CompanyApiClient";
 import {
-  Alert,
-  Button,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
   Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
+  Chip,
   FormControl,
+  FormHelperText,
+  InputAdornment,
   InputLabel,
   ListItemText,
   MenuItem,
   Select,
-  Stack,
   TextField,
+  Typography,
 } from "@mui/material";
-import type { Product } from "../../shared/types/Product";
+import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import { productsApi } from "../../../api/clients/ProductApiClient";
+import { categoriesApi } from "../../../api/clients/CategoryApiClient";
+import { companiesApi } from "../../../api/clients/CompanyApiClient";
+import { LOW_STOCK_THRESHOLD, type Product } from "../../shared/types/Product";
 import type { Category } from "../../shared/types/Category";
 import type { Company } from "../../shared/types/Company";
 import { useAuth } from "../../../context/AuthContext/auth-context";
 import { Role } from "../../../api/models/AuthModel";
+import FormDialog from "../../common/FormDialog";
+import FormSection from "../../common/FormDialog/FormSection";
+import ImageUrlField from "../../common/FormDialog/ImageUrlField";
+import { counterHelper, counterHelperProps, isDirty } from "../../common/FormDialog/formHelpers";
+import "../../common/ProductCard/ProductCard.css";
+
+const NAME_MAX = 200;
+const DESCRIPTION_MAX = 1000;
 
 interface ProductFormDialogProps {
   product: Product | null;
   onClose: () => void;
   onSaved: () => void;
+}
+
+interface ProductForm {
+  name: string;
+  description: string;
+  price: string;
+  stock: string;
+  imageUrl: string;
+  companyId: number | "";
+  categoryIds: number[];
+}
+
+type Errors = Partial<Record<keyof ProductForm, string>>;
+
+function validate(form: ProductForm): Errors {
+  const errors: Errors = {};
+  if (form.name.trim() === "") errors.name = "Please give the product a name.";
+  const price = Number(form.price);
+  if (form.price.trim() === "" || isNaN(price) || price <= 0) errors.price = "Enter a price greater than 0.";
+  const stock = Number(form.stock);
+  if (form.stock.trim() === "" || !Number.isInteger(stock) || stock < 0)
+    errors.stock = "Enter a whole number, 0 or more.";
+  if (form.companyId === "") errors.companyId = "Choose the company that sells this product.";
+  if (form.categoryIds.length === 0) errors.categoryIds = "Choose at least one category, so customers can find it.";
+  return errors;
+}
+
+// The card exactly as customers will see it in the shop
+function ProductPreview({ form, sellerName }: { form: ProductForm; sellerName: string }) {
+  const stock = Number(form.stock);
+  const outOfStock = form.stock.trim() !== "" && stock <= 0;
+  const lowStock = !outOfStock && stock > 0 && stock <= LOW_STOCK_THRESHOLD;
+  const price = Number(form.price);
+
+  return (
+    <Card
+      sx={{ pointerEvents: "none" }}
+      className={outOfStock ? "product-card--sold-out" : undefined}
+    >
+      <Box className="card-image-wrap">
+        {outOfStock && <Box className="product-stock-badge">Out of stock</Box>}
+        {lowStock && (
+          <Box className="product-stock-badge product-stock-badge--low">Only {stock} left</Box>
+        )}
+        {form.imageUrl.trim() ? (
+          <CardMedia component="img" height="170" image={form.imageUrl} alt="" sx={{ objectFit: "cover" }} />
+        ) : (
+          <Box
+            sx={{
+              height: 170,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "var(--cream-dark)",
+              color: "var(--accent)",
+            }}
+          >
+            <ImageOutlinedIcon fontSize="large" />
+          </Box>
+        )}
+      </Box>
+      <CardContent sx={{ p: 2 }}>
+        <Typography className="product-card-name">{form.name.trim() || "Product name"}</Typography>
+        {sellerName && (
+          <span className="product-card-seller">
+            <StorefrontOutlinedIcon className="product-card-seller-icon" />
+            {sellerName}
+          </span>
+        )}
+        <Typography className="product-card-desc">
+          {form.description.trim() || "A short description of the product."}
+        </Typography>
+        <Box className="product-card-divider" />
+        <Box className="product-card-price-row">
+          <Typography className="price-tag">{price > 0 ? price.toFixed(2) : "0.00"}</Typography>
+          <Typography className="product-card-currency">RON</Typography>
+        </Box>
+      </CardContent>
+    </Card>
+  );
 }
 
 function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps) {
@@ -36,20 +128,20 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
   // Sellers always sell under their own company, the server enforces it too
   const isSeller = hasRole(Role.Seller);
 
-  const [name, setName] = useState(product?.name ?? "");
-  const [description, setDescription] = useState(product?.description ?? "");
-  const [price, setPrice] = useState(product?.price?.toString() ?? "");
-  const [stock, setStock] = useState(product?.stockQuantity?.toString() ?? "0");
-  const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? "");
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
-    product?.categories.map((c) => c.id) ?? []
-  );
-  const [companyId, setCompanyId] = useState<number | "">(
-    product?.companyId ?? (isSeller ? (user?.companyId ?? "") : "")
-  );
+  const [initial] = useState<ProductForm>(() => ({
+    name: product?.name ?? "",
+    description: product?.description ?? "",
+    price: product?.price?.toString() ?? "",
+    stock: product?.stockQuantity?.toString() ?? "0",
+    imageUrl: product?.imageUrl ?? "",
+    companyId: product?.companyId ?? (isSeller ? (user?.companyId ?? "") : ""),
+    categoryIds: product?.categories.map((c) => c.id) ?? [],
+  }));
+  const [form, setForm] = useState<ProductForm>(initial);
+  const [errors, setErrors] = useState<Errors>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -59,36 +151,31 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
     }
   }, [isSeller]);
 
+  function set<K extends keyof ProductForm>(key: K, value: ProductForm[K]) {
+    setForm((current) => ({ ...current, [key]: value }));
+    if (errors[key]) setErrors((current) => ({ ...current, [key]: undefined }));
+  }
+
+  const sellerName = isSeller
+    ? (user?.companyName ?? "")
+    : (companies.find((c) => c.id === form.companyId)?.name ?? product?.companyName ?? "");
+
   async function handleSave() {
-    if (name.trim() === "") {
-      setError("Name is required.");
-      return;
-    }
-    const parsedPrice = parseFloat(price);
-    if (isNaN(parsedPrice) || parsedPrice < 0) {
-      setError("Price must be a valid positive number.");
-      return;
-    }
-    const parsedStock = Number(stock);
-    if (!Number.isInteger(parsedStock) || parsedStock < 0) {
-      setError("Stock must be a whole number, 0 or more.");
-      return;
-    }
-    if (companyId === "") {
-      setError("Please choose the company that sells this product.");
-      return;
-    }
+    const found = validate(form);
+    setErrors(found);
+    if (Object.values(found).some(Boolean)) return;
+
     setSaving(true);
-    setError("");
+    setServerError("");
     try {
       const data = {
-        name,
-        description,
-        price: parsedPrice,
-        stockQuantity: parsedStock,
-        imageUrl,
-        companyId,
-        categoryIds: selectedCategoryIds,
+        name: form.name.trim(),
+        description: form.description.trim(),
+        price: Number(form.price),
+        stockQuantity: Number(form.stock),
+        imageUrl: form.imageUrl.trim(),
+        companyId: form.companyId as number,
+        categoryIds: form.categoryIds,
       };
       if (isEditing) {
         await productsApi.update(product.id, data);
@@ -97,59 +184,110 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
       }
       onSaved();
     } catch (err) {
-      setError((err as Error).message);
+      setServerError((err as Error).message);
       setSaving(false);
     }
   }
 
   return (
-    <Dialog open onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{isEditing ? "Edit Product" : "Add Product"}</DialogTitle>
-      <DialogContent>
-        <Stack spacing={2} sx={{ mt: 1 }}>
-          {error !== "" && <Alert severity="error">{error}</Alert>}
-          <TextField
-            label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            fullWidth
-          />
-          <TextField
-            label="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            fullWidth
-            multiline
-            rows={3}
-          />
+    <FormDialog
+      title={isEditing ? "Edit product" : "Add product"}
+      subtitle={
+        isEditing
+          ? "Changes are visible in the shop as soon as you save."
+          : "The product appears in the shop as soon as you save it."
+      }
+      submitLabel={isEditing ? "Save changes" : "Add product"}
+      saving={saving}
+      dirty={isDirty(initial, form)}
+      error={serverError}
+      onSubmit={handleSave}
+      onClose={onClose}
+      aside={<ProductPreview form={form} sellerName={sellerName} />}
+      asideTitle="How it looks in the shop"
+    >
+      <FormSection title="Product">
+        <TextField
+          label="Name"
+          value={form.name}
+          onChange={(e) => set("name", e.target.value)}
+          error={!!errors.name}
+          helperText={errors.name}
+          slotProps={{ htmlInput: { maxLength: NAME_MAX } }}
+          required
+          fullWidth
+          autoFocus
+        />
+        <TextField
+          label="Description"
+          value={form.description}
+          onChange={(e) => set("description", e.target.value)}
+          helperText={counterHelper(form.description, DESCRIPTION_MAX)}
+          slotProps={{ ...counterHelperProps, htmlInput: { maxLength: DESCRIPTION_MAX } }}
+          multiline
+          minRows={3}
+          maxRows={6}
+          fullWidth
+        />
+      </FormSection>
+
+      <FormSection title="Price and stock">
+        <Box className="form-row">
           <TextField
             label="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            fullWidth
+            value={form.price}
+            onChange={(e) => set("price", e.target.value)}
+            error={!!errors.price}
+            helperText={errors.price}
             type="number"
+            required
+            fullWidth
+            slotProps={{
+              htmlInput: { min: 0, step: 0.01 },
+              input: { endAdornment: <InputAdornment position="end">RON</InputAdornment> },
+            }}
           />
           <TextField
             label="Units in stock"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-            fullWidth
+            value={form.stock}
+            onChange={(e) => set("stock", e.target.value)}
+            error={!!errors.stock}
+            helperText={errors.stock ?? (Number(form.stock) === 0 ? "Customers will see it as out of stock." : undefined)}
             type="number"
-            slotProps={{ htmlInput: { min: 0, step: 1 } }}
-          />
-          <TextField
-            label="Image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            required
             fullWidth
+            slotProps={{
+              htmlInput: { min: 0, step: 1 },
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Inventory2OutlinedIcon fontSize="small" />
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
-          {!isSeller && (
-          <FormControl fullWidth>
-            <InputLabel>Sold by</InputLabel>
+        </Box>
+      </FormSection>
+
+      <FormSection title="Image">
+        <ImageUrlField
+          label="Image link"
+          value={form.imageUrl}
+          onChange={(value) => set("imageUrl", value)}
+          helperText="A square photo on a clean background looks best."
+        />
+      </FormSection>
+
+      <FormSection title="Where it appears">
+        {!isSeller && (
+          <FormControl fullWidth required error={!!errors.companyId}>
+            <InputLabel id="product-company-label">Sold by</InputLabel>
             <Select
-              value={companyId}
+              labelId="product-company-label"
+              value={form.companyId}
               label="Sold by"
-              onChange={(e) => setCompanyId(e.target.value as number)}
+              onChange={(e) => set("companyId", e.target.value as number)}
             >
               {companies.map((company) => (
                 <MenuItem key={company.id} value={company.id}>
@@ -157,39 +295,38 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                 </MenuItem>
               ))}
             </Select>
+            {errors.companyId && <FormHelperText>{errors.companyId}</FormHelperText>}
           </FormControl>
-          )}
-          <FormControl fullWidth>
-            <InputLabel>Categories</InputLabel>
-            <Select
-              multiple
-              value={selectedCategoryIds}
-              label="Categories"
-              onChange={(e) => setSelectedCategoryIds(e.target.value as number[])}
-              renderValue={(selected) =>
-                categories
+        )}
+        <FormControl fullWidth required error={!!errors.categoryIds}>
+          <InputLabel id="product-categories-label">Categories</InputLabel>
+          <Select
+            labelId="product-categories-label"
+            multiple
+            value={form.categoryIds}
+            label="Categories"
+            onChange={(e) => set("categoryIds", e.target.value as number[])}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {categories
                   .filter((c) => (selected as number[]).includes(c.id))
-                  .map((c) => c.name)
-                  .join(", ")
-              }
-            >
-              {categories.map((cat) => (
-                <MenuItem key={cat.id} value={cat.id}>
-                  <Checkbox checked={selectedCategoryIds.includes(cat.id)} />
-                  <ListItemText primary={cat.name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" color="primary" onClick={handleSave} disabled={saving}>
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+                  .map((c) => (
+                    <Chip key={c.id} label={c.name} size="small" />
+                  ))}
+              </Box>
+            )}
+          >
+            {categories.map((cat) => (
+              <MenuItem key={cat.id} value={cat.id}>
+                <Checkbox checked={form.categoryIds.includes(cat.id)} />
+                <ListItemText primary={cat.name} />
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>{errors.categoryIds ?? "Used by the shop filters and by the AI suggestions."}</FormHelperText>
+        </FormControl>
+      </FormSection>
+    </FormDialog>
   );
 }
 

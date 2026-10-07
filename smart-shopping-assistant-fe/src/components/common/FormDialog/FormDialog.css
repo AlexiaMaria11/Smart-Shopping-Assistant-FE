@@ -1,0 +1,182 @@
+/* ── Shell ── */
+.form-dialog .MuiDialog-paper {
+  max-height: calc(100vh - 48px);
+}
+
+.form-dialog-header.MuiDialogTitle-root {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 20px 18px 28px;
+  background: var(--white);
+  color: var(--text-primary);
+  border-top: 4px solid var(--primary);
+  border-bottom: 1px solid var(--border);
+}
+
+.form-dialog-title {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.35rem !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary);
+}
+
+.form-dialog-subtitle {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.84rem !important;
+  color: var(--text-secondary);
+  margin-top: 4px !important;
+}
+
+.form-dialog-close {
+  color: var(--text-secondary) !important;
+  margin-top: -4px !important;
+}
+
+.form-dialog-close:hover {
+  color: var(--primary) !important;
+  background: var(--accent-pale) !important;
+}
+
+.form-dialog-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.form-dialog-body.MuiDialogContent-root {
+  padding: 24px 28px 8px;
+  overflow-y: auto;
+}
+
+.form-dialog-footer.MuiDialogActions-root {
+  padding: 14px 28px;
+  border-top: 1px solid var(--border);
+  background: var(--cream);
+}
+
+/* ── Two columns: form + preview ── */
+.form-dialog-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: start;
+}
+
+.form-dialog-aside {
+  position: sticky;
+  top: 0;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+}
+
+.form-dialog-aside-title {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 12px !important;
+}
+
+@media (max-width: 900px) {
+  .form-dialog-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .form-dialog-aside {
+    position: static;
+    order: -1;
+  }
+}
+
+/* ── Sections ── */
+.form-section + .form-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--border);
+}
+
+.form-section-title {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.74rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.form-section-description {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.8rem !important;
+  color: var(--text-secondary);
+  margin-top: 2px !important;
+}
+
+.form-section-fields {
+  margin-top: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Character counter on the right, error text on the left */
+.form-counter.MuiFormHelperText-root {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+/* ── Image field ── */
+.image-field-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--cream-dark);
+  flex-shrink: 0;
+}
+
+.image-field-thumb--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+/* ── Choice buttons inside forms (the global toggle style is made for the dark navbar) ── */
+.form-dialog .form-toggle.MuiToggleButtonGroup-root {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  background: var(--cream) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.form-dialog .form-toggle .MuiToggleButton-root {
+  color: var(--text-secondary);
+  padding: 6px 16px !important;
+}
+
+.form-dialog .form-toggle .MuiToggleButton-root.Mui-selected {
+  background: var(--primary) !important;
+  color: var(--white) !important;
+  box-shadow: 0 2px 8px rgba(114, 47, 55, 0.25) !important;
+}
