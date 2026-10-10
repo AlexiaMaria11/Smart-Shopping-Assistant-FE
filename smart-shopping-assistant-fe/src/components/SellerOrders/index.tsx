@@ -98,7 +98,14 @@ function SellerOrders() {
                 >
                   <img src={item.imageUrl} alt={item.productName} className="order-thumb" />
                   <Typography className="order-line-name">
-                    {item.quantity} × {item.productName}
+                    {item.quantity} ×{" "}
+                    {item.productId === null ? (
+                      item.productName
+                    ) : (
+                      <Link to={`/products/${item.productId}`} className="order-line-link">
+                        {item.productName}
+                      </Link>
+                    )}
                   </Typography>
                   <Typography className="order-line-price">{money(item.lineTotal)}</Typography>
                 </Box>

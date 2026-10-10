@@ -7,6 +7,7 @@ import Products from "./components/Products";
 import Home from "./components/Home";
 import Promotions from "./components/Promotions";
 import Shop from "./components/Shop";
+import ProductDetails from "./components/ProductDetails";
 import Favorites from "./components/Favorites";
 import CartProvider from "./context/CartContext/CartProvider";
 import FavoritesProvider from "./context/FavoritesContext/FavoritesProvider";
@@ -40,6 +41,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/products/:id" element={<ProductDetails />} />
               <Route path="/sellers" element={<Sellers />} />
               <Route path="/sellers/:slug" element={<SellerPage />} />
               <Route path="/login" element={<Login />} />

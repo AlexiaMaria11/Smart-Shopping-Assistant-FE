@@ -8,6 +8,15 @@ export const productsApi = {
     const data = await http.get<ProductModel[]>(`/products${query}`);
     return data.map(toProduct);
   },
+  getById: async (id: number): Promise<Product> => {
+    return toProduct(await http.get<ProductModel>(`/products/${id}`));
+  },
+  getSimilar: async (id: number, take = 4): Promise<Product[]> => {
+    const data = await http.get<ProductModel[]>(
+      `/products/${id}/similar?take=${take}`,
+    );
+    return data.map(toProduct);
+  },
   getManaged: async (): Promise<Product[]> => {
     const data = await http.get<ProductModel[]>("/products/manage");
     return data.map(toProduct);

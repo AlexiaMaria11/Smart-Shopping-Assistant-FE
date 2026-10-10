@@ -10,6 +10,12 @@ export const promotionsApi = {
     const data = await http.get<PromotionModel[]>("/promotions");
     return data.map(toPromotion);
   },
+  getForProduct: async (productId: number): Promise<Promotion[]> => {
+    const data = await http.get<PromotionModel[]>(
+      `/promotions/product/${productId}`,
+    );
+    return data.map(toPromotion);
+  },
   getManaged: async (): Promise<Promotion[]> => {
     const data = await http.get<PromotionModel[]>("/promotions/manage");
     return data.map(toPromotion);

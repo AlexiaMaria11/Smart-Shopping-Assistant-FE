@@ -32,6 +32,7 @@ function ProductCard({ product, hideSeller = false }: ProductCardProps) {
   const { addItem } = useCart();
   const { isFavorite, toggle } = useFavorites();
   const fav = isFavorite(product.id);
+  const productLink = `/products/${product.id}`;
   const outOfStock = product.stockQuantity <= 0;
   const lowStock = !outOfStock && product.stockQuantity <= LOW_STOCK_THRESHOLD;
 
@@ -58,13 +59,15 @@ function ProductCard({ product, hideSeller = false }: ProductCardProps) {
             Only {product.stockQuantity} left
           </Box>
         )}
-        <CardMedia
-          component="img"
-          height="190"
-          image={product.imageUrl}
-          alt={product.name}
-          sx={{ objectFit: "cover" }}
-        />
+        <Link to={productLink} className="product-card-image-link" aria-label={product.name}>
+          <CardMedia
+            component="img"
+            height="190"
+            image={product.imageUrl}
+            alt={product.name}
+            sx={{ objectFit: "cover" }}
+          />
+        </Link>
         <IconButton
           className={`product-fav-btn${fav ? " product-fav-btn--active" : ""}`}
           size="small"
@@ -80,7 +83,11 @@ function ProductCard({ product, hideSeller = false }: ProductCardProps) {
       </Box>
 
       <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
-        <Typography className="product-card-name">{product.name}</Typography>
+        <Typography className="product-card-name">
+          <Link to={productLink} className="product-card-name-link">
+            {product.name}
+          </Link>
+        </Typography>
         {!hideSeller && product.companySlug && (
           <Link
             to={`/sellers/${product.companySlug}`}

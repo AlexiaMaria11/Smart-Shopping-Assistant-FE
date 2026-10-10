@@ -43,3 +43,19 @@ export const PROMOTION_REWARD_LABELS: Record<PromotionReward, string> = {
   [PromotionReward.FreeItems]: "Free Items",
   [PromotionReward.PercentDiscount]: "Percent Discount",
 };
+
+// A plain-language summary of what the customer has to do and what they get,
+// used where the promotion is shown to customers (the product page).
+export function promotionDescription(promotion: Promotion): string {
+  const condition =
+    promotion.type === PromotionType.Quantity
+      ? `Buy ${promotion.threshold} or more`
+      : `Spend ${promotion.threshold.toFixed(2)} RON or more`;
+
+  const reward =
+    promotion.reward === PromotionReward.PercentDiscount
+      ? `get ${promotion.rewardValue}% off`
+      : `get ${promotion.rewardValue} free`;
+
+  return `${condition} and ${reward}.`;
+}

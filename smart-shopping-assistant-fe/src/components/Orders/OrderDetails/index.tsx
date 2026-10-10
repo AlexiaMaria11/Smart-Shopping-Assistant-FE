@@ -172,7 +172,13 @@ function OrderDetails() {
                   >
                     <img src={item.imageUrl} alt={item.productName} className="order-thumb" />
                     <Typography className="order-line-name">
-                      {item.productName}
+                      {item.productId === null ? (
+                        item.productName
+                      ) : (
+                        <Link to={`/products/${item.productId}`} className="order-line-link">
+                          {item.productName}
+                        </Link>
+                      )}
                       <br />
                       <span className="order-meta">
                         {item.quantity} × {money(item.unitPrice)}

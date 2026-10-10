@@ -22,14 +22,18 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { productsApi } from "../../../api/clients/ProductApiClient";
 import { categoriesApi } from "../../../api/clients/CategoryApiClient";
 import { companiesApi } from "../../../api/clients/CompanyApiClient";
-import { LOW_STOCK_THRESHOLD, type Product } from "../../shared/types/Product";
+import {
+  galleryOf,
+  LOW_STOCK_THRESHOLD,
+  type Product,
+} from "../../shared/types/Product";
 import type { Category } from "../../shared/types/Category";
 import type { Company } from "../../shared/types/Company";
 import { useAuth } from "../../../context/AuthContext/auth-context";
 import { Role } from "../../../api/models/AuthModel";
 import FormDialog from "../../common/FormDialog";
 import FormSection from "../../common/FormDialog/FormSection";
-import ImageUrlField from "../../common/FormDialog/ImageUrlField";
+import ProductImagesField, { type ImageRow } from "./ProductImagesField";
 import { counterHelper, counterHelperProps, isDirty } from "../../common/FormDialog/formHelpers";
 import "../../common/ProductCard/ProductCard.css";
 
@@ -47,7 +51,7 @@ interface ProductForm {
   description: string;
   price: string;
   stock: string;
-  imageUrl: string;
+  images: ImageRow[];
   companyId: number | "";
   categoryIds: number[];
 }
@@ -62,14 +66,26 @@ function validate(form: ProductForm): Errors {
   const stock = Number(form.stock);
   if (form.stock.trim() === "" || !Number.isInteger(stock) || stock < 0)
     errors.stock = "Enter a whole number, 0 or more.";
+  if (form.images.some((image) => image.url.trim() === ""))
+    errors.images = "Fill in the empty image links, or remove those rows.";
+  else {
+    const urls = form.images.map((image) => image.url.trim().toLowerCase());
+    if (new Set(urls).size !== urls.length) errors.images = "The same picture is listed twice.";
+  }
   if (form.companyId === "") errors.companyId = "Choose the company that sells this product.";
   if (form.categoryIds.length === 0) errors.categoryIds = "Choose at least one category, so customers can find it.";
   return errors;
 }
 
 // The card exactly as customers will see it in the shop
+function mainImageUrl(images: ImageRow[]): string {
+  const main = images.find((image) => image.isMain) ?? images[0];
+  return (main?.url ?? "").trim();
+}
+
 function ProductPreview({ form, sellerName }: { form: ProductForm; sellerName: string }) {
   const stock = Number(form.stock);
+  const imageUrl = mainImageUrl(form.images);
   const outOfStock = form.stock.trim() !== "" && stock <= 0;
   const lowStock = !outOfStock && stock > 0 && stock <= LOW_STOCK_THRESHOLD;
   const price = Number(form.price);
@@ -84,8 +100,8 @@ function ProductPreview({ form, sellerName }: { form: ProductForm; sellerName: s
         {lowStock && (
           <Box className="product-stock-badge product-stock-badge--low">Only {stock} left</Box>
         )}
-        {form.imageUrl.trim() ? (
-          <CardMedia component="img" height="170" image={form.imageUrl} alt="" sx={{ objectFit: "cover" }} />
+        {imageUrl !== "" ? (
+          <CardMedia component="img" height="170" image={imageUrl} alt="" sx={{ objectFit: "cover" }} />
         ) : (
           <Box
             sx={{
@@ -133,7 +149,10 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
     description: product?.description ?? "",
     price: product?.price?.toString() ?? "",
     stock: product?.stockQuantity?.toString() ?? "0",
-    imageUrl: product?.imageUrl ?? "",
+    // Products saved before galleries existed have a single ImageUrl
+    images: product
+      ? galleryOf(product).map((image) => ({ id: image.id, url: image.url, isMain: image.isMain }))
+      : [],
     companyId: product?.companyId ?? (isSeller ? (user?.companyId ?? "") : ""),
     categoryIds: product?.categories.map((c) => c.id) ?? [],
   }));
@@ -173,7 +192,10 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
         description: form.description.trim(),
         price: Number(form.price),
         stockQuantity: Number(form.stock),
-        imageUrl: form.imageUrl.trim(),
+        imageUrl: mainImageUrl(form.images),
+        images: form.images
+          .filter((image) => image.url.trim() !== "")
+          .map((image) => ({ id: image.id, url: image.url.trim(), isMain: image.isMain })),
         companyId: form.companyId as number,
         categoryIds: form.categoryIds,
       };
@@ -270,12 +292,14 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
         </Box>
       </FormSection>
 
-      <FormSection title="Image">
-        <ImageUrlField
-          label="Image link"
-          value={form.imageUrl}
-          onChange={(value) => set("imageUrl", value)}
-          helperText="A square photo on a clean background looks best."
+      <FormSection
+        title="Images"
+        description="Customers see these in this order on the product page. Square photos on a clean background look best."
+      >
+        <ProductImagesField
+          images={form.images}
+          onChange={(images) => set("images", images)}
+          error={errors.images}
         />
       </FormSection>
 
