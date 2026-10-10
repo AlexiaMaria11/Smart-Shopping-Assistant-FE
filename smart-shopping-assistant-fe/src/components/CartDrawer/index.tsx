@@ -16,7 +16,8 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { useCart } from "../../context/CartContext/cart-context";
 import "./CartDrawer.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { featuresApi } from "../../api/clients/FeaturesApiClient";
 import { useNavigate } from "react-router-dom";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import AnalyzeDialog from "./AnalyzeDialog";
@@ -25,6 +26,12 @@ function CartDrawer() {
   const { cart, open, closeCart, updateQuantity, removeProduct } = useCart();
   const isEmpty = cart === null || cart.items.length === 0;
   const [analyzeOpen, setAnalyzeOpen] = useState(false);
+  // The AI button only shows when the server has an AI key configured
+  const [aiAvailable, setAiAvailable] = useState(false);
+
+  useEffect(() => {
+    featuresApi.get().then((features) => setAiAvailable(features.aiAssistant));
+  }, []);
   const navigate = useNavigate();
   const hasStockProblem =
     cart !== null && cart.items.some((i) => i.quantity > i.availableStock);
@@ -192,15 +199,17 @@ function CartDrawer() {
                 {hasStockProblem ? "Fix the quantities above" : "Checkout"}
               </Button>
 
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<AutoAwesomeIcon />}
-                onClick={() => setAnalyzeOpen(true)}
-                className="cart-analyze-btn"
-              >
-                AI Analyze
-              </Button>
+              {aiAvailable && (
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  startIcon={<AutoAwesomeIcon />}
+                  onClick={() => setAnalyzeOpen(true)}
+                  className="cart-analyze-btn"
+                >
+                  AI Analyze
+                </Button>
+              )}
             </Box>
           </>
         )}
