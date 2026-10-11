@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T00:00:00Z",
+  "title": "Design System: Smart Shop",
+  "extensions": {
+    "colorMeta": {
+      "burgundy": {
+        "role": "primary",
+        "displayName": "House Burgundy",
+        "canonical": "#722F37",
+        "tonalRamp": ["#2A1014", "#43181F", "#5A2430", "#722F37", "#8B3A44", "#9B4A55", "#C4907C", "#F8EDE8"]
+      },
+      "burgundy-dark": {
+        "role": "primary",
+        "displayName": "Navigation Burgundy",
+        "canonical": "#4A1520",
+        "tonalRamp": ["#1C070C", "#300E15", "#4A1520", "#5F1E2B", "#762836", "#9B4A55", "#C68E96", "#F3E0E3"]
+      },
+      "burgundy-light": {
+        "role": "primary",
+        "displayName": "Lifted Burgundy",
+        "canonical": "#9B4A55",
+        "tonalRamp": ["#2F1419", "#4A1F27", "#652A34", "#823844", "#9B4A55", "#B5707A", "#D2A5AC", "#F3E3E5"]
+      },
+      "burgundy-bright": {
+        "role": "primary",
+        "displayName": "Bright Burgundy",
+        "canonical": "#8B3A44",
+        "tonalRamp": ["#2B0F13", "#45181D", "#5F2228", "#762D35", "#8B3A44", "#A85A64", "#CE9AA1", "#F2E2E4"]
+      },
+      "burgundy-deep": {
+        "role": "primary",
+        "displayName": "Deep Burgundy",
+        "canonical": "#5A2430",
+        "tonalRamp": ["#210C11", "#381619", "#4A1C25", "#5A2430", "#733341", "#92505E", "#C19AA3", "#F0E2E5"]
+      },
+      "clay": {
+        "role": "secondary",
+        "displayName": "Warm Clay",
+        "canonical": "#C4907C",
+        "tonalRamp": ["#3A231B", "#55362A", "#70493A", "#9A6855", "#C4907C", "#D8AC9B", "#E8C0B0", "#F8EDE8"]
+      },
+      "clay-dark": {
+        "role": "secondary",
+        "displayName": "Deep Clay",
+        "canonical": "#9A6855",
+        "tonalRamp": ["#2E1C15", "#452A20", "#5E3A2C", "#7B4D3C", "#9A6855", "#BA8B78", "#DCBCAC", "#F7EDE8"]
+      },
+      "clay-light": {
+        "role": "secondary",
+        "displayName": "Pale Clay",
+        "canonical": "#E8C0B0",
+        "tonalRamp": ["#3C241C", "#56352A", "#70493A", "#9A6855", "#C4907C", "#E8C0B0", "#F2DACF", "#FBF1EC"]
+      },
+      "blush-pale": {
+        "role": "secondary",
+        "displayName": "Blush Pale",
+        "canonical": "#F8EDE8",
+        "tonalRamp": ["#3B2A24", "#543B33", "#6E5046", "#9A7C6E", "#C4A698", "#E0CCC2", "#F0E1DA", "#F8EDE8"]
+      },
+      "paper-cream": {
+        "role": "neutral",
+        "displayName": "Paper Cream",
+        "canonical": "#FBF5EE",
+        "tonalRamp": ["#302A22", "#473F34", "#5F5547", "#8A7E6C", "#B5A994", "#D9CFBC", "#F0E6D8", "#FBF5EE"]
+      },
+      "paper-cream-dark": {
+        "role": "neutral",
+        "displayName": "Plate Ground",
+        "canonical": "#F0E6D8",
+        "tonalRamp": ["#2C271F", "#433C30", "#5A5141", "#857A62", "#B0A383", "#D3C7AC", "#F0E6D8", "#FAF5EC"]
+      },
+      "plate-white": {
+        "role": "neutral",
+        "displayName": "Plate White",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#262626", "#3D3D3D", "#545454", "#808080", "#ABABAB", "#D6D6D6", "#F2F2F2", "#FFFFFF"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#1C0A08",
+        "tonalRamp": ["#1C0A08", "#33130F", "#4B1C17", "#6E342C", "#926053", "#B79185", "#D9C0B8", "#F4E9E5"]
+      },
+      "cocoa": {
+        "role": "neutral",
+        "displayName": "Cocoa Credit",
+        "canonical": "#7A4F3A",
+        "tonalRamp": ["#24150F", "#3A231A", "#512F23", "#653D2D", "#7A4F3A", "#A0755D", "#C9A693", "#F0E4DC"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#E4CEBC",
+        "tonalRamp": ["#33261D", "#4B372A", "#634838", "#8C6950", "#B4906F", "#D4B49C", "#E4CEBC", "#F7EFE7"]
+      },
+      "signal-amber": {
+        "role": "tertiary",
+        "displayName": "Signal Amber",
+        "canonical": "#C46A1B",
+        "tonalRamp": ["#3A1F08", "#552D0C", "#703C10", "#9B5316", "#C46A1B", "#DC8C42", "#EDB880", "#FAE7D2"]
+      },
+      "signal-red": {
+        "role": "tertiary",
+        "displayName": "Signal Red",
+        "canonical": "#C62828",
+        "tonalRamp": ["#3B0C0C", "#551212", "#701818", "#9B2020", "#C62828", "#DB5A5A", "#EC9A9A", "#FCE8E8"]
+      },
+      "olive-green": {
+        "role": "tertiary",
+        "displayName": "Olive Green",
+        "canonical": "#5C8A4E",
+        "tonalRamp": ["#1B2917", "#283D22", "#36522E", "#476B3C", "#5C8A4E", "#80A975", "#AFCBA6", "#EAF3E7"]
+      },
+      "harbour-blue": {
+        "role": "tertiary",
+        "displayName": "Harbour Blue",
+        "canonical": "#2E7D9E",
+        "tonalRamp": ["#0E252F", "#153744", "#1D4A5C", "#26637D", "#2E7D9E", "#589FBC", "#94C6DA", "#E3F3F8"]
+      },
+      "gold": {
+        "role": "tertiary",
+        "displayName": "Muted Gold",
+        "canonical": "#C9A84C",
+        "tonalRamp": ["#3C3116", "#564620", "#705C2A", "#9B853A", "#C9A84C", "#D9C078", "#E9DAAB", "#F9F3DF"]
+      }
+    },
+    "typographyMeta": {
+      "masthead": {
+        "displayName": "Masthead",
+        "purpose": "The word COLLECTION opening the catalogue. Marcellus 400, uppercase, tracked 0.08em, line-height 0.95, clamped up to the 4.4rem masthead step — the largest step in the ramp, created for this role alone."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "The piece name on the product page, clamped between the 1.85rem page step and the 2.4rem display step."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section titles and the filter rail's heading. Marcellus 400, uppercase, tracked 0.14-0.16em."
+      },
+      "plate-name": {
+        "displayName": "Plate Name",
+        "purpose": "The piece name in a plate's credit line, two-line clamped. Scales to 1rem and inverts to white on the lead plate."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose, control text and descriptions. Archivo 400; the product description runs at line-height 1.75 capped at 68ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Houses, folios, stock notes, navigation items, section labels, button text and the gallery counter. Archivo 500-600, uppercase, tracked 0.12-0.18em."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Prices and counts. Archivo 600 with tabular-nums; the product page's large price is Marcellus 400 at the 1.5rem amount step, also tabular."
+      }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "The lookbook world's only elevation value. Plates, the navigation and the primary action all ship flat; depth comes from the cream/cream-dark tonal step, the burgundy regions and hairlines."
+      },
+      {
+        "name": "legacy-card",
+        "value": "0 2px 16px rgba(114, 47, 55, 0.07), 0 1px 4px rgba(28, 10, 8, 0.05)",
+        "purpose": "Previous card system only (Home, cart, checkout, orders, favourites, seller and admin pages). Never on a lookbook surface."
+      },
+      {
+        "name": "legacy-card-raised",
+        "value": "0 10px 32px rgba(114, 47, 55, 0.12)",
+        "purpose": "Previous card system hover lift. Not migrated; not available to this world."
+      },
+      {
+        "name": "legacy-dialog",
+        "value": "0 16px 56px rgba(114, 47, 55, 0.18)",
+        "purpose": "MUI dialog paper, shared across both worlds. Burgundy at low alpha, never neutral black."
+      },
+      {
+        "name": "legacy-drawer",
+        "value": "-8px 0 56px rgba(114, 47, 55, 0.16)",
+        "purpose": "Cart drawer paper; that surface is not yet migrated."
+      },
+      {
+        "name": "legacy-action",
+        "value": "0 4px 18px rgba(114, 47, 55, 0.28)",
+        "purpose": "MUI contained-primary button default. The lookbook's primary action overrides it to none."
+      }
+    ],
+    "motion": [
+      {
+        "name": "page-turn",
+        "value": "opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1)",
+        "purpose": "The single authored motion moment: hovering or focusing a plate cross-fades to the second photograph of the same piece. A piece with one photograph holds still."
+      },
+      {
+        "name": "reveal",
+        "value": "opacity 0.25s ease",
+        "purpose": "Plate actions (favourite, add to cart) appearing on hover or focus-within. Pinned visible below 600px."
+      },
+      {
+        "name": "state-shift",
+        "value": "color 0.2s ease, border-color 0.2s ease",
+        "purpose": "Default for every text and hairline state change: navigation links, contents index, house names, plate names, links."
+      },
+      {
+        "name": "fill-shift",
+        "value": "background 0.2s ease",
+        "purpose": "Inversion of an outlined or ghost control into a solid burgundy field."
+      },
+      {
+        "name": "reduced-motion-guard",
+        "value": "@media (prefers-reduced-motion: reduce) { animation-duration: 0.01ms; transition-duration: 0.01ms; scroll-behavior: auto }",
+        "purpose": "Global in src/index.css; the page turn names itself again locally in Shop.css. Someone who asked their system for less motion gets none."
+      }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "480px" },
+      { "name": "sm", "value": "600px" },
+      { "name": "rail-collapse", "value": "900px" },
+      { "name": "sheet-two-up", "value": "1000px" },
+      { "name": "spread-stack", "value": "1100px" },
+      { "name": "contents-two-col", "value": "1280px" },
+      { "name": "sheet-four-up", "value": "1601px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "The Plate",
+      "kind": "custom",
+      "refersTo": "plate-frame",
+      "description": "The unit of the system: a photograph on bare cream paper with its credit line under one hairline. Hover turns the page to the next photograph.",
+      "html": "<div class=\"ds-look\"><div class=\"ds-look-frame\"><a class=\"ds-look-link\" href=\"#\"><img class=\"ds-look-img\" src=\"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600\" alt=\"Silk column dress\"><img class=\"ds-look-img ds-look-img--turn\" src=\"https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600\" alt=\"\" aria-hidden=\"true\"></a><div class=\"ds-look-actions\"><button class=\"ds-look-act\" aria-label=\"Add to favorites\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\"><path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\"/></svg></button><button class=\"ds-look-act\" aria-label=\"Add to cart\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\"><path d=\"M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.17 14.75l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.44C5.09 14.37 5 14.68 5 15c0 1.1.9 2 2 2h12v-2H7.42l-.25-.25z\"/></svg></button></div></div><div class=\"ds-look-credit\"><div class=\"ds-look-title\"><span class=\"ds-look-no\">03</span><a class=\"ds-look-name\" href=\"#\">Bias-cut silk column dress</a></div><div class=\"ds-look-credit-line\"><a class=\"ds-look-house\" href=\"#\">Atelier Mornea</a><span class=\"ds-look-price\">1480.00<span class=\"ds-look-currency\">RON</span></span></div></div></div>",
+      "css": ".ds-look { max-width: 320px; font-family: \"Archivo\", Inter, system-ui, sans-serif; } .ds-look-frame { position: relative; aspect-ratio: 4 / 5; background: var(--cream-dark, #F0E6D8); overflow: hidden; } .ds-look-link { display: block; position: absolute; inset: 0; } .ds-look-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; } .ds-look-img--turn { opacity: 0; transition: opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); } .ds-look:hover .ds-look-img--turn, .ds-look:focus-within .ds-look-img--turn { opacity: 1; } .ds-look-actions { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 6px; opacity: 0; transition: opacity 0.25s ease; } .ds-look:hover .ds-look-actions, .ds-look:focus-within .ds-look-actions { opacity: 1; } .ds-look-act { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.94); border: 1px solid rgba(28,10,8,0.18); border-radius: 0; color: #1C0A08; cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; } .ds-look-act:hover, .ds-look-act:focus-visible { background: var(--primary, #722F37); border-color: var(--primary, #722F37); color: #fff; } .ds-look-act:focus-visible { outline: 2px solid var(--primary, #722F37); outline-offset: 2px; } .ds-look-credit { margin-top: 12px; padding-top: 9px; border-top: 1px solid var(--border, #E4CEBC); } .ds-look-title { display: flex; align-items: baseline; gap: 9px; } .ds-look-no { flex-shrink: 0; font-size: 0.72rem; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.08em; color: var(--text-secondary, #7A4F3A); } .ds-look-name { font-family: \"Marcellus\", Georgia, serif; font-size: 0.88rem; line-height: 1.3; color: #1C0A08; text-decoration: none; } .ds-look-name:hover { color: var(--primary, #722F37); } .ds-look-credit-line { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 5px; } .ds-look-house { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-secondary, #7A4F3A); text-decoration: none; } .ds-look-house:hover { color: var(--primary, #722F37); } .ds-look-price { flex-shrink: 0; font-size: 0.82rem; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; color: #1C0A08; } .ds-look-currency { font-size: 0.72rem; font-weight: 500; color: var(--text-secondary, #7A4F3A); margin-left: 4px; letter-spacing: 0.08em; }"
+    },
+    {
+      "name": "The Lead Plate",
+      "kind": "custom",
+      "refersTo": "plate-credit-lead",
+      "description": "The piece that opens the sheet: a wider 4:3 frame and its credits on a committed burgundy ground, hairline dropped.",
+      "html": "<div class=\"ds-lead\"><div class=\"ds-lead-frame\"><img class=\"ds-lead-img\" src=\"https://images.unsplash.com/photo-1495385794356-15371f348c31?w=900\" alt=\"Opening look\"></div><div class=\"ds-lead-credit\"><div class=\"ds-lead-title\"><span class=\"ds-lead-no\">01</span><a class=\"ds-lead-name\" href=\"#\">Hand-finished wool opera coat</a></div><div class=\"ds-lead-line\"><a class=\"ds-lead-house\" href=\"#\">Casa Bellu</a><span class=\"ds-lead-price\">3240.00<span class=\"ds-lead-currency\">RON</span></span></div></div></div>",
+      "css": ".ds-lead { max-width: 560px; font-family: \"Archivo\", Inter, system-ui, sans-serif; } .ds-lead-frame { position: relative; aspect-ratio: 4 / 3; max-height: 560px; background: var(--cream-dark, #F0E6D8); overflow: hidden; } .ds-lead-img { width: 100%; height: 100%; object-fit: cover; display: block; } .ds-lead-credit { padding: 14px 18px 16px; background: var(--primary, #722F37); border-top: none; } .ds-lead-title { display: flex; align-items: baseline; gap: 9px; } .ds-lead-no { font-size: 0.72rem; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.08em; color: rgba(255,255,255,0.75); } .ds-lead-name { font-family: \"Marcellus\", Georgia, serif; font-size: 1rem; line-height: 1.3; color: #fff; text-decoration: none; } .ds-lead-name:hover { text-decoration: underline; text-underline-offset: 3px; } .ds-lead-line { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 5px; } .ds-lead-house { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.8); text-decoration: none; } .ds-lead-house:hover { color: #fff; } .ds-lead-price { font-size: 0.82rem; font-weight: 600; font-variant-numeric: tabular-nums; color: #fff; } .ds-lead-currency { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.75); margin-left: 4px; letter-spacing: 0.08em; }"
+    },
+    {
+      "name": "The Tissue Interleaf",
+      "kind": "custom",
+      "refersTo": "tissue-interleaf",
+      "description": "The sold-out state in full: a translucent warm sheet over the photograph carrying the word printed on it. Replaces a coloured pill or badge.",
+      "html": "<div class=\"ds-tissue-frame\"><img class=\"ds-tissue-img\" src=\"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600\" alt=\"Sold-out look\"><span class=\"ds-tissue\">Sold out</span></div>",
+      "css": ".ds-tissue-frame { position: relative; aspect-ratio: 4 / 5; max-width: 280px; background: var(--cream-dark, #F0E6D8); overflow: hidden; } .ds-tissue-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; } .ds-tissue { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.74); color: #1C0A08; font-family: \"Marcellus\", Georgia, serif; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.34em; text-indent: 0.34em; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav-field",
+      "description": "One flat burgundy plane, 64px tall, closed by a single clay-tinted hairline. A wordmark in wide-tracked Marcellus capitals and sections named rather than buttoned.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-wordmark\" href=\"#\">Smart Shop</a><div class=\"ds-nav-links\"><a class=\"ds-nav-btn ds-nav-btn--active\" href=\"#\">Collection</a><a class=\"ds-nav-btn\" href=\"#\">Houses</a><a class=\"ds-nav-btn\" href=\"#\">Orders</a><a class=\"ds-nav-btn\" href=\"#\">Favourites</a></div><a class=\"ds-nav-btn ds-nav-signin\" href=\"#\">Sign in</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; min-height: 64px; padding: 8px 24px; background: var(--primary-dark, #4A1520); border-bottom: 1px solid rgba(196,144,124,0.35); box-shadow: none; } .ds-nav-wordmark { margin-right: 32px; font-family: \"Marcellus\", Georgia, serif; font-size: 0.95rem; letter-spacing: 0.26em; text-transform: uppercase; color: #fff; text-decoration: none; white-space: nowrap; } .ds-nav-wordmark:hover { color: rgba(255,255,255,0.78); } .ds-nav-links { display: flex; flex-grow: 1; justify-content: center; gap: 16px; } .ds-nav-btn { font-family: \"Archivo\", Inter, system-ui, sans-serif; font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.72); text-decoration: none; border-radius: 0; padding: 6px 2px; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-color 0.2s ease; } .ds-nav-btn:hover { color: #fff; border-bottom-color: rgba(255,255,255,0.4); } .ds-nav-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; } .ds-nav-btn--active { color: #fff; border-bottom-color: #fff; } .ds-nav-signin { border: 1px solid rgba(255,255,255,0.35); padding: 7px 16px; margin-left: 12px; } .ds-nav-signin:hover { border-color: #fff; }"
+    },
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Add to collection / add to cart on the product page: a flat burgundy field with a wide-tracked Archivo label, square corners, no shadow and no gradient.",
+      "html": "<button class=\"ds-btn-primary\">Add to cart</button>",
+      "css": ".ds-btn-primary { background: var(--primary, #722F37); color: #fff; font-family: \"Archivo\", Inter, system-ui, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; padding: 14px 22px; min-width: 200px; border: none; border-radius: 0; box-shadow: none; cursor: pointer; transition: background 0.2s ease; } .ds-btn-primary:hover { background: var(--primary-dark, #4A1520); } .ds-btn-primary:focus-visible { outline: 2px solid var(--primary, #722F37); outline-offset: 2px; } .ds-btn-primary:disabled { background: var(--border, #E4CEBC); color: var(--text-secondary, #7A4F3A); cursor: default; }"
+    },
+    {
+      "name": "Outline Action",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The rail's clear-filters control: a hairline burgundy rule around nothing that inverts to a solid burgundy field on hover.",
+      "html": "<button class=\"ds-btn-outline\">Clear filters</button>",
+      "css": ".ds-btn-outline { background: transparent; color: var(--primary, #722F37); font-family: \"Archivo\", Inter, system-ui, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; padding: 8px 16px; border: 1px solid var(--primary, #722F37); border-radius: 0; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; } .ds-btn-outline:hover { background: var(--primary, #722F37); color: #fff; } .ds-btn-outline:focus-visible { outline: 2px solid var(--primary, #722F37); outline-offset: 2px; }"
+    },
+    {
+      "name": "Underline Search Field",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "Search and sort ride the masthead rule as standard-variant underline fields: one hairline, no fill, no radius; the rule takes the house colour on hover and focus.",
+      "html": "<label class=\"ds-field\"><svg class=\"ds-field-icon\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\"><path d=\"M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\"/></svg><input class=\"ds-field-input\" type=\"search\" placeholder=\"Search the collection\"></label>",
+      "css": ".ds-field { display: inline-flex; align-items: center; gap: 8px; width: 260px; border-bottom: 1px solid var(--border, #E4CEBC); padding-bottom: 4px; transition: border-color 0.2s ease; } .ds-field:hover, .ds-field:focus-within { border-bottom-color: var(--primary, #722F37); } .ds-field-icon { color: var(--text-secondary, #7A4F3A); flex-shrink: 0; } .ds-field-input { flex: 1; min-width: 0; background: transparent; border: none; border-radius: 0; outline: none; font-family: \"Archivo\", Inter, system-ui, sans-serif; font-size: 0.82rem; color: #1C0A08; } .ds-field-input::placeholder { color: var(--text-secondary, #7A4F3A); }"
+    },
+    {
+      "name": "Contents Index Entry",
+      "kind": "chip",
+      "refersTo": "chip-credit",
+      "description": "The collection's sections, set as a printed contents list in three columns: Marcellus on a hairline, italic and burgundy when selected.",
+      "html": "<div class=\"ds-contents\"><button class=\"ds-section\">Dresses</button><button class=\"ds-section ds-section--on\">Shoes</button><button class=\"ds-section\">Jewellery</button><button class=\"ds-section\">Bags</button></div>",
+      "css": ".ds-contents { columns: 2; column-gap: 32px; max-width: 420px; } .ds-section { display: block; width: 100%; text-align: left; padding: 7px 0; border: none; border-bottom: 1px solid var(--border, #E4CEBC); background: none; cursor: pointer; font-family: \"Marcellus\", Georgia, serif; font-size: 0.88rem; color: #1C0A08; transition: color 0.2s ease, border-color 0.2s ease; } .ds-section:hover { color: var(--primary, #722F37); border-bottom-color: var(--primary, #722F37); } .ds-section:focus-visible { outline: 2px solid var(--primary, #722F37); outline-offset: 2px; } .ds-section--on { color: var(--primary, #722F37); border-bottom-color: var(--primary, #722F37); font-style: italic; }"
+    },
+    {
+      "name": "Collection Masthead",
+      "kind": "custom",
+      "refersTo": "typography.masthead",
+      "description": "The catalogue's opening: the word COLLECTION at the 4.4rem masthead step over the season line counting pieces and houses.",
+      "html": "<div class=\"ds-masthead\"><h1 class=\"ds-masthead-title\">Collection</h1><p class=\"ds-masthead-line\">48 pieces from 9 houses</p></div>",
+      "css": ".ds-masthead { padding-bottom: 12px; border-bottom: 1px solid var(--border, #E4CEBC); } .ds-masthead-title { margin: 0; font-family: \"Marcellus\", Georgia, serif; font-weight: 400; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 0.95; letter-spacing: 0.08em; text-transform: uppercase; color: #1C0A08; } .ds-masthead-line { margin: 12px 0 0; font-family: \"Archivo\", Inter, system-ui, sans-serif; font-size: 0.82rem; letter-spacing: 0.02em; color: var(--text-secondary, #7A4F3A); }"
+    },
+    {
+      "name": "Gallery Plate",
+      "kind": "custom",
+      "refersTo": "gallery-thumb",
+      "description": "The product page's plate gallery: a 4:5 photograph, the count as a tabular credit under a hairline, and squared thumbnails that take a burgundy border when active.",
+      "html": "<div class=\"ds-gallery\"><div class=\"ds-gallery-main\"><img class=\"ds-gallery-img\" src=\"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700\" alt=\"Look, full plate\"></div><div class=\"ds-gallery-count\">Plate 1 of 4</div><div class=\"ds-gallery-thumbs\"><button class=\"ds-gallery-thumb ds-gallery-thumb--active\"><img src=\"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=160\" alt=\"\"></button><button class=\"ds-gallery-thumb\"><img src=\"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=160\" alt=\"\"></button><button class=\"ds-gallery-thumb\"><img src=\"https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=160\" alt=\"\"></button></div></div>",
+      "css": ".ds-gallery { max-width: 380px; } .ds-gallery-main { position: relative; aspect-ratio: 4 / 5; background: var(--cream-dark, #F0E6D8); overflow: hidden; } .ds-gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; } .ds-gallery-count { margin-top: 9px; padding-top: 7px; border-top: 1px solid var(--border, #E4CEBC); font-family: \"Archivo\", Inter, system-ui, sans-serif; font-size: 0.72rem; font-weight: 500; font-variant-numeric: tabular-nums; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-secondary, #7A4F3A); } .ds-gallery-thumbs { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; } .ds-gallery-thumb { width: 64px; height: 80px; padding: 0; border: 1px solid var(--border, #E4CEBC); border-radius: 0; background: var(--cream-dark, #F0E6D8); cursor: pointer; overflow: hidden; opacity: 0.72; transition: border-color 0.2s ease, opacity 0.2s ease; } .ds-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; } .ds-gallery-thumb:hover { opacity: 1; } .ds-gallery-thumb:focus-visible { outline: 2px solid var(--primary, #722F37); outline-offset: 2px; } .ds-gallery-thumb--active { border-color: var(--primary, #722F37); opacity: 1; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Collection Lookbook",
+    "overview": "The catalogue is read as a fashion house's printed lookbook: edited and sequenced rather than stacked. One piece opens each sheet at full width with its credit line; the rest follow it at equal size. Photographs sit directly on the cream paper — no container, no border, no shadow — and the only rule drawn per plate is the hairline over its credit line. Burgundy is not an accent here: it commits at the scale of whole regions, as the flat navigation plane and as the ground under the lead plate's credits. Marcellus in wide-tracked capitals is the house voice; Archivo carries every control, label and figure.\n\nDensity is a printed page: large pictures, three per row at desktop, generous paper between them. Depth is absent by design — the lookbook world ships no shadows and no corner radius at all. Hierarchy comes from size, from the burgundy regions, and from hairlines. What this world rejects, and rejects explicitly, is the category default it replaced: a uniform grid of bordered, shadowed white cards where the photograph is a thumbnail inside a container and the house is a line of small print.\n\nScope of record: the lookbook world is implemented on the Shop catalogue (/shop), the top navigation, and the product page (/products/:id). Home, the cart drawer, checkout, orders, favourites, the seller pages and the admin pages have not been rebuilt in this world. They inherit the new typefaces through the MUI theme but still use the previous card system (src/components/common/ProductCard) with its radii, shadows and gradients. Burgundy and cream are pinned by the user in PRODUCT.md and binding on every surface; interface copy is English and MUI remains the component library.",
+    "keyCharacteristics": [
+      "Photographs on bare paper: no card, no border, no shadow, no radius",
+      "Burgundy committed at region scale, not sprinkled as an accent",
+      "Exactly one hairline per plate, drawn over its credit line",
+      "A single authored motion moment: the page turn",
+      "Marcellus at one weight (400), Archivo for every control and figure",
+      "Figures tabular everywhere they can be compared"
+    ],
+    "rules": [
+      {
+        "name": "The Region Commitment Rule",
+        "body": "Burgundy is committed at the scale of a whole region or not at all. The navigation is a full flat burgundy plane; the lead plate's credit panel is a burgundy ground. There is no burgundy-tinted card, no burgundy left-border stripe, and no burgundy badge floating on a photograph.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bare Photograph Rule",
+        "body": "A photograph sits directly on the cream paper. No card, no border, no shadow, no radius, no overlay gradient. The 4:5 frame (4:3 for the lead) is the only container, and it is invisible.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Hairline Rule",
+        "body": "Each plate draws exactly one rule: a 1px hairline between the photograph and its credit line. A second rule inside a plate is a defect. The lead plate drops even that one, because its burgundy ground already separates the credits.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Weight Rule",
+        "body": "Marcellus ships at weight 400 and only 400. The family has a single weight, so every rule that once asked for 600 or 700 had the request stripped rather than letting the browser synthesize a fake bold. Emphasis in the house voice comes from size, tracking and case — never from weight. Weights 500/600/700 belong to Archivo alone.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Any number a reader might compare or watch change — prices, the price-range bounds, the plate folio, the gallery counter — carries font-variant-numeric: tabular-nums. Figures must not shuffle horizontally.",
+        "section": "typography"
+      },
+      {
+        "name": "The Wide Capitals Rule",
+        "body": "Marcellus goes uppercase with tracking of 0.08em and up when it names a thing (masthead, section title, rail heading, the wordmark at 0.26em, the tissue word at 0.34em with a matching text-indent). Marcellus set in sentence case stays untracked.",
+        "section": "typography"
+      },
+      {
+        "name": "The Size Encodes Quantity Rule",
+        "body": "The lead plate is wider (4:3, up to 700px, max-height 560px) because it leads the sheet. Nothing else varies in size. Size is never decoration.",
+        "section": "layout"
+      },
+      {
+        "name": "The No-Lift Rule",
+        "body": "A lookbook surface never gains a shadow, a translate, or a scale on hover. State is shown by colour, by an underline, by a border taking the house colour, or by the page turn.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Corner Rule",
+        "body": "On a lookbook surface the radius is 0. A rounded corner is the previous world showing through, and a pill is the previous world's primary action.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do put the photograph straight on the cream paper with no container, border, shadow or radius.",
+      "Do commit burgundy at region scale — a whole plane or a whole panel — per The Region Commitment Rule.",
+      "Do draw exactly one hairline per plate, over its credit line.",
+      "Do keep Marcellus at weight 400 and get emphasis from size, tracking and case (The One Weight Rule).",
+      "Do set every comparable figure with font-variant-numeric: tabular-nums.",
+      "Do print the credit line in its fixed order: folio, name, house, price.",
+      "Do enumerate sheet columns per breakpoint (3 at desktop, 4 above 1601px, 2 below 1000px) rather than auto-filling from a min-width.",
+      "Do make the lead plate wider and never taller; size encodes rank and nothing else.",
+      "Do route every colour, size, space and radius through the theme tokens and the custom properties main.tsx emits, and tint with the -rgb triplets rather than restating a hex.",
+      "Do keep every motion device inside the prefers-reduced-motion guard; the global rule flattens them all, and the page turn names itself again locally."
+    ],
+    "donts": [
+      "Don't add a box-shadow to a lookbook surface; this world ships none (The No-Lift Rule).",
+      "Don't round a corner on a lookbook surface, and don't bring back the pill-shaped primary action.",
+      "Don't use a gradient for a burgundy region; the navigation is a flat field, and the theme's gradients belong to the unmigrated surfaces.",
+      "Don't put a coloured badge or pill on a photograph — availability is the tissue interleaf, and the photograph count is a credit beneath a hairline.",
+      "Don't lift, scale or shadow a plate on hover; the page turn is the response.",
+      "Don't reach for .product-grid or MuiCard on a lookbook surface; both belong to the previous card world.",
+      "Don't let Marcellus render a synthetic bold by asking for weight 600 or 700.",
+      "Don't vary plate size for emphasis, and don't add a second rule inside a plate.",
+      "Don't change the burgundy-and-cream poles; the palette is pinned in PRODUCT.md and binding on every surface."
+    ]
+  }
+}
