@@ -1,43 +1,107 @@
 import { createTheme } from "@mui/material/styles";
 
+// Everything the stylesheets need that the MUI palette does not already carry.
+// main.tsx turns every entry below into a CSS variable, so a value lives here once
+// and the CSS files only ever reference it. See DESIGN.md for what each one means.
+interface ThemeTokens {
+  accentPale: string;
+  creamDark: string;
+  border: string;
+  // Status colors. The MUI palette carries the main ones; these are the tints,
+  // borders and the amber that only the stylesheets use.
+  status: {
+    warning: string;
+    successText: string;
+    successBorder: string;
+    successSurface: string;
+    errorBorder: string;
+    errorSurface: string;
+    gold: string;
+    goldMuted: string;
+  };
+  // Neutral surfaces that sit between cream and white
+  surfaces: {
+    rowAlt: string;
+    tableLine: string;
+  };
+  // The type scale. DESIGN.md names five roles; these are the steps they use.
+  text: {
+    xxs: string;
+    xs: string;
+    sm: string;
+    body: string;
+    control: string;
+    md: string;
+    lg: string;
+    xl: string;
+    xxl: string;
+    title: string;
+    amount: string;
+    headline: string;
+    page: string;
+    section: string;
+    display: string;
+    hero: string;
+    masthead: string;
+  };
+  // Icon glyph sizes. MUI sets an icon's size with font-size, which is why these
+  // are not part of the type scale and must not be read as text steps.
+  icons: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+  };
+  // The 8px spacing rhythm
+  space: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  // Actions are pills; surfaces step up this scale
+  // The two intermediate burgundies every gradient runs through
+  brand: {
+    bright: string;
+    deep: string;
+  };
+  radii: {
+    hair: string;
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    xxl: string;
+    pill: string;
+  };
+  gradients: {
+    navbar: string;
+    cartHeader: string;
+    dialogTitle: string;
+    buttonPrimary: string;
+    buttonPrimaryHover: string;
+  };
+  shadows: {
+    sm: string;
+    md: string;
+    lg: string;
+    card: string;
+    cardRaised: string;
+    dialog: string;
+    drawer: string;
+    action: string;
+    actionHover: string;
+  };
+}
+
 declare module "@mui/material/styles" {
   interface Theme {
-    tokens: {
-      accentPale: string;
-      creamDark: string;
-      border: string;
-      gradients: {
-        navbar: string;
-        cartHeader: string;
-        dialogTitle: string;
-        buttonPrimary: string;
-        buttonPrimaryHover: string;
-      };
-      shadows: {
-        sm: string;
-        md: string;
-        lg: string;
-      };
-    };
+    tokens: ThemeTokens;
   }
   interface ThemeOptions {
-    tokens?: {
-      accentPale?: string;
-      creamDark?: string;
-      border?: string;
-      gradients?: {
-        navbar?: string;
-        cartHeader?: string;
-        dialogTitle?: string;
-        buttonPrimary?: string;
-        buttonPrimaryHover?: string;
-      };
-      shadows?: {
-        sm?: string;
-        md?: string;
-        lg?: string;
-      };
-    };
+    tokens?: ThemeTokens;
   }
 }
 
@@ -46,21 +110,88 @@ const theme = createTheme({
     accentPale: "#F8EDE8",
     creamDark: "#F0E6D8",
     border: "#E4CEBC",
-    gradients: {
-      navbar: "linear-gradient(135deg, #5A2430 0%, #722F37 50%, #4A1520 100%)",
-      cartHeader:
-        "linear-gradient(135deg, #5A2430 0%, #722F37 60%, #4A1520 100%)",
-      dialogTitle:
-        "linear-gradient(135deg, #8B3A44 0%, #722F37 60%, #4A1520 100%)",
-      buttonPrimary:
-        "linear-gradient(135deg, #8B3A44 0%, #722F37 50%, #5A2430 100%)",
-      buttonPrimaryHover:
-        "linear-gradient(135deg, #9B4A54 0%, #8B3A44 50%, #722F37 100%)",
+    status: {
+      warning: "#C46A1B",
+      successText: "#3D6B32",
+      successBorder: "#C4DEC0",
+      successSurface: "#F6FBF5",
+      errorBorder: "#F0C0C0",
+      errorSurface: "#FDF5F5",
+      gold: "#C9A84C",
+      goldMuted: "#C4B08A",
     },
+    surfaces: {
+      rowAlt: "#FDF8F5",
+      tableLine: "#F0E6DD",
+    },
+    text: {
+      xxs: "0.72rem",      // badges, counters, the smallest meta
+      xs: "0.78rem",       // uppercase labels and table headers
+      sm: "0.82rem",       // helper text, card descriptions
+      body: "0.88rem",     // the workhorse: prose, table cells, controls
+      control: "0.9rem",   // MUI inputs and buttons
+      md: "0.95rem",       // emphasised body
+      lg: "1rem",          // lead-in text, cart line totals
+      xl: "1.05rem",       // product card names
+      xxl: "1.2rem",       // price tags, drawer and dialog titles
+      title: "1.35rem",    // form dialog titles, empty-state headings
+      amount: "1.5rem",    // the cart total
+      headline: "1.7rem",  // page headings in the shop
+      page: "1.85rem",     // management page titles
+      section: "2.1rem",   // section headings at desktop
+      display: "2.4rem",   // the home hero at mobile
+      hero: "3.4rem",      // the home hero above 900px
+      masthead: "4.4rem",  // the lookbook masthead, the largest step there is
+    },
+    icons: {
+      xs: "16px",   // inside buttons, beside a label
+      sm: "18px",   // inline with body text
+      md: "20px",   // standalone controls
+      lg: "32px",   // empty-state and feature glyphs
+    },
+    space: {
+      xs: "8px",
+      sm: "12px",
+      md: "16px",
+      lg: "24px",
+      xl: "32px",
+    },
+    brand: {
+      bright: "#8B3A44",
+      deep: "#5A2430",
+    },
+    radii: {
+      hair: "3px",
+      xs: "8px",
+      sm: "10px",
+      md: "12px",
+      lg: "16px",
+      xl: "18px",
+      xxl: "20px",
+      pill: "50px",
+    },
+    gradients: {
+      navbar: "linear-gradient(135deg, var(--burgundy-deep) 0%, var(--primary) 50%, var(--primary-dark) 100%)",
+      cartHeader:
+        "linear-gradient(135deg, var(--burgundy-deep) 0%, var(--primary) 60%, var(--primary-dark) 100%)",
+      dialogTitle:
+        "linear-gradient(135deg, var(--burgundy-bright) 0%, var(--primary) 60%, var(--primary-dark) 100%)",
+      buttonPrimary:
+        "linear-gradient(135deg, var(--burgundy-bright) 0%, var(--primary) 50%, var(--burgundy-deep) 100%)",
+      buttonPrimaryHover:
+        "linear-gradient(135deg, var(--primary-light) 0%, var(--burgundy-bright) 50%, var(--primary) 100%)",
+    },
+    // Every shadow is burgundy at low alpha — never neutral black
     shadows: {
       sm: "0 2px 10px rgba(114, 47, 55, 0.07)",
       md: "0 6px 24px rgba(114, 47, 55, 0.11)",
       lg: "0 12px 42px rgba(114, 47, 55, 0.15)",
+      card: "0 2px 16px rgba(114, 47, 55, 0.07), 0 1px 4px rgba(28, 10, 8, 0.05)",
+      cardRaised: "0 10px 32px rgba(114, 47, 55, 0.12)",
+      dialog: "0 16px 56px rgba(114, 47, 55, 0.18)",
+      drawer: "-8px 0 56px rgba(114, 47, 55, 0.16)",
+      action: "0 4px 18px rgba(114, 47, 55, 0.28)",
+      actionHover: "0 6px 24px rgba(114, 47, 55, 0.40)",
     },
   },
   palette: {
@@ -105,13 +236,13 @@ const theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: '"Poppins", "Inter", system-ui, sans-serif',
-    h1: { fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 },
-    h2: { fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 },
-    h3: { fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 600 },
-    h4: { fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 600 },
-    h5: { fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 600 },
-    h6: { fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 600 },
+    fontFamily: '"Archivo", "Inter", system-ui, sans-serif',
+    h1: { fontFamily: '"Marcellus", Georgia, serif', fontWeight: 400 },
+    h2: { fontFamily: '"Marcellus", Georgia, serif', fontWeight: 400 },
+    h3: { fontFamily: '"Marcellus", Georgia, serif', fontWeight: 400 },
+    h4: { fontFamily: '"Marcellus", Georgia, serif', fontWeight: 400 },
+    h5: { fontFamily: '"Marcellus", Georgia, serif', fontWeight: 400 },
+    h6: { fontFamily: '"Marcellus", Georgia, serif', fontWeight: 400 },
     button: {
       textTransform: "none",
       fontWeight: 600,
@@ -122,15 +253,15 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 50,
+          borderRadius: "var(--radius-pill)",
           padding: "9px 28px",
-          fontSize: "0.9rem",
+          fontSize: "var(--text-control)",
           "&.MuiButton-containedPrimary": {
             background: "var(--gradient-btn-primary)",
-            boxShadow: "0 4px 18px rgba(114, 47, 55, 0.28)",
+            boxShadow: "var(--shadow-action)",
             "&:hover": {
               background: "var(--gradient-btn-primary-hover)",
-              boxShadow: "0 6px 24px rgba(114, 47, 55, 0.40)",
+              boxShadow: "var(--shadow-action-hover)",
             },
           },
           "&.MuiButton-outlinedPrimary": {
@@ -164,14 +295,13 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 18,
-          boxShadow:
-            "0 2px 16px rgba(114, 47, 55, 0.07), 0 1px 4px rgba(28, 10, 8, 0.05)",
+          borderRadius: "var(--radius-xl)",
+          boxShadow: "var(--shadow-card)",
           border: "1px solid var(--border)",
           backgroundColor: "#ffffff",
           "&:hover": {
             transform: "translateY(-5px)",
-            boxShadow: "0 10px 32px rgba(114, 47, 55, 0.12)",
+            boxShadow: "var(--shadow-card-raised)",
             borderColor: "var(--accent)",
           },
           transition:
@@ -182,9 +312,9 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 10,
-          backgroundColor: "#ffffff",
-          fontFamily: '"Poppins", sans-serif',
+          borderRadius: "var(--radius-sm)",
+          backgroundColor: "var(--white)",
+          fontFamily: '"Archivo", sans-serif',
           "& .MuiOutlinedInput-notchedOutline": { borderColor: "var(--border)" },
           "&:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: "var(--accent)",
@@ -199,8 +329,8 @@ const theme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          fontFamily: '"Poppins", sans-serif',
-          fontSize: "0.9rem",
+          fontFamily: '"Archivo", sans-serif',
+          fontSize: "var(--text-control)",
           color: "var(--text-secondary)",
           "&.Mui-focused": { color: "var(--primary)" },
         },
@@ -209,8 +339,8 @@ const theme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: 20,
-          boxShadow: "0 16px 56px rgba(114, 47, 55, 0.18)",
+          borderRadius: "var(--radius-xxl)",
+          boxShadow: "var(--shadow-dialog)",
           overflow: "hidden",
           border: "1px solid var(--border)",
         },
@@ -219,10 +349,10 @@ const theme = createTheme({
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          fontFamily: '"Playfair Display", Georgia, serif',
-          fontWeight: 700,
-          fontSize: "1.2rem",
-          color: "#ffffff",
+          fontFamily: '"Marcellus", Georgia, serif',
+          fontWeight: 400,
+          fontSize: "var(--text-xxl)",
+          color: "var(--white)",
           background: "var(--gradient-dialog-title)",
           padding: "20px 28px",
           display: "flex",
@@ -248,8 +378,8 @@ const theme = createTheme({
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          borderRadius: "20px 0 0 20px",
-          boxShadow: "-8px 0 56px rgba(114, 47, 55, 0.16)",
+          borderRadius: "var(--radius-xxl) 0 0 var(--radius-xxl)",
+          boxShadow: "var(--shadow-drawer)",
           backgroundColor: "var(--cream)",
         },
       },
@@ -257,36 +387,36 @@ const theme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          fontFamily: '"Poppins", sans-serif',
+          fontFamily: '"Archivo", sans-serif',
           fontWeight: 500,
-          fontSize: "0.78rem",
+          fontSize: "var(--text-xs)",
         },
         colorSuccess: {
-          backgroundColor: "#EAF3E7",
-          color: "#3D6B32",
+          backgroundColor: "var(--success-light)",
+          color: "var(--success-text)",
           fontWeight: 600,
-          border: "1px solid #C4DEC0",
+          border: "1px solid var(--success-border)",
         },
         colorError: {
-          backgroundColor: "#FCE8E8",
+          backgroundColor: "var(--error-light)",
           color: "var(--error)",
           fontWeight: 600,
-          border: "1px solid #F0C0C0",
+          border: "1px solid var(--error-border)",
         },
       },
     },
     MuiAlert: {
       styleOverrides: {
-        root: { borderRadius: 12, fontFamily: '"Poppins", sans-serif' },
+        root: { borderRadius: 12, fontFamily: '"Archivo", sans-serif' },
       },
     },
     MuiToggleButton: {
       styleOverrides: {
         root: {
-          fontFamily: '"Poppins", sans-serif',
-          fontSize: "0.82rem",
+          fontFamily: '"Archivo", sans-serif',
+          fontSize: "var(--text-sm)",
           fontWeight: 500,
-          borderColor: "rgba(255,255,255,0.25)",
+          borderColor: "rgba(255, 255, 255, 0.25)",
           "&.Mui-selected": {
             backgroundColor: "rgba(196, 144, 124, 0.22)",
             borderColor: "rgba(196, 144, 124, 0.5)",
@@ -305,15 +435,15 @@ const theme = createTheme({
         root: { color: "var(--primary)" },
         thumb: {
           backgroundColor: "var(--primary)",
-          border: "2px solid #fff",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-          "&:hover": { boxShadow: "0 0 0 8px rgba(156, 93, 72, 0.16)" },
+          border: "2px solid var(--white)",
+          boxShadow: "0 2px 6px rgba(var(--ink-rgb), 0.18)",
+          "&:hover": { boxShadow: "0 0 0 8px rgba(var(--primary-rgb), 0.16)" },
         },
         track: { backgroundColor: "var(--primary)" },
         rail: { backgroundColor: "var(--accent-light)" },
         valueLabel: {
-          fontFamily: '"Poppins", sans-serif',
-          fontSize: "0.75rem",
+          fontFamily: '"Archivo", sans-serif',
+          fontSize: "var(--text-xxs)",
           backgroundColor: "var(--primary)",
         },
       },
@@ -321,9 +451,9 @@ const theme = createTheme({
     MuiBadge: {
       styleOverrides: {
         badge: {
-          fontFamily: '"Poppins", sans-serif',
+          fontFamily: '"Archivo", sans-serif',
           fontWeight: 700,
-          fontSize: "0.68rem",
+          fontSize: "var(--text-xxs)",
           minWidth: 18,
           height: 18,
         },
@@ -355,16 +485,16 @@ const theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          fontFamily: '"Poppins", sans-serif',
-          fontSize: "0.88rem",
+          fontFamily: '"Archivo", sans-serif',
+          fontSize: "var(--text-body)",
         },
       },
     },
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
-          fontFamily: '"Poppins", sans-serif',
-          fontSize: "0.85rem",
+          fontFamily: '"Archivo", sans-serif',
+          fontSize: "var(--text-sm)",
           color: "var(--text-primary)",
         },
       },

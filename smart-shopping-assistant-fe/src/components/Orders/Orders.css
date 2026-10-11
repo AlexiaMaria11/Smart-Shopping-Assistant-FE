@@ -4,26 +4,26 @@
 }
 
 .orders-title {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-weight: 700 !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
   color: var(--text-primary);
-  margin-bottom: 24px !important;
+  margin-bottom: var(--space-lg) !important;
 }
 
 .orders-empty {
   text-align: center;
   padding: 64px 0;
   color: var(--text-secondary);
-  font-family: "Poppins", sans-serif;
+  font-family: "Archivo", sans-serif;
 }
 
 .order-card {
   display: block;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 18px 22px;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-md);
   text-decoration: none;
   color: inherit;
   transition:
@@ -40,26 +40,26 @@ a.order-card:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
 .order-number {
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Archivo", sans-serif !important;
   font-weight: 700 !important;
-  font-size: 0.98rem !important;
+  font-size: var(--text-lg) !important;
   color: var(--text-primary);
 }
 
 .order-meta {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.8rem !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-sm) !important;
   color: var(--text-secondary);
 }
 
 .order-thumbs {
   display: flex;
-  gap: 8px;
+  gap: var(--space-xs);
   margin: 14px 0 10px;
   flex-wrap: wrap;
 }
@@ -67,16 +67,16 @@ a.order-card:hover {
 .order-thumb {
   width: 54px;
   height: 54px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   object-fit: cover;
   border: 1px solid var(--border);
   background: var(--cream-dark);
 }
 
 .order-total {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-weight: 700 !important;
-  font-size: 1.1rem !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: var(--text-xl) !important;
   color: var(--primary);
 }
 
@@ -84,22 +84,22 @@ a.order-card:hover {
 .order-details-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 24px;
+  gap: var(--space-lg);
   align-items: start;
 }
 
 .order-box {
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 22px;
   margin-bottom: 20px;
 }
 
 .order-box-title {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-weight: 700 !important;
-  font-size: 1.1rem !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: var(--text-xl) !important;
   margin-bottom: 14px !important;
 }
 
@@ -107,15 +107,15 @@ a.order-card:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-sm);
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-sm);
 }
 
 .order-package-seller {
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Archivo", sans-serif !important;
   font-weight: 600 !important;
-  font-size: 0.9rem !important;
+  font-size: var(--text-control) !important;
 }
 
 .order-line {
@@ -136,20 +136,20 @@ a.order-card:hover {
 
 .order-line-name {
   flex: 1;
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.88rem !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-body) !important;
 }
 
 .order-line-price {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.88rem !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-body) !important;
   font-weight: 600 !important;
   white-space: nowrap;
 }
 
 .order-text {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.86rem !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-body) !important;
   color: var(--text-secondary);
   line-height: 1.7 !important;
 }
@@ -157,8 +157,8 @@ a.order-card:hover {
 .order-sum-row {
   display: flex;
   justify-content: space-between;
-  font-family: "Poppins", sans-serif;
-  font-size: 0.88rem;
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-body);
   padding: 3px 0;
 }
 
@@ -167,12 +167,12 @@ a.order-card:hover {
 }
 
 .order-sum-row--total {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 700;
-  font-size: 1.15rem;
+  font-family: "Marcellus", Georgia, serif;
+  font-weight: 400;
+  font-size: var(--text-xxl);
   color: var(--primary);
   border-top: 1px solid var(--border);
-  margin-top: 8px;
+  margin-top: var(--space-xs);
   padding-top: 10px;
 }
 

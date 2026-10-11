@@ -141,7 +141,7 @@ function Companies() {
                       onChange={(e) =>
                         handleStatusChange(company, e.target.value as CompanyStatus)
                       }
-                      sx={{ minWidth: 120, fontSize: "0.82rem" }}
+                      sx={{ minWidth: 120, fontSize: "var(--text-sm)" }}
                       aria-label={`Change status of ${company.name}`}
                     >
                       {Object.values(CompanyStatus).map((status) => (

@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", "Inter", system-ui, sans-serif;
+  font-family: "Archivo", "Inter", system-ui, sans-serif;
   background-color: var(--cream);
   color: var(--text-primary);
   line-height: 1.6;
@@ -26,21 +26,21 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   background: var(--primary-light);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
 
 ::selection {
-  background: rgba(196, 144, 124, 0.28);
+  background: rgba(var(--accent-rgb), 0.28);
   color: var(--primary-dark);
 }
 
 /* ── Shared table styles ── */
 
 .data-table-container {
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
@@ -51,12 +51,12 @@ body {
   background-color: var(--primary);
   color: var(--white);
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-bottom: none;
   padding: 14px 20px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Archivo", sans-serif;
   white-space: nowrap;
 }
 
@@ -66,7 +66,7 @@ body {
 }
 
 .data-table-body .MuiTableRow-root:nth-child(even) {
-  background-color: #fdf8f5;
+  background-color: var(--row-alt);
 }
 
 .data-table-body .MuiTableRow-root:hover {
@@ -75,10 +75,10 @@ body {
 
 .data-table-body .MuiTableCell-root {
   color: var(--text-primary);
-  font-size: 0.88rem;
-  font-family: "Poppins", sans-serif;
+  font-size: var(--text-body);
+  font-family: "Archivo", sans-serif;
   padding: 13px 20px;
-  border-bottom: 1px solid #f0e6dd;
+  border-bottom: 1px solid var(--table-line);
 }
 
 .data-table-body .MuiTableRow-root:last-child .MuiTableCell-root {
@@ -103,14 +103,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
 }
 
 .page-header-title {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-weight: 700 !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
   color: var(--primary) !important;
-  font-size: 1.85rem !important;
+  font-size: var(--text-page) !important;
   letter-spacing: -0.02em !important;
   position: relative;
   padding-bottom: 10px;
@@ -124,14 +124,14 @@ body {
   width: 44px;
   height: 2.5px;
   background: var(--accent);
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
 }
 
 .page-header-btn {
   font-weight: 600;
-  border-radius: 50px;
+  border-radius: var(--radius-pill);
   padding: 9px 28px;
-  font-size: 0.88rem;
+  font-size: var(--text-body);
   letter-spacing: 0.02em;
 }
 
@@ -156,9 +156,9 @@ body {
 /* ── Shared price tag ── */
 
 .price-tag {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-xxl);
+  font-weight: 400;
   color: var(--primary);
 }
 
@@ -168,7 +168,7 @@ body {
   height: 48px;
   width: 48px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   display: block;
   margin: 0 auto;
 }
@@ -176,20 +176,20 @@ body {
 /* ── Shared product card styles (Shop + Favorites) ── */
 
 .product-card-name {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 600;
-  font-size: 1.05rem;
+  font-family: "Marcellus", Georgia, serif;
+  font-weight: 400;
+  font-size: var(--text-xl);
   color: var(--text-primary);
   margin-bottom: 6px;
   line-height: 1.35;
 }
 
 .product-card-desc {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.8rem;
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
   line-height: 1.6;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-sm);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -205,7 +205,7 @@ body {
     var(--accent-light),
     transparent
   );
-  margin-bottom: 12px;
+  margin-bottom: var(--space-sm);
 }
 
 .product-card-price-row {
@@ -215,16 +215,16 @@ body {
 }
 
 .product-card-currency {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.78rem;
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-xs);
   color: var(--accent-dark);
   font-weight: 500;
 }
 
 .shop-add-btn {
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Archivo", sans-serif !important;
   font-weight: 600 !important;
-  font-size: 0.85rem !important;
+  font-size: var(--text-body) !important;
   padding-top: 9px !important;
   padding-bottom: 9px !important;
   transition: background 0.25s ease, color 0.25s ease !important;
@@ -235,7 +235,7 @@ body {
   position: absolute !important;
   top: 8px;
   right: 8px;
-  background: rgba(255, 255, 255, 0.88) !important;
+  background: rgba(var(--white-rgb), 0.88) !important;
   backdrop-filter: blur(4px);
   color: var(--accent) !important;
   transition: transform 0.15s ease, color 0.15s ease, background 0.15s ease !important;
@@ -257,9 +257,50 @@ body {
 }
 
 .stock-cell--low {
-  color: #c46a1b !important;
+  color: var(--warning) !important;
 }
 
 .stock-cell--out {
   color: var(--error) !important;
+}
+
+/* ── Browser surfaces ──
+   The parts we did not draw still carry the design: the focus ring is themed
+   from the palette instead of shipping the browser default. */
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-hair);
+}
+
+.site-footer :focus-visible,
+.navbar :focus-visible {
+  outline-color: var(--white);
+}
+
+/* Someone who asked their system for less motion gets none of ours */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Shared product grid ──
+   Used by any surface that lays out ProductCards. It used to be borrowed from
+   Shop.css, which coupled three pages to one surface's stylesheet. */
+
+.product-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }

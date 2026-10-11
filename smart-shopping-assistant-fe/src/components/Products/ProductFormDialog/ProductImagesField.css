@@ -1,7 +1,7 @@
 .product-image-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-xs);
   margin-bottom: 10px;
 }
 
@@ -9,7 +9,7 @@
   width: 44px;
   height: 44px;
   flex-shrink: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   border: 1px solid var(--border);
   object-fit: cover;
   background: var(--cream-dark);
@@ -28,8 +28,8 @@
 }
 
 .product-images-empty {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.82rem !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-sm) !important;
   color: var(--text-secondary) !important;
   margin-bottom: 6px !important;
 }

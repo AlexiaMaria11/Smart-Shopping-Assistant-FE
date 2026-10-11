@@ -117,9 +117,9 @@ function ProductCard({ product, hideSeller = false }: ProductCardProps) {
           disabled={outOfStock}
           startIcon={
             added ? (
-              <CheckIcon sx={{ fontSize: "1rem !important" }} />
+              <CheckIcon sx={{ fontSize: "var(--icon-xs) !important" }} />
             ) : (
-              <AddShoppingCartIcon sx={{ fontSize: "1rem !important" }} />
+              <AddShoppingCartIcon sx={{ fontSize: "var(--icon-xs) !important" }} />
             )
           }
           onClick={() => !added && handleAddToCart()}

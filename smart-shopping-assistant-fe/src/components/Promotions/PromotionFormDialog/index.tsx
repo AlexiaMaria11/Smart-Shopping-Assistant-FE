@@ -114,7 +114,7 @@ function PromotionSummary({ text, isActive, scope }: { text: string; isActive: b
     <Box>
       <Box sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}>
         <LocalOfferOutlinedIcon sx={{ color: "var(--primary)", mt: "2px" }} />
-        <Typography sx={{ fontFamily: '"Poppins", sans-serif', fontSize: "0.95rem", fontWeight: 500 }}>
+        <Typography sx={{ fontFamily: '"Archivo", sans-serif', fontSize: "var(--text-md)", fontWeight: 500 }}>
           {text}
         </Typography>
       </Box>
@@ -122,7 +122,7 @@ function PromotionSummary({ text, isActive, scope }: { text: string; isActive: b
         <Chip size="small" label={isActive ? "Active" : "Inactive"} color={isActive ? "success" : "default"} />
         <Chip size="small" label={scope} variant="outlined" />
       </Box>
-      <Typography sx={{ fontFamily: '"Poppins", sans-serif', fontSize: "0.78rem", color: "var(--text-secondary)", mt: 2 }}>
+      <Typography sx={{ fontFamily: '"Archivo", sans-serif', fontSize: "0.78rem", color: "var(--text-secondary)", mt: 2 }}>
         The discount is applied automatically in the cart, no code needed.
       </Typography>
     </Box>

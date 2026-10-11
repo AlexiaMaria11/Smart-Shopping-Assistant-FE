@@ -137,7 +137,7 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
-        <AutoAwesomeIcon sx={{ color: "#C9A84C", fontSize: "1.3rem" }} />
+        <AutoAwesomeIcon sx={{ color: "var(--gold)", fontSize: "var(--icon-md)" }} />
         AI Cart Analysis
       </DialogTitle>
 

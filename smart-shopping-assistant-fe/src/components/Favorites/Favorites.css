@@ -11,21 +11,21 @@
 }
 
 .favorites-title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 700;
+  font-family: "Marcellus", Georgia, serif;
+  font-weight: 400;
   color: var(--text-primary);
-  font-size: 1.7rem;
+  font-size: var(--text-headline);
 }
 
 @media (min-width: 900px) {
   .favorites-title {
-    font-size: 2.1rem;
+    font-size: var(--text-section);
   }
 }
 
 .favorites-count {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.84rem;
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-body);
   color: var(--text-secondary);
 }
 
@@ -36,7 +36,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .favorites-empty-icon {
@@ -48,30 +48,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-xs);
 }
 
 .favorites-empty-icon-svg {
   color: var(--primary) !important;
-  font-size: 32px !important;
+  font-size: var(--icon-lg) !important;
 }
 
 .favorites-empty-title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.3rem;
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-title);
   color: var(--text-secondary);
 }
 
 .favorites-empty-subtitle {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.86rem;
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-body);
   color: var(--accent-dark);
 }
 
 /* ── Grid ── */
 .favorites-grid {
   display: grid;
-  gap: 24px;
+  gap: var(--space-lg);
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }
 
