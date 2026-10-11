@@ -1,6 +1,4 @@
-import { Box, IconButton } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { Box } from "@mui/material";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { useState } from "react";
 import type { ProductImage } from "../shared/types/Product";
@@ -10,7 +8,9 @@ interface ProductGalleryProps {
   productName: string;
 }
 
-// The main picture with the other ones as thumbnails underneath.
+// The plate, with the other views of the same piece as thumbnails beneath it and
+// the count set as a credit. Turning the plate is the thumbnails' job, the way a
+// lookbook turns a page, so no carousel chrome sits on the photograph.
 // The caller gives it a key per product, so it starts again from the first picture.
 function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [current, setCurrent] = useState(0);
@@ -25,8 +25,6 @@ function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   const index = Math.min(current, images.length - 1);
   const image = images[index];
-  const step = (by: number) =>
-    setCurrent((i) => (i + by + images.length) % images.length);
 
   return (
     <Box>
@@ -36,28 +34,13 @@ function ProductGallery({ images, productName }: ProductGalleryProps) {
           alt={image.altText || productName}
           className="gallery-main-img"
         />
-        {images.length > 1 && (
-          <>
-            <IconButton
-              className="gallery-arrow gallery-arrow--prev"
-              onClick={() => step(-1)}
-              aria-label="Previous image"
-            >
-              <ChevronLeftIcon />
-            </IconButton>
-            <IconButton
-              className="gallery-arrow gallery-arrow--next"
-              onClick={() => step(1)}
-              aria-label="Next image"
-            >
-              <ChevronRightIcon />
-            </IconButton>
-            <Box className="gallery-counter">
-              {index + 1} / {images.length}
-            </Box>
-          </>
-        )}
       </Box>
+
+      {images.length > 1 && (
+        <Box className="gallery-count">
+          View {index + 1} of {images.length}
+        </Box>
+      )}
 
       {images.length > 1 && (
         <Box className="gallery-thumbs">

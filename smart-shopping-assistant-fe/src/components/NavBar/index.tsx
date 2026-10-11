@@ -20,7 +20,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.png";
 import "./NavBar.css";
 import { useState } from "react";
 import { useCart } from "../../context/CartContext/cart-context";
@@ -119,13 +118,8 @@ function NavBar() {
               </IconButton>
             )}
 
-            <Link to="/">
-              <Box
-                component="img"
-                src={logo}
-                alt="Smart Shopping Assistant Logo"
-                className="navbar-logo"
-              />
+            <Link to="/" className="navbar-wordmark">
+              Smart Shop
             </Link>
 
             {!isMobile ? (

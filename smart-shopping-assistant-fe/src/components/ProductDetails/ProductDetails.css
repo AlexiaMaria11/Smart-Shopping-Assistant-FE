@@ -1,3 +1,9 @@
+/* One look, opened
+   The product page is the lookbook's full plate: the photograph large on the
+   paper, the facts set as credits beside it under their own hairlines. Same
+   world as the collection — no cards, no shadows, Marcellus for the names and
+   Archivo for every control and figure. */
+
 .product-page {
   background: var(--cream);
   min-height: 100vh;
@@ -5,34 +11,24 @@
 
 .product-detail-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 40px;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-xl);
   align-items: start;
 }
 
-@media (max-width: 900px) {
-  .product-detail-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
-  }
-}
-
-/* ── Gallery ── */
+/* The plate */
 .gallery-main {
   position: relative;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  aspect-ratio: 4 / 5;
+  background: var(--cream-dark);
   overflow: hidden;
-  aspect-ratio: 1 / 1;
 }
 
 .gallery-main--empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--cream-dark);
-  color: var(--accent);
+  color: var(--text-secondary);
 }
 
 .gallery-main-img {
@@ -42,66 +38,36 @@
   display: block;
 }
 
-.gallery-arrow {
-  position: absolute !important;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9) !important;
-  color: var(--primary) !important;
-  box-shadow: var(--shadow-sm);
-}
-
-.gallery-arrow:hover {
-  background: var(--white) !important;
-}
-
-.gallery-arrow--prev {
-  left: 10px;
-}
-
-.gallery-arrow--next {
-  right: 10px;
-}
-
-.gallery-counter {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  padding: 3px 10px;
-  border-radius: 50px;
-  font-family: "Poppins", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--white);
-  background: rgba(28, 10, 8, 0.6);
+/* The count is a credit under the plate, not a pill on the photograph */
+.gallery-count {
+  margin-top: 9px;
+  padding-top: 7px;
+  border-top: 1px solid var(--border);
+  font-size: var(--text-xxs);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
 }
 
 .gallery-thumbs {
   display: flex;
-  gap: 10px;
-  margin-top: 12px;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
   flex-wrap: wrap;
 }
 
 .gallery-thumb {
-  width: 68px;
-  height: 68px;
+  width: 64px;
+  height: 80px;
   padding: 0;
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--white);
+  border: 1px solid var(--border);
+  background: var(--cream-dark);
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.gallery-thumb:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-.gallery-thumb--active {
-  border-color: var(--primary);
+  overflow: hidden;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+  opacity: 0.72;
 }
 
 .gallery-thumb img {
@@ -111,186 +77,269 @@
   display: block;
 }
 
-/* ── Product information ── */
+.gallery-thumb:hover {
+  opacity: 1;
+}
+
+.gallery-thumb--active {
+  border-color: var(--primary);
+  opacity: 1;
+}
+
+/* The credits */
 .product-detail-name {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-weight: 700 !important;
-  color: var(--text-primary);
-  font-size: 1.9rem !important;
-  line-height: 1.25 !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: clamp(var(--text-page), 3.4vw, var(--text-display)) !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.01em;
+  color: var(--text-primary) !important;
 }
 
 .product-detail-seller {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  font-family: "Poppins", sans-serif;
-  font-size: 0.86rem;
+  gap: 7px;
+  margin-top: var(--space-sm);
+  font-size: var(--text-xxs);
   font-weight: 500;
-  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-secondary);
   text-decoration: none;
 }
 
 .product-detail-seller:hover {
   color: var(--primary);
-  text-decoration: underline;
 }
 
 .product-detail-price-row {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  margin-top: 18px;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border);
 }
 
 .product-detail-price {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-size: 2.1rem !important;
-  font-weight: 700 !important;
-  color: var(--primary) !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-amount) !important;
+  font-weight: 400 !important;
   line-height: 1 !important;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary) !important;
 }
 
 .product-detail-currency {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  color: var(--accent-dark) !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary) !important;
 }
 
 .product-detail-stock {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 12px;
-  font-family: "Poppins", sans-serif;
-  font-size: 0.86rem;
+  gap: 7px;
+  margin-top: var(--space-sm);
+  font-size: var(--text-xxs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: var(--text-secondary);
 }
 
 .product-detail-stock--in {
-  color: #3d6b32;
-  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .product-detail-stock--low {
-  color: #c46a1b;
+  color: var(--warning);
   font-weight: 600;
 }
 
 .product-detail-stock--out {
-  color: var(--error);
+  color: var(--primary);
   font-weight: 600;
 }
 
-/* ── Quantity and add to cart ── */
 .product-detail-buy {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 24px;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
   flex-wrap: wrap;
 }
 
 .product-detail-qty {
-  width: 110px;
+  width: 96px;
+}
+
+.product-detail-qty .MuiOutlinedInput-root {
+  border-radius: 0;
+  background: var(--white);
 }
 
 .product-detail-add {
   flex: 1;
-  min-width: 190px;
+  min-width: 200px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em;
+  padding: 14px 22px !important;
+  transition: background 0.2s ease !important;
+}
+
+.product-detail-add:hover {
+  background: var(--primary-dark) !important;
+}
+
+.product-detail-add.Mui-disabled {
+  background: var(--border) !important;
+  color: var(--text-secondary) !important;
 }
 
 .product-detail-fav {
-  border: 1px solid var(--border) !important;
-  color: var(--accent-dark) !important;
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--primary) !important;
+  border-radius: 0 !important;
+  color: var(--primary) !important;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .product-detail-fav:hover {
-  border-color: var(--primary) !important;
-  color: var(--primary) !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
 }
 
 .product-detail-fav--active {
-  color: var(--primary) !important;
-  border-color: var(--primary) !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
 }
 
-/* ── Offers ── */
+/* Offers, categories, description: credits in their own blocks */
 .product-detail-promos {
-  margin-top: 26px;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border);
 }
 
 .product-detail-section-label {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.76rem !important;
+  font-size: var(--text-xxs) !important;
   font-weight: 600 !important;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.16em;
   color: var(--text-secondary) !important;
-  margin-bottom: 10px !important;
+  margin-bottom: var(--space-sm) !important;
 }
 
 .product-promo {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px;
-  margin-bottom: 8px;
-  border: 1px solid var(--accent-light);
-  border-radius: 12px;
-  background: var(--accent-pale);
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .product-promo-icon {
-  color: var(--primary) !important;
-  font-size: 19px !important;
-  margin-top: 1px;
+  color: var(--primary);
+  font-size: var(--icon-sm) !important;
+  margin-top: 2px;
 }
 
 .product-promo-name {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.88rem !important;
-  font-weight: 600 !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-body) !important;
   color: var(--text-primary) !important;
 }
 
 .product-promo-rule {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.8rem !important;
+  font-size: var(--text-xs) !important;
   color: var(--text-secondary) !important;
+  margin-top: 2px !important;
 }
 
 .product-detail-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
+  gap: var(--space-xs);
+  margin-top: var(--space-lg);
 }
 
-/* ── Description and sections ── */
+.product-detail-categories .MuiChip-root {
+  border-radius: 0;
+  border-color: var(--border);
+  color: var(--text-secondary);
+  font-size: var(--text-xxs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
 .product-detail-description {
-  margin-top: 44px;
-  padding: 24px 26px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border);
+  max-width: 68ch;
 }
 
 .product-detail-section-title {
-  font-family: "Playfair Display", Georgia, serif !important;
-  font-size: 1.25rem !important;
-  font-weight: 700 !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-lg) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--text-primary) !important;
-  margin-bottom: 14px !important;
+  margin-bottom: var(--space-sm) !important;
 }
 
 .product-detail-description-text {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.92rem !important;
+  font-size: var(--text-body) !important;
+  line-height: 1.75 !important;
+  color: var(--text-primary) !important;
+}
+
+@media (max-width: 900px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.product-detail-back {
+  margin-bottom: var(--space-md) !important;
+  padding: 4px 2px !important;
+  min-width: 0 !important;
+  border-radius: 0 !important;
   color: var(--text-secondary) !important;
-  white-space: pre-line;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em;
+  background: transparent !important;
+}
+
+.product-detail-back:hover {
+  color: var(--primary) !important;
+  background: transparent !important;
+}
+
+/* The strip of other looks takes the sheet's enumerated columns, not the
+   previous world's auto-filling .product-grid, so a plate here sits on the
+   same measure as a plate in the collection. */
+.look-strip {
+  display: grid;
+  gap: 40px var(--space-lg);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1000px) {
+  .look-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

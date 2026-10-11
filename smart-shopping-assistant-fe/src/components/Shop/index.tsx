@@ -5,7 +5,6 @@ import {
   Container,
   FormControl,
   FormGroup,
-  InputLabel,
   MenuItem,
   Select,
   Skeleton,
@@ -14,29 +13,28 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import StorefrontIcon from "@mui/icons-material/Storefront";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useMemo, useState } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import type { Product } from "../shared/types/Product";
 import { productsApi } from "../../api/clients/ProductApiClient";
-import ProductCard from "../common/ProductCard";
+import ProductLook from "./ProductLook";
 import "./Shop.css";
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "name-desc";
 
 function ShopSkeleton() {
   return (
-    <Box className="shop-grid">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Box key={i} className="shop-skeleton-card">
-          <Skeleton variant="rectangular" height={190} />
-          <Box sx={{ p: 2.5 }}>
-            <Skeleton variant="text" width="70%" height={24} />
-            <Skeleton variant="text" width="100%" />
-            <Skeleton variant="text" width="80%" />
-            <Skeleton variant="text" width="40%" height={32} sx={{ mt: 1 }} />
+    <Box className="sheet">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Box key={i} className="look">
+          <Skeleton variant="rectangular" sx={{ aspectRatio: "4 / 5" }} />
+          <Box sx={{ pt: 1.5 }}>
+            <Skeleton variant="text" width="70%" height={22} />
+            <Skeleton variant="text" width="45%" />
           </Box>
         </Box>
       ))}
@@ -45,6 +43,9 @@ function ShopSkeleton() {
 }
 
 function Shop() {
+  const theme = useTheme();
+  // Narrow screens open on the collection, not on a column of checkboxes
+  const narrow = useMediaQuery(theme.breakpoints.down("md"));
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -163,67 +164,144 @@ function Shop() {
     priceRange[0] !== priceMin ||
     priceRange[1] !== priceMax;
 
+  function clearFilters() {
+    setSelectedCategories([]);
+    setSelectedCompanies([]);
+    setInStockOnly(false);
+    setUserPriceRange(null);
+  }
+
+  // The collection opens on one piece, the first that can still be bought, and
+  // the rest of the sheet follows it in order.
+  const { leadLook, followingLooks } = useMemo(() => {
+    if (visibleProducts.length === 0) {
+      return { leadLook: undefined, followingLooks: [] as Product[] };
+    }
+    const first = visibleProducts.findIndex((p) => p.stockQuantity > 0);
+    const leadIndex = first === -1 ? 0 : first;
+    return {
+      leadLook: visibleProducts[leadIndex],
+      followingLooks: visibleProducts.filter((_, i) => i !== leadIndex),
+    };
+  }, [visibleProducts]);
+
+  const houseCount = useMemo(
+    () => new Set(visibleProducts.map((p) => p.companyId)).size,
+    [visibleProducts],
+  );
+
   return (
-    <Box className="shop-page">
-      <Container maxWidth="xl" sx={{ pt: 5, pb: 6 }}>
-        <Box className="shop-header">
-          <Box className="shop-title-row">
-            <Typography variant="h4" className="shop-title">
-              Shop
-            </Typography>
-            {products.length > 0 && (
-              <Typography className="shop-product-count">
-                {visibleProducts.length} / {products.length} products
+    <Box className="lookbook">
+      <Container maxWidth="xl" sx={{ pt: 5, pb: 8 }}>
+        <Box className="lookbook-open">
+          <Box className="lookbook-head">
+            <Box className="lookbook-titleblock">
+              <Typography variant="h1" className="lookbook-title">
+                Collection
               </Typography>
+              <Typography className="lookbook-line">
+              {loading
+                ? "Opening the collection"
+                : visibleProducts.length === 0
+                  ? "Nothing here matches these filters"
+                  : `${visibleProducts.length} ${visibleProducts.length === 1 ? "piece" : "pieces"} from ${houseCount} ${houseCount === 1 ? "house" : "houses"}`}
+              </Typography>
+            </Box>
+
+            {allCategories.length > 0 && (
+              <Box className="lookbook-contents" component="nav" aria-label="Collection sections">
+                {allCategories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => handleCategoryToggle(cat.id)}
+                    aria-pressed={selectedCategories.includes(cat.id)}
+                    className={`lookbook-section${selectedCategories.includes(cat.id) ? " lookbook-section--on" : ""}`}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
+              </Box>
+            )}
+
+            {allCompanies.length > 0 && (
+              <Box className="lookbook-houses" component="nav" aria-label="Houses in this collection">
+                <Typography className="lookbook-houses-label">Houses</Typography>
+                <Box className="lookbook-houses-list">
+                  {allCompanies.map((company) => (
+                    <button
+                      key={company.id}
+                      type="button"
+                      onClick={() => handleCompanyToggle(company.id)}
+                      aria-pressed={selectedCompanies.includes(company.id)}
+                      className={`lookbook-house${selectedCompanies.includes(company.id) ? " lookbook-house--on" : ""}`}
+                    >
+                      {company.name}
+                    </button>
+                  ))}
+                </Box>
+              </Box>
             )}
           </Box>
 
-          <Box className="shop-controls-row">
-            <TextField
-              placeholder="Search products…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="shop-search"
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon className="shop-search-icon" />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-
-            <FormControl size="small" className="shop-sort">
-              <InputLabel>Sort by</InputLabel>
-              <Select
-                label="Sort by"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-              >
-                <MenuItem value="price-asc">Price: Low to High</MenuItem>
-                <MenuItem value="price-desc">Price: High to Low</MenuItem>
-                <MenuItem value="name-asc">Name: A → Z</MenuItem>
-                <MenuItem value="name-desc">Name: Z → A</MenuItem>
-              </Select>
-            </FormControl>
+          <Box className="lookbook-lead">
+            {loading ? (
+              <Skeleton variant="rectangular" sx={{ aspectRatio: "4 / 5" }} />
+            ) : (
+              leadLook !== undefined && (
+                <ProductLook product={leadLook} plate={1} lead />
+              )
+            )}
           </Box>
+
+          <Box className="lookbook-tools">
+              <TextField
+                placeholder="Search the collection"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                variant="standard"
+                className="lookbook-search"
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon className="lookbook-search-icon" />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+
+              <FormControl variant="standard" size="small" className="lookbook-sort">
+                <Select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  aria-label="Sort the collection"
+                >
+                  <MenuItem value="price-asc">Price ascending</MenuItem>
+                  <MenuItem value="price-desc">Price descending</MenuItem>
+                  <MenuItem value="name-asc">Name A-Z</MenuItem>
+                  <MenuItem value="name-desc">Name Z-A</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
         </Box>
 
         {error !== "" && (
-          <Alert severity="error" sx={{ mb: 3, borderRadius: 3 }}>
+          <Alert severity="error" sx={{ mb: 3 }}>
             {error}
           </Alert>
         )}
 
-        <Box className="shop-body">
-          <Box className="shop-sidebar">
-            <Typography className="sidebar-section-title">Filters</Typography>
+        <Box className="lookbook-body">
+          <Box className="lookbook-rail">
+            <Typography className="rail-title">Filters</Typography>
+            <Box component="details" className="rail-disclosure" open={!narrow}>
+              <Box component="summary">Narrow the collection</Box>
 
             {allCategories.length > 0 && (
-              <Box className="sidebar-section">
-                <Typography className="sidebar-label">Categories</Typography>
+              <Box className="rail-section">
+                <Typography className="rail-label">Categories</Typography>
                 <FormGroup>
                   {allCategories.map((cat) => (
                     <FormControlLabel
@@ -242,8 +320,8 @@ function Shop() {
             )}
 
             {allCompanies.length > 0 && (
-              <Box className="sidebar-section">
-                <Typography className="sidebar-label">Sold by</Typography>
+              <Box className="rail-section">
+                <Typography className="rail-label">Houses</Typography>
                 <FormGroup>
                   {allCompanies.map((company) => (
                     <FormControlLabel
@@ -261,8 +339,8 @@ function Shop() {
               </Box>
             )}
 
-            <Box className="sidebar-section">
-              <Typography className="sidebar-label">Availability</Typography>
+            <Box className="rail-section">
+              <Typography className="rail-label">Availability</Typography>
               <FormControlLabel
                 label="In stock only"
                 control={
@@ -274,8 +352,8 @@ function Shop() {
               />
             </Box>
 
-            <Box className="sidebar-section">
-              <Typography className="sidebar-label">Price</Typography>
+            <Box className="rail-section">
+              <Typography className="rail-label">Price</Typography>
               <Slider
                 value={priceRange}
                 onChange={(_, val) => setUserPriceRange(val as [number, number])}
@@ -284,69 +362,61 @@ function Shop() {
                 valueLabelDisplay="auto"
                 valueLabelFormat={(v) => `${v} RON`}
               />
-              <Box className="price-range-labels">
-                <Typography className="price-range-value">
+              <Box className="rail-price-labels">
+                <Typography className="rail-price-value">
                   {priceRange[0]} RON
                 </Typography>
-                <Typography className="price-range-value">
+                <Typography className="rail-price-value">
                   {priceRange[1]} RON
                 </Typography>
               </Box>
             </Box>
 
-            {hasActiveFilters && (
-              <Button
-                variant="outlined"
-                size="small"
-                fullWidth
-                className="shop-clear-btn"
-                onClick={() => {
-                  setSelectedCategories([]);
-                  setSelectedCompanies([]);
-                  setInStockOnly(false);
-                  setUserPriceRange(null);
-                }}
-              >
-                Clear filters
-              </Button>
-            )}
+              {hasActiveFilters && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  className="rail-clear"
+                  onClick={clearFilters}
+                >
+                  Clear filters
+                </Button>
+              )}
+            </Box>
           </Box>
 
-          <Box className="shop-main">
+          <Box className="lookbook-main">
             {loading ? (
               <ShopSkeleton />
             ) : visibleProducts.length === 0 ? (
-              <Box className="shop-empty">
-                <Box className="shop-empty-icon">
-                  <StorefrontIcon className="shop-empty-icon-svg" />
-                </Box>
-                <Typography className="shop-empty-title">
-                  No products found
+              <Box className="lookbook-empty">
+                <Typography className="lookbook-empty-title">
+                  Nothing to show under these filters
                 </Typography>
-                <Typography className="shop-empty-subtitle">
-                  Try adjusting your search or filters.
+                <Typography className="lookbook-empty-text">
+                  Try another search, a different house, or a wider price range.
                 </Typography>
                 {hasActiveFilters && (
                   <Button
                     variant="outlined"
                     size="small"
-                    className="shop-clear-btn"
-                    sx={{ mt: 2 }}
-                    onClick={() => {
-                      setSelectedCategories([]);
-                      setSelectedCompanies([]);
-                      setInStockOnly(false);
-                      setUserPriceRange(null);
-                    }}
+                    className="rail-clear"
+                    sx={{ mt: 2, width: "auto" }}
+                    onClick={clearFilters}
                   >
                     Clear filters
                   </Button>
                 )}
               </Box>
+            ) : followingLooks.length === 0 ? (
+              <Typography className="lookbook-only">
+                This is the only piece in the collection under these filters.
+              </Typography>
             ) : (
-              <Box className="shop-grid">
-                {visibleProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              <Box className="sheet">
+                {followingLooks.map((product, index) => (
+                  <ProductLook key={product.id} product={product} plate={index + 2} />
                 ))}
               </Box>
             )}

@@ -11,7 +11,6 @@ import LoadingState from "../../common/LoadingState";
 import ErrorAlert from "../../common/ErrorAlert";
 import ProductCard from "../../common/ProductCard";
 import "../Sellers.css";
-import "../../Shop/Shop.css";
 
 function SellerPage() {
   const { slug = "" } = useParams();
@@ -94,7 +93,7 @@ function SellerPage() {
         <Typography className="seller-section-title">
           Products ({products.length})
         </Typography>
-        <Box className="shop-grid">
+        <Box className="product-grid">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} hideSeller />
           ))}

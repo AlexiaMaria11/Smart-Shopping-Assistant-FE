@@ -33,10 +33,9 @@ import { useCart } from "../../context/CartContext/cart-context";
 import { useFavorites } from "../../context/FavoritesContext/favorites-context";
 import ErrorAlert from "../common/ErrorAlert";
 import LoadingState from "../common/LoadingState";
-import ProductCard from "../common/ProductCard";
+import ProductLook from "../Shop/ProductLook";
 import ProductGallery from "./ProductGallery";
 import "./ProductDetails.css";
-import "../Shop/Shop.css";
 
 // Everything that was loaded for one product id. Keeping the id next to the data means
 // moving to another product never shows the previous one while the new one is loading.
@@ -99,8 +98,13 @@ function ProductDetails() {
   if (product === null) {
     return (
       <Container maxWidth="md" sx={{ py: 5 }}>
-        <Button component={Link} to="/shop" startIcon={<ArrowBackIcon />} sx={{ mb: 2, px: 1 }}>
-          Back to shop
+        <Button
+          component={Link}
+          to="/shop"
+          startIcon={<ArrowBackIcon sx={{ fontSize: "var(--icon-xs) !important" }} />}
+          className="product-detail-back"
+        >
+          Back to the collection
         </Button>
         <ErrorAlert
           message={current?.error || (validId ? "Product not found." : "This product does not exist.")}
@@ -130,8 +134,13 @@ function ProductDetails() {
   return (
     <Box className="product-page">
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Button component={Link} to="/shop" startIcon={<ArrowBackIcon />} sx={{ mb: 2, px: 1 }}>
-          Back to shop
+        <Button
+          component={Link}
+          to="/shop"
+          startIcon={<ArrowBackIcon sx={{ fontSize: "var(--icon-xs) !important" }} />}
+          className="product-detail-back"
+        >
+          Back to the collection
         </Button>
 
         <Box className="product-detail-grid">
@@ -249,11 +258,11 @@ function ProductDetails() {
         {similar.length > 0 && (
           <Box sx={{ mt: 5 }}>
             <Typography className="product-detail-section-title">
-              You may also like
+              Also in the collection
             </Typography>
-            <Box className="shop-grid">
+            <Box className="look-strip">
               {similar.map((item) => (
-                <ProductCard key={item.id} product={item} />
+                <ProductLook key={item.id} product={item} />
               ))}
             </Box>
           </Box>

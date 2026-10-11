@@ -1,0 +1,184 @@
+/* One look
+   The lookbook's plate: a photograph on the paper, its credits under a
+   hairline. Shared by the collection sheet and the "also in the collection"
+   strip on a product page, so both read as the same book. */
+
+.look-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--cream-dark);
+  overflow: hidden;
+}
+
+.look-link {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* Jewellery is photographed as a cut-out with a transparent ground, so each
+   view carries the frame colour behind it. Without it the turning view lets
+   the one underneath show through and the piece appears twice at once. */
+.look-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--cream-dark);
+}
+
+/* The page turn: the next photograph of the same piece, cross-faded in */
+.look-img--turn {
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.look:hover .look-img--turn,
+.look:focus-within .look-img--turn {
+  opacity: 1;
+}
+
+/* The tissue interleaf covers a piece that is gone, the way a lookbook
+   protects a plate; it is not a coloured pill on the photograph. */
+.look-tissue {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--white-rgb), 0.74);
+  color: var(--text-primary);
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+}
+
+.look-actions {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.look:hover .look-actions,
+.look:focus-within .look-actions {
+  opacity: 1;
+}
+
+.look-act {
+  width: 34px;
+  height: 34px;
+  background: rgba(var(--white-rgb), 0.94) !important;
+  border: 1px solid rgba(var(--ink-rgb), 0.18) !important;
+  color: var(--text-primary) !important;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.look-act:hover {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+.look-act--on,
+.look-act--done {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+/* The credits */
+.look-credit {
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+}
+
+.look-title {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.look-no {
+  flex-shrink: 0;
+  font-size: var(--text-xxs);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.look-name {
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-body);
+  line-height: 1.3;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.look-name:hover {
+  color: var(--primary);
+}
+
+.look-credit-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  margin-top: 5px;
+}
+
+.look-house {
+  font-size: var(--text-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.look-house:hover {
+  color: var(--primary);
+}
+
+.look-price {
+  flex-shrink: 0;
+  font-size: var(--text-sm) !important;
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary) !important;
+  letter-spacing: 0.01em;
+}
+
+.look-currency {
+  font-size: var(--text-xxs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: 4px;
+  letter-spacing: 0.08em;
+}
+
+.look-last {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: var(--text-xxs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+}

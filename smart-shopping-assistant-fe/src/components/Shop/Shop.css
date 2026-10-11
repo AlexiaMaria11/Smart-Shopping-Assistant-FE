@@ -1,226 +1,464 @@
-.shop-page {
+/* The collection lookbook
+   The catalogue as a house's printed lookbook: one piece opens it at full
+   size, the rest follow on the sheet. Photographs sit on the paper with no
+   container, no border and no shadow; the only rule drawn is the hairline
+   over a credit line. Marcellus in wide-tracked capitals is the house voice,
+   Archivo carries every control, label and figure. */
+
+.lookbook {
   background: var(--cream);
   min-height: 100vh;
 }
 
-/* ── Header ── */
-.shop-header {
-  margin-bottom: 32px;
+/* The opening spread: the title and the piece that leads the collection */
+.lookbook-open {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+  gap: var(--space-xl) var(--space-xl);
+  align-items: stretch;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-xl);
 }
 
-.shop-title-row {
+/* The title holds the top of the spread and the controls sit on the lead's
+   own baseline, so the opening reads as one composition rather than a header
+   with a picture next to it. */
+/* The index opens the spread and the houses close it, both anchored, so the
+   air between them is composed rather than a column that stops dead. */
+.lookbook-head {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin-bottom: 18px;
+  flex-direction: column;
+  gap: var(--space-xl);
+  height: 100%;
 }
 
-.shop-title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 700;
+.lookbook-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: clamp(var(--text-display), 6vw, var(--text-masthead)) !important;
+  line-height: 0.95 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary) !important;
+}
+
+.lookbook-line {
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary) !important;
+  margin-top: var(--space-sm) !important;
+  letter-spacing: 0.02em;
+}
+
+/* The contents of the collection: its sections, named the way a lookbook names
+   them. Pressing one narrows the sheet, and the rail's checkbox follows. */
+.lookbook-contents {
+  columns: 3;
+  column-gap: var(--space-xl);
+  max-width: min(760px, 100%);
+}
+
+.lookbook-section {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-body);
   color: var(--text-primary);
-  font-size: 1.7rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-@media (min-width: 900px) {
-  .shop-title {
-    font-size: 2.1rem;
-  }
+.lookbook-section:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
-.shop-product-count {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.84rem;
-  color: var(--text-secondary);
+.lookbook-section--on {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-style: italic;
 }
 
-.shop-controls-row {
+/* Search and sort ride the masthead rule, right-aligned, under both columns */
+/* The houses that supply the collection, named in the opening the way a press
+   kit credits its stockists. Pressing one narrows the sheet to that house. */
+.lookbook-houses {
+  margin-top: auto;
+}
+
+.lookbook-houses-label {
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-secondary) !important;
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--text-primary);
+  margin-bottom: var(--space-sm) !important;
+  max-width: min(760px, 100%);
+}
+
+.lookbook-houses-list {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
   flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
 }
 
-/* ── Search & sort inputs ── */
-.shop-search {
-  flex: 1;
-  max-width: 480px;
+.lookbook-house {
+  padding: 2px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-md);
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.shop-search .MuiOutlinedInput-root {
-  border-radius: 50px;
+.lookbook-house:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
-.shop-search .MuiInputBase-input {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.9rem;
-  padding-top: 10px;
-  padding-bottom: 10px;
+.lookbook-house--on {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-style: italic;
 }
 
-.shop-search-icon {
-  color: var(--accent-dark);
-  font-size: 20px;
-}
-
-.shop-sort {
-  min-width: 200px;
-}
-
-.shop-sort .MuiOutlinedInput-root {
-  border-radius: 50px;
-}
-
-/* ── Body: sidebar + main ── */
-.shop-body {
+.lookbook-tools {
+  grid-column: 1 / -1;
   display: flex;
-  gap: 28px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  margin-top: var(--space-md);
+}
+
+.lookbook-search {
+  width: 260px;
+}
+
+.lookbook-sort {
+  min-width: 176px;
+}
+
+.lookbook-search .MuiInputBase-root,
+.lookbook-sort .MuiInputBase-root {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.lookbook-search .MuiInput-underline::before,
+.lookbook-sort .MuiInput-underline::before {
+  border-bottom: 1px solid var(--border);
+}
+
+.lookbook-search .MuiInput-underline:hover:not(.Mui-disabled)::before,
+.lookbook-sort .MuiInput-underline:hover:not(.Mui-disabled)::before {
+  border-bottom: 1px solid var(--primary);
+}
+
+.lookbook-search-icon {
+  color: var(--text-secondary);
+  font-size: var(--icon-sm);
+}
+
+/* Body: the filters, then the sheet */
+.lookbook-body {
+  display: flex;
+  gap: var(--space-xl);
   align-items: flex-start;
 }
 
-/* ── Sidebar ── */
-.shop-sidebar {
-  width: 240px;
+.lookbook-rail {
+  width: 208px;
   flex-shrink: 0;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 22px 18px 24px;
+  padding-right: var(--space-lg);
+  border-right: 1px solid var(--border);
   position: sticky;
-  top: 24px;
+  top: var(--space-lg);
 }
 
-.sidebar-section-title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--text-primary);
-  margin-bottom: 18px !important;
+.rail-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-md) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-primary) !important;
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--text-primary);
+  margin-bottom: var(--space-md) !important;
 }
 
-.sidebar-section {
-  margin-bottom: 22px;
+.rail-section {
+  margin-bottom: var(--space-lg);
 }
 
-.sidebar-label {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.78rem !important;
+.rail-label {
+  font-size: var(--text-xxs) !important;
   font-weight: 600 !important;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em;
   color: var(--text-secondary) !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 6px !important;
 }
 
-/* ── Price range labels ── */
-.price-range-labels {
+.lookbook-rail .MuiFormControlLabel-label {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.lookbook-rail .MuiCheckbox-root {
+  padding: 5px 9px;
+}
+
+.rail-price-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
-.price-range-value {
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.78rem !important;
+.rail-price-value {
+  font-size: var(--text-xxs) !important;
   color: var(--text-secondary) !important;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ── Clear filters button ── */
-.shop-clear-btn {
-  margin-top: 8px !important;
-  border-color: var(--accent) !important;
+.rail-clear {
+  margin-top: var(--space-xs) !important;
+  border-radius: 0 !important;
+  border: 1px solid var(--primary) !important;
   color: var(--primary) !important;
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.8rem !important;
-  border-radius: 50px !important;
-  text-transform: none !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em;
+  padding: 8px 16px !important;
 }
 
-.shop-clear-btn:hover {
-  border-color: var(--primary) !important;
-  background: rgba(156, 93, 72, 0.06) !important;
+.rail-clear:hover {
+  background: var(--primary) !important;
+  color: var(--white) !important;
 }
 
-/* ── Main area ── */
-.shop-main {
+.lookbook-main {
   flex: 1;
   min-width: 0;
 }
 
-/* ── Empty state ── */
-.shop-empty {
-  text-align: center;
-  padding: 80px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.shop-empty-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-pale), var(--cream-dark));
-  border: 1.5px solid var(--accent-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-
-.shop-empty-icon-svg {
-  color: var(--accent) !important;
-  font-size: 32px !important;
-}
-
-.shop-empty-title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.3rem;
-  color: var(--text-secondary);
-}
-
-.shop-empty-subtitle {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.86rem;
-  color: var(--accent-dark);
-}
-
-/* ── Product grid ── */
-.shop-grid {
+.sheet {
   display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 40px var(--space-lg);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-/* ── Skeleton card ── */
-.shop-skeleton-card {
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--white);
+@media (min-width: 1601px) {
+  .sheet {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
-/* product-card-*, product-fav-btn, shop-add-btn are in index.css (shared with Favorites) */
+/* The piece that opens the collection: a plate in the same portrait measure
+   as the sheet, just wider than a following one, so it reads as the lead
+   without swallowing the opening or crushing a portrait photograph into a
+   landscape box. No height cap here: the column's own max-width already
+   bounds the plate's size, and a height cap on top of aspect-ratio shrinks
+   the image narrower than the credit panel below it, which always runs the
+   column's full width. */
+.lookbook-lead .look-frame {
+  aspect-ratio: 4 / 5;
+}
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .shop-body {
-    flex-direction: column;
+.lookbook-lead .look-credit {
+  margin-top: 0;
+  padding: 14px 18px 16px;
+  border-top: none;
+  background: var(--primary);
+}
+
+.lookbook-lead .look-name {
+  font-size: var(--text-lg);
+  color: var(--white);
+}
+
+.lookbook-lead .look-name:hover {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lookbook-lead .look-house {
+  color: rgba(var(--white-rgb), 0.8);
+}
+
+.lookbook-lead .look-house:hover {
+  color: var(--white);
+}
+
+.lookbook-lead .look-price {
+  color: var(--white) !important;
+}
+
+.lookbook-lead .look-currency {
+  color: rgba(var(--white-rgb), 0.75);
+}
+
+.lookbook-lead .look-no {
+  color: rgba(var(--white-rgb), 0.75);
+}
+
+.lookbook-lead .look-last {
+  color: rgba(var(--white-rgb), 0.88);
+}
+
+/* Quiet states */
+.lookbook-empty {
+  padding: 64px 0;
+  max-width: 46ch;
+}
+
+.lookbook-empty-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-title) !important;
+  font-weight: 400 !important;
+  color: var(--text-primary) !important;
+}
+
+.lookbook-empty-text {
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary) !important;
+  margin-top: 8px !important;
+}
+
+.lookbook-only {
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary) !important;
+  padding: var(--space-lg) 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .look-img--turn {
+    transition: none;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  .lookbook-contents {
+    columns: 2;
+  }
+}
+
+@media (max-width: 1000px) {
+  .sheet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .lookbook-open {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 
-  .shop-sidebar {
+  .lookbook-head {
+    gap: var(--space-lg);
+    height: auto;
+  }
+
+  .lookbook-houses {
+    margin-top: 0;
+  }
+
+  .lookbook-tools {
+    justify-content: flex-start;
+  }
+
+  .lookbook-lead {
+    max-width: min(380px, 100%);
+  }
+
+  .lookbook-tools {
+    padding-top: var(--space-lg);
+  }
+}
+
+.rail-disclosure {
+  border: none;
+}
+
+.rail-disclosure > summary {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .lookbook-contents,
+  .lookbook-houses {
+    display: none;
+  }
+
+  /* The disclosure names itself, so the rail drops its own heading */
+  .rail-title {
+    display: none;
+  }
+
+  .rail-disclosure > summary {
+    display: block;
+    list-style: none;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: var(--text-xxs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--primary);
+  }
+
+  .rail-disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lookbook-body {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .lookbook-rail {
     width: 100%;
     position: static;
+    padding-right: 0;
+    padding-bottom: var(--space-lg);
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 600px) {
+  .lookbook-contents {
+    columns: 1;
+    margin-top: var(--space-lg);
   }
 
-  .shop-controls-row {
-    flex-direction: column;
-    align-items: stretch;
+  .sheet {
+    gap: var(--space-lg) var(--space-md);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .shop-search {
-    max-width: 100%;
+  .lookbook-search {
+    width: 100%;
+  }
+
+  .look-actions {
+    opacity: 1;
   }
 }
