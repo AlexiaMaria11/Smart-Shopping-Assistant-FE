@@ -1,0 +1,49 @@
+.site-footer {
+  margin-top: auto;
+  padding: 44px 0 36px;
+  background: var(--primary-dark);
+  color: var(--white);
+}
+
+.site-footer-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.site-footer-brand {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: var(--text-xxl) !important;
+  color: var(--white) !important;
+}
+
+.site-footer-note {
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-sm) !important;
+  color: rgba(var(--white-rgb), 0.72) !important;
+  max-width: 44ch;
+  margin-top: 4px !important;
+}
+
+.site-footer-links {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.site-footer-links a {
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-body);
+  font-weight: 500;
+  color: rgba(var(--white-rgb), 0.85);
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.site-footer-links a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}

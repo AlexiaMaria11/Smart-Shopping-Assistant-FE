@@ -1,23 +1,26 @@
 .app {
   min-height: 100vh;
   background-color: var(--cream);
+  /* So the footer sits at the bottom on short pages instead of mid-screen */
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── Toggle button group pill shape (used in NavBar) ── */
 .MuiToggleButtonGroup-root {
-  border-radius: 50px !important;
+  border-radius: var(--radius-pill) !important;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(var(--white-rgb), 0.08);
+  border: 1px solid rgba(var(--white-rgb), 0.2) !important;
   padding: 2px;
   gap: 2px;
 }
 
 .MuiToggleButton-root {
-  border-radius: 50px !important;
+  border-radius: var(--radius-pill) !important;
   border: none !important;
   padding: 4px 16px !important;
-  font-size: 0.8rem !important;
+  font-size: var(--text-sm) !important;
   letter-spacing: 0.03em !important;
   transition:
     background-color 0.2s ease,
@@ -28,5 +31,5 @@
   background: var(--accent) !important;
   color: var(--white) !important;
   font-weight: 700 !important;
-  box-shadow: 0 2px 8px rgba(196, 144, 124, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.35) !important;
 }

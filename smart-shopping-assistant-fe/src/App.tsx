@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import "./App.css";
 import NavBar from "./components/NavBar";
+import Footer from "./components/common/Footer";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Categories from "./components/Categories";
 import Products from "./components/Products";
@@ -104,6 +105,7 @@ function App() {
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+            <Footer />
             <CartDrawer />
           </Box>
         </CartProvider>
