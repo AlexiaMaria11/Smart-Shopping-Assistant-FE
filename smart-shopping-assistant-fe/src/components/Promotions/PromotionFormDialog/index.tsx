@@ -230,7 +230,7 @@ function PromotionFormDialog({ promotion, onClose, onSaved }: PromotionFormDialo
           value={form.name}
           onChange={(e) => set("name", e.target.value)}
           error={!!errors.name}
-          helperText={errors.name ?? "Shown in the cart, for example \"10% off Electronics over 100 RON\"."}
+          helperText={errors.name ?? "Shown in the cart, for example \"10% off Dresses over 500 RON\"."}
           slotProps={{ htmlInput: { maxLength: 200 } }}
           required
           fullWidth

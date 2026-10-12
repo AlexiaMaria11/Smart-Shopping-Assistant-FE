@@ -18,6 +18,7 @@ import type { Promotion } from "../shared/types/Promotion";
 import {
   PROMOTION_REWARD_LABELS,
   PROMOTION_TYPE_LABELS,
+  PromotionReward,
 } from "../shared/types/Promotion";
 import type { Product } from "../shared/types/Product";
 import type { Category } from "../shared/types/Category";
@@ -126,13 +127,16 @@ function Promotions() {
                     {promotion.name}
                   </TableCell>
                   <TableCell>{PROMOTION_TYPE_LABELS[promotion.type]}</TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" className="data-table-figure">
                     {promotion.threshold.toFixed(2)} RON
                   </TableCell>
                   <TableCell>
                     {PROMOTION_REWARD_LABELS[promotion.reward]}
                   </TableCell>
-                  <TableCell align="right">{promotion.rewardValue}</TableCell>
+                  <TableCell align="right" className="data-table-figure">
+                    {promotion.rewardValue}
+                    {promotion.reward === PromotionReward.PercentDiscount ? "%" : ""}
+                  </TableCell>
                   <TableCell className="data-table-cell-muted">
                     {promotion.productId
                       ? `Product: ${products.find((p) => p.id === promotion.productId)?.name ?? promotion.productId}`
@@ -145,6 +149,7 @@ function Promotions() {
                       label={promotion.isActive ? "Active" : "Inactive"}
                       size="small"
                       color={promotion.isActive ? "success" : "error"}
+                      className="lookbook-chip"
                     />
                   </TableCell>
                   <TableCell align="right" className="data-table-cell-nowrap">

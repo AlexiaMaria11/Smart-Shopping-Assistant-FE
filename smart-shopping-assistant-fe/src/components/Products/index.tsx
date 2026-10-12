@@ -133,17 +133,17 @@ function Products() {
                   >
                     {product.description || "—"}
                   </TableCell>
-                  <TableCell align="right" className="data-table-cell-bold">
+                  <TableCell align="right" className="data-table-cell-bold data-table-figure">
                     {product.price.toFixed(2)} RON
                   </TableCell>
                   <TableCell
                     align="right"
                     className={
                       product.stockQuantity === 0
-                        ? "stock-cell stock-cell--out"
+                        ? "stock-cell stock-cell--out data-table-figure"
                         : product.stockQuantity <= LOW_STOCK_THRESHOLD
-                          ? "stock-cell stock-cell--low"
-                          : "stock-cell"
+                          ? "stock-cell stock-cell--low data-table-figure"
+                          : "stock-cell data-table-figure"
                     }
                   >
                     {product.stockQuantity}

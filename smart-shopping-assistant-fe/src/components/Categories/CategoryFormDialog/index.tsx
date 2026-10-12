@@ -67,7 +67,7 @@ function CategoryFormDialog({ category, onClose, onSaved }: CategoryFormDialogPr
             setNameError("");
           }}
           error={nameError !== ""}
-          helperText={nameError || "Shown to customers, for example \"Home & Garden\"."}
+          helperText={nameError || "Shown to customers, for example \"Coats & Jackets\"."}
           slotProps={{ htmlInput: { maxLength: NAME_MAX } }}
           required
           fullWidth

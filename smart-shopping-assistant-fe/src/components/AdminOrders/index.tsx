@@ -77,7 +77,7 @@ function AdminOrders() {
                   </TableCell>
                   <TableCell>{[...new Set(order.items.map((i) => i.companyName))].join(", ")}</TableCell>
                   <TableCell className="data-table-cell-muted">{paymentLabel(order)}</TableCell>
-                  <TableCell align="right" className="data-table-cell-bold">
+                  <TableCell align="right" className="data-table-cell-bold data-table-figure">
                     {money(order.total)}
                   </TableCell>
                   <TableCell>
@@ -85,6 +85,7 @@ function AdminOrders() {
                       size="small"
                       label={ORDER_STATUS_LABELS[order.status]}
                       color={ORDER_STATUS_COLORS[order.status]}
+                      className="lookbook-chip"
                     />
                   </TableCell>
                 </TableRow>

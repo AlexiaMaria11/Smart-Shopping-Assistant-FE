@@ -123,7 +123,7 @@ function Companies() {
                 <TableRow key={company.id}>
                   <TableCell>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                      <Avatar src={company.logoUrl} alt={company.name} variant="rounded">
+                      <Avatar src={company.logoUrl} alt={company.name} variant="square" sx={{ borderRadius: 0 }}>
                         {company.name[0]}
                       </Avatar>
                       <Box className="data-table-cell-bold">{company.name}</Box>
@@ -132,8 +132,12 @@ function Companies() {
                   <TableCell className="data-table-cell-muted">
                     {company.contactEmail || "—"}
                   </TableCell>
-                  <TableCell align="center">{company.productCount}</TableCell>
-                  <TableCell align="center">{company.commissionPercent}%</TableCell>
+                  <TableCell align="center" className="data-table-figure">
+                    {company.productCount}
+                  </TableCell>
+                  <TableCell align="center" className="data-table-figure">
+                    {company.commissionPercent}%
+                  </TableCell>
                   <TableCell>
                     <Select
                       size="small"
@@ -141,7 +145,12 @@ function Companies() {
                       onChange={(e) =>
                         handleStatusChange(company, e.target.value as CompanyStatus)
                       }
-                      sx={{ minWidth: 120, fontSize: "var(--text-sm)" }}
+                      sx={{
+                        minWidth: 120,
+                        fontSize: "var(--text-sm)",
+                        borderRadius: 0,
+                        "& .MuiOutlinedInput-notchedOutline": { borderRadius: 0 },
+                      }}
                       aria-label={`Change status of ${company.name}`}
                     >
                       {Object.values(CompanyStatus).map((status) => (
