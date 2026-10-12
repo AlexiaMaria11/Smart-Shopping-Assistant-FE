@@ -262,6 +262,43 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* The sheet closes on a hairline, then the folio for the whole run: square,
+   burgundy on the current page, Archivo tabular throughout. */
+.lookbook-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+.lookbook-pagination .MuiPaginationItem-root {
+  border-radius: 0;
+  font-family: "Archivo", sans-serif;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+}
+
+.lookbook-pagination .MuiPaginationItem-root:hover {
+  background: var(--accent-pale);
+}
+
+.lookbook-pagination .MuiPaginationItem-root.Mui-selected {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.lookbook-pagination .MuiPaginationItem-root.Mui-selected:hover {
+  background: var(--primary-dark);
+}
+
+.lookbook-pagination .MuiPaginationItem-ellipsis {
+  color: var(--text-secondary);
+}
+
 @media (min-width: 1601px) {
   .sheet {
     grid-template-columns: repeat(4, minmax(0, 1fr));

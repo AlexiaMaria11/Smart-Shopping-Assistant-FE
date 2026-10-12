@@ -41,3 +41,30 @@ export interface ProductInput {
   categoryIds?: number[];
   images?: ProductImageInput[];
 }
+
+// Matches the backend's ProductSortOption enum names exactly
+export const ProductSortOption = {
+  PriceAsc: "PriceAsc",
+  PriceDesc: "PriceDesc",
+  NameAsc: "NameAsc",
+  NameDesc: "NameDesc",
+} as const;
+export type ProductSortOption =
+  (typeof ProductSortOption)[keyof typeof ProductSortOption];
+
+export interface ProductSearchParams {
+  name?: string;
+  categoryIds?: number[];
+  minPrice?: number;
+  maxPrice?: number;
+  companyIds?: number[];
+  inStockOnly?: boolean;
+  sort?: ProductSortOption;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface PriceRangeModel {
+  min: number;
+  max: number;
+}

@@ -6,6 +6,7 @@ import {
   FormControl,
   FormGroup,
   MenuItem,
+  Pagination,
   Select,
   Skeleton,
   Slider,
@@ -20,11 +21,15 @@ import { useEffect, useMemo, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import type { Product } from "../shared/types/Product";
-import { productsApi } from "../../api/clients/ProductApiClient";
+import { productsApi, type PagedProducts } from "../../api/clients/ProductApiClient";
+import { categoriesApi } from "../../api/clients/CategoryApiClient";
+import { companiesApi } from "../../api/clients/CompanyApiClient";
+import { ProductSortOption } from "../../api/models/ProductModel";
 import ProductLook from "../common/ProductLook";
 import "./Shop.css";
 
-type SortOption = "price-asc" | "price-desc" | "name-asc" | "name-desc";
+const PAGE_SIZE = 12;
+const SEARCH_DEBOUNCE_MS = 350;
 
 function ShopSkeleton() {
   return (
@@ -46,149 +51,146 @@ function Shop() {
   const theme = useTheme();
   // Narrow screens open on the collection, not on a column of checkboxes
   const narrow = useMediaQuery(theme.breakpoints.down("md"));
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+
+  // The rail's own option lists and the catalogue's price bounds — fetched
+  // once, independently of whatever page or filters are active.
+  const [facets, setFacets] = useState<{
+    categories: { id: number; name: string }[];
+    companies: { id: number; name: string }[];
+    priceBounds: [number, number];
+  } | null>(null);
+
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState<SortOption>("price-asc");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [sortBy, setSortBy] = useState<ProductSortOption>(ProductSortOption.PriceAsc);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [userPriceRange, setUserPriceRange] = useState<[number, number] | null>(null);
   const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
   const [inStockOnly, setInStockOnly] = useState(false);
+  const [userPriceRange, setUserPriceRange] = useState<[number, number] | null>(null);
+  const [page, setPage] = useState(1);
 
-  const allCategories = useMemo(() => {
-    const map = new Map<number, string>();
-    products.forEach((p) =>
-      p.categories.forEach((c) => map.set(c.id, c.name)),
-    );
-    return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
-  }, [products]);
+  // Keyed by the exact request that produced it, so "loading" and "result" are
+  // both derived from whether the latest request has come back yet, instead
+  // of a separate flag that has to be flipped by hand around every fetch.
+  const [loaded, setLoaded] = useState<{ key: string; result: PagedProducts } | null>(null);
+  const [error, setError] = useState("");
 
-  const allCompanies = useMemo(() => {
-    const map = new Map<number, string>();
-    products.forEach((p) => map.set(p.companyId, p.companyName));
-    return Array.from(map.entries())
-      .map(([id, name]) => ({ id, name }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [products]);
+  // The rail's facet lists and price bounds, once
+  useEffect(() => {
+    Promise.all([categoriesApi.getAll(), companiesApi.getAll(), productsApi.getPriceRange()])
+      .then(([categories, companies, priceRange]) => {
+        setFacets({
+          categories: categories.map((c) => ({ id: c.id, name: c.name })),
+          companies: [...companies]
+            .map((c) => ({ id: c.id, name: c.name }))
+            .sort((a, b) => a.name.localeCompare(b.name)),
+          priceBounds: [Math.floor(priceRange.min), Math.ceil(priceRange.max)],
+        });
+      })
+      .catch(() => {});
+  }, []);
 
-  const preFilteredProducts = useMemo(() => {
-    let result = products.filter((p) =>
-      p.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()),
-    );
-    if (selectedCategories.length > 0) {
-      result = result.filter((p) =>
-        p.categories.some((c) => selectedCategories.includes(c.id)),
+  // Typing settles before it becomes a request
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(search.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(id);
+  }, [search]);
+
+  const priceRange = useMemo<[number, number] | null>(
+    () => userPriceRange ?? (facets ? facets.priceBounds : null),
+    [userPriceRange, facets],
+  );
+
+  const searchKey = JSON.stringify({
+    debouncedSearch,
+    selectedCategories,
+    selectedCompanies,
+    inStockOnly,
+    priceRange,
+    sortBy,
+    page,
+  });
+
+  useEffect(() => {
+    productsApi
+      .search({
+        name: debouncedSearch || undefined,
+        categoryIds: selectedCategories.length > 0 ? selectedCategories : undefined,
+        companyIds: selectedCompanies.length > 0 ? selectedCompanies : undefined,
+        inStockOnly: inStockOnly || undefined,
+        minPrice: priceRange?.[0],
+        maxPrice: priceRange?.[1],
+        sort: sortBy,
+        page,
+        pageSize: PAGE_SIZE,
+      })
+      .then(
+        (result) => {
+          setLoaded({ key: searchKey, result });
+          setError("");
+        },
+        (err: Error) => setError(err.message),
       );
-    }
-    if (selectedCompanies.length > 0) {
-      result = result.filter((p) => selectedCompanies.includes(p.companyId));
-    }
-    if (inStockOnly) {
-      result = result.filter((p) => p.stockQuantity > 0);
-    }
-    return result;
-  }, [products, search, selectedCategories, selectedCompanies, inStockOnly]);
+    // searchKey is derived from every other dependency listed here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, selectedCategories, selectedCompanies, inStockOnly, priceRange, sortBy, page]);
 
-  const priceMin = useMemo(
-    () =>
-      preFilteredProducts.length
-        ? Math.floor(Math.min(...preFilteredProducts.map((p) => p.price)))
-        : 0,
-    [preFilteredProducts],
-  );
-  const priceMax = useMemo(
-    () =>
-      preFilteredProducts.length
-        ? Math.ceil(Math.max(...preFilteredProducts.map((p) => p.price)))
-        : 10000,
-    [preFilteredProducts],
-  );
+  const loading = loaded?.key !== searchKey;
+  const result = loaded?.key === searchKey ? loaded.result : null;
 
-  const priceRange = useMemo<[number, number]>(
-    () =>
-      userPriceRange
-        ? [
-            Math.max(priceMin, userPriceRange[0]),
-            Math.min(priceMax, userPriceRange[1]),
-          ]
-        : [priceMin, priceMax],
-    [userPriceRange, priceMin, priceMax],
-  );
-
-  const visibleProducts = useMemo(() => {
-    let result = preFilteredProducts.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1],
-    );
-    result = [...result].sort((a, b) => {
-      if (sortBy === "price-asc") return a.price - b.price;
-      if (sortBy === "price-desc") return b.price - a.price;
-      if (sortBy === "name-asc") return a.name.localeCompare(b.name);
-      if (sortBy === "name-desc") return b.name.localeCompare(a.name);
-      return 0;
-    });
-    return result;
-  }, [preFilteredProducts, priceRange, sortBy]);
+  function resetToFirstPage() {
+    setPage(1);
+  }
 
   const handleCategoryToggle = (id: number) => {
     setSelectedCategories((prev) =>
       prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id],
     );
+    resetToFirstPage();
   };
 
   const handleCompanyToggle = (id: number) => {
     setSelectedCompanies((prev) =>
       prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id],
     );
+    resetToFirstPage();
   };
-
-  function loadProducts() {
-    productsApi
-      .getAll()
-      .then((data) => {
-        setProducts(data);
-        setError("");
-      })
-      .catch((err) => setError((err as Error).message))
-      .finally(() => setLoading(false));
-  }
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
 
   const hasActiveFilters =
     selectedCategories.length > 0 ||
     selectedCompanies.length > 0 ||
     inStockOnly ||
-    priceRange[0] !== priceMin ||
-    priceRange[1] !== priceMax;
+    userPriceRange !== null ||
+    debouncedSearch !== "";
 
   function clearFilters() {
+    setSearch("");
+    setDebouncedSearch("");
     setSelectedCategories([]);
     setSelectedCompanies([]);
     setInStockOnly(false);
     setUserPriceRange(null);
+    resetToFirstPage();
   }
 
-  // The collection opens on one piece, the first that can still be bought, and
-  // the rest of the sheet follows it in order.
+  // Each page is its own sheet: it opens on one piece, the first that can
+  // still be bought, and the rest of that page follows it. The folio renumbers
+  // from 01 on every page, because it describes the sheet, not the catalogue.
   const { leadLook, followingLooks } = useMemo(() => {
-    if (visibleProducts.length === 0) {
+    const items = result?.items ?? [];
+    if (items.length === 0) {
       return { leadLook: undefined, followingLooks: [] as Product[] };
     }
-    const first = visibleProducts.findIndex((p) => p.stockQuantity > 0);
+    const first = items.findIndex((p) => p.stockQuantity > 0);
     const leadIndex = first === -1 ? 0 : first;
     return {
-      leadLook: visibleProducts[leadIndex],
-      followingLooks: visibleProducts.filter((_, i) => i !== leadIndex),
+      leadLook: items[leadIndex],
+      followingLooks: items.filter((_, i) => i !== leadIndex),
     };
-  }, [visibleProducts]);
+  }, [result]);
 
-  const houseCount = useMemo(
-    () => new Set(visibleProducts.map((p) => p.companyId)).size,
-    [visibleProducts],
-  );
+  const totalCount = result?.totalCount ?? 0;
+  const totalPages = result?.totalPages ?? 0;
 
   return (
     <Box className="lookbook">
@@ -200,17 +202,17 @@ function Shop() {
                 Collection
               </Typography>
               <Typography className="lookbook-line">
-              {loading
-                ? "Opening the collection"
-                : visibleProducts.length === 0
-                  ? "Nothing here matches these filters"
-                  : `${visibleProducts.length} ${visibleProducts.length === 1 ? "piece" : "pieces"} from ${houseCount} ${houseCount === 1 ? "house" : "houses"}`}
+                {loading
+                  ? "Opening the collection"
+                  : totalCount === 0
+                    ? "Nothing here matches these filters"
+                    : `${totalCount} ${totalCount === 1 ? "piece" : "pieces"}`}
               </Typography>
             </Box>
 
-            {allCategories.length > 0 && (
+            {facets && facets.categories.length > 0 && (
               <Box className="lookbook-contents" component="nav" aria-label="Collection sections">
-                {allCategories.map((cat) => (
+                {facets.categories.map((cat) => (
                   <button
                     key={cat.id}
                     type="button"
@@ -224,11 +226,11 @@ function Shop() {
               </Box>
             )}
 
-            {allCompanies.length > 0 && (
+            {facets && facets.companies.length > 0 && (
               <Box className="lookbook-houses" component="nav" aria-label="Houses in this collection">
                 <Typography className="lookbook-houses-label">Houses</Typography>
                 <Box className="lookbook-houses-list">
-                  {allCompanies.map((company) => (
+                  {facets.companies.map((company) => (
                     <button
                       key={company.id}
                       type="button"
@@ -255,36 +257,42 @@ function Shop() {
           </Box>
 
           <Box className="lookbook-tools">
-              <TextField
-                placeholder="Search the collection"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                variant="standard"
-                className="lookbook-search"
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon className="lookbook-search-icon" />
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
+            <TextField
+              placeholder="Search the collection"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                resetToFirstPage();
+              }}
+              variant="standard"
+              className="lookbook-search"
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon className="lookbook-search-icon" />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
 
-              <FormControl variant="standard" size="small" className="lookbook-sort">
-                <Select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  aria-label="Sort the collection"
-                >
-                  <MenuItem value="price-asc">Price ascending</MenuItem>
-                  <MenuItem value="price-desc">Price descending</MenuItem>
-                  <MenuItem value="name-asc">Name A-Z</MenuItem>
-                  <MenuItem value="name-desc">Name Z-A</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+            <FormControl variant="standard" size="small" className="lookbook-sort">
+              <Select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value as ProductSortOption);
+                  resetToFirstPage();
+                }}
+                aria-label="Sort the collection"
+              >
+                <MenuItem value={ProductSortOption.PriceAsc}>Price ascending</MenuItem>
+                <MenuItem value={ProductSortOption.PriceDesc}>Price descending</MenuItem>
+                <MenuItem value={ProductSortOption.NameAsc}>Name A-Z</MenuItem>
+                <MenuItem value={ProductSortOption.NameDesc}>Name Z-A</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
 
         {error !== "" && (
@@ -299,78 +307,84 @@ function Shop() {
             <Box component="details" className="rail-disclosure" open={!narrow}>
               <Box component="summary">Narrow the collection</Box>
 
-            {allCategories.length > 0 && (
-              <Box className="rail-section">
-                <Typography className="rail-label">Categories</Typography>
-                <FormGroup>
-                  {allCategories.map((cat) => (
-                    <FormControlLabel
-                      key={cat.id}
-                      label={cat.name}
-                      control={
-                        <Checkbox
-                          checked={selectedCategories.includes(cat.id)}
-                          onChange={() => handleCategoryToggle(cat.id)}
-                        />
-                      }
-                    />
-                  ))}
-                </FormGroup>
-              </Box>
-            )}
+              {facets && facets.categories.length > 0 && (
+                <Box className="rail-section">
+                  <Typography className="rail-label">Categories</Typography>
+                  <FormGroup>
+                    {facets.categories.map((cat) => (
+                      <FormControlLabel
+                        key={cat.id}
+                        label={cat.name}
+                        control={
+                          <Checkbox
+                            checked={selectedCategories.includes(cat.id)}
+                            onChange={() => handleCategoryToggle(cat.id)}
+                          />
+                        }
+                      />
+                    ))}
+                  </FormGroup>
+                </Box>
+              )}
 
-            {allCompanies.length > 0 && (
-              <Box className="rail-section">
-                <Typography className="rail-label">Houses</Typography>
-                <FormGroup>
-                  {allCompanies.map((company) => (
-                    <FormControlLabel
-                      key={company.id}
-                      label={company.name}
-                      control={
-                        <Checkbox
-                          checked={selectedCompanies.includes(company.id)}
-                          onChange={() => handleCompanyToggle(company.id)}
-                        />
-                      }
-                    />
-                  ))}
-                </FormGroup>
-              </Box>
-            )}
+              {facets && facets.companies.length > 0 && (
+                <Box className="rail-section">
+                  <Typography className="rail-label">Houses</Typography>
+                  <FormGroup>
+                    {facets.companies.map((company) => (
+                      <FormControlLabel
+                        key={company.id}
+                        label={company.name}
+                        control={
+                          <Checkbox
+                            checked={selectedCompanies.includes(company.id)}
+                            onChange={() => handleCompanyToggle(company.id)}
+                          />
+                        }
+                      />
+                    ))}
+                  </FormGroup>
+                </Box>
+              )}
 
-            <Box className="rail-section">
-              <Typography className="rail-label">Availability</Typography>
-              <FormControlLabel
-                label="In stock only"
-                control={
-                  <Checkbox
-                    checked={inStockOnly}
-                    onChange={(e) => setInStockOnly(e.target.checked)}
+              <Box className="rail-section">
+                <Typography className="rail-label">Availability</Typography>
+                <FormControlLabel
+                  label="In stock only"
+                  control={
+                    <Checkbox
+                      checked={inStockOnly}
+                      onChange={(e) => {
+                        setInStockOnly(e.target.checked);
+                        resetToFirstPage();
+                      }}
+                    />
+                  }
+                />
+              </Box>
+
+              {facets && (
+                <Box className="rail-section">
+                  <Typography className="rail-label">Price</Typography>
+                  <Slider
+                    value={priceRange ?? facets.priceBounds}
+                    onChange={(_, val) => setUserPriceRange(val as [number, number])}
+                    onChangeCommitted={resetToFirstPage}
+                    min={facets.priceBounds[0]}
+                    max={facets.priceBounds[1]}
+                    valueLabelDisplay="auto"
+                    valueLabelFormat={(v) => `${v} RON`}
                   />
-                }
-              />
-            </Box>
-
-            <Box className="rail-section">
-              <Typography className="rail-label">Price</Typography>
-              <Slider
-                value={priceRange}
-                onChange={(_, val) => setUserPriceRange(val as [number, number])}
-                min={priceMin}
-                max={priceMax}
-                valueLabelDisplay="auto"
-                valueLabelFormat={(v) => `${v} RON`}
-              />
-              <Box className="rail-price-labels">
-                <Typography className="rail-price-value">
-                  {priceRange[0]} RON
-                </Typography>
-                <Typography className="rail-price-value">
-                  {priceRange[1]} RON
-                </Typography>
-              </Box>
-            </Box>
+                  <Box className="rail-price-labels">
+                    <Typography className="rail-price-value">
+                      {(priceRange ?? facets.priceBounds)[0]} RON
+                    </Typography>
+                    <Typography className="rail-price-value">
+                      {(priceRange ?? facets.priceBounds)[1]} RON
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
 
               {hasActiveFilters && (
                 <Button
@@ -389,7 +403,7 @@ function Shop() {
           <Box className="lookbook-main">
             {loading ? (
               <ShopSkeleton />
-            ) : visibleProducts.length === 0 ? (
+            ) : totalCount === 0 ? (
               <Box className="lookbook-empty">
                 <Typography className="lookbook-empty-title">
                   Nothing to show under these filters
@@ -409,7 +423,7 @@ function Shop() {
                   </Button>
                 )}
               </Box>
-            ) : followingLooks.length === 0 ? (
+            ) : followingLooks.length === 0 && totalPages <= 1 ? (
               <Typography className="lookbook-only">
                 This is the only piece in the collection under these filters.
               </Typography>
@@ -418,6 +432,17 @@ function Shop() {
                 {followingLooks.map((product, index) => (
                   <ProductLook key={product.id} product={product} plate={index + 2} />
                 ))}
+              </Box>
+            )}
+
+            {!loading && totalPages > 1 && (
+              <Box className="lookbook-pagination">
+                <Pagination
+                  page={page}
+                  count={totalPages}
+                  onChange={(_, value) => setPage(value)}
+                  shape="rounded"
+                />
               </Box>
             )}
           </Box>
