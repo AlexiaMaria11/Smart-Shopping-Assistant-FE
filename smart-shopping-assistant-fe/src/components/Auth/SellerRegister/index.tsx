@@ -125,6 +125,7 @@ function SellerRegister() {
               color="primary"
               size="large"
               disabled={saving}
+              className="auth-submit-btn"
             >
               Register company
             </Button>

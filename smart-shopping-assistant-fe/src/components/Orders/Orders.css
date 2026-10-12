@@ -1,3 +1,8 @@
+/* Orders is an Operate surface: tracking a purchase already made, not
+   browsing a sheet of plates. It carries the house's palette and square
+   corners, but stays a plain working list — hairlines instead of card
+   borders+shadows, state shown by colour rather than a hover lift. */
+
 .orders-page {
   background: var(--cream);
   min-height: 100vh;
@@ -6,6 +11,8 @@
 .orders-title {
   font-family: "Marcellus", Georgia, serif !important;
   font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--text-primary);
   margin-bottom: var(--space-lg) !important;
 }
@@ -17,23 +24,80 @@
   font-family: "Archivo", sans-serif;
 }
 
+.orders-empty-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: var(--text-xl) !important;
+  color: var(--text-primary) !important;
+  margin-bottom: var(--space-xs) !important;
+}
+
+/* Squared action buttons shared across Orders, OrderDetails and PackageActions */
+.orders-square-btn {
+  border-radius: 0 !important;
+}
+
+/* The house's flat, square primary action — replaces the gradient pill the
+   global button theme otherwise supplies */
+.orders-primary-btn {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+.orders-primary-btn:hover {
+  background: var(--primary-dark) !important;
+}
+
+.orders-primary-btn.Mui-disabled {
+  background: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+.orders-back-btn {
+  margin-bottom: var(--space-sm) !important;
+  padding: 4px 2px !important;
+  min-width: 0 !important;
+  border-radius: 0 !important;
+  color: var(--text-secondary) !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em;
+  background: transparent !important;
+}
+
+.orders-back-btn:hover {
+  color: var(--primary) !important;
+  background: transparent !important;
+}
+
+/* Status chips are square everywhere on this surface */
+.orders-page .MuiChip-root {
+  border-radius: 0;
+  font-family: "Archivo", sans-serif;
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .order-card {
   display: block;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: 18px 22px;
   margin-bottom: var(--space-md);
   text-decoration: none;
   color: inherit;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 a.order-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-sm);
+  border-color: var(--primary);
 }
 
 .order-card-header {
@@ -45,8 +109,8 @@ a.order-card:hover {
 }
 
 .order-number {
-  font-family: "Archivo", sans-serif !important;
-  font-weight: 700 !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
   font-size: var(--text-lg) !important;
   color: var(--text-primary);
 }
@@ -54,6 +118,7 @@ a.order-card:hover {
 .order-meta {
   font-family: "Archivo", sans-serif !important;
   font-size: var(--text-sm) !important;
+  font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
 }
 
@@ -67,16 +132,16 @@ a.order-card:hover {
 .order-thumb {
   width: 54px;
   height: 54px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   object-fit: cover;
-  border: 1px solid var(--border);
   background: var(--cream-dark);
 }
 
 .order-total {
-  font-family: "Marcellus", Georgia, serif !important;
-  font-weight: 400 !important;
+  font-family: "Archivo", sans-serif !important;
+  font-weight: 700 !important;
   font-size: var(--text-xl) !important;
+  font-variant-numeric: tabular-nums;
   color: var(--primary);
 }
 
@@ -91,7 +156,7 @@ a.order-card:hover {
 .order-box {
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: 22px;
   margin-bottom: 20px;
 }
@@ -99,7 +164,9 @@ a.order-card:hover {
 .order-box-title {
   font-family: "Marcellus", Georgia, serif !important;
   font-weight: 400 !important;
-  font-size: var(--text-xl) !important;
+  font-size: var(--text-title) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   margin-bottom: 14px !important;
 }
 
@@ -144,6 +211,7 @@ a.order-card:hover {
   font-family: "Archivo", sans-serif !important;
   font-size: var(--text-body) !important;
   font-weight: 600 !important;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
@@ -159,6 +227,7 @@ a.order-card:hover {
   justify-content: space-between;
   font-family: "Archivo", sans-serif;
   font-size: var(--text-body);
+  font-variant-numeric: tabular-nums;
   padding: 3px 0;
 }
 
@@ -167,9 +236,10 @@ a.order-card:hover {
 }
 
 .order-sum-row--total {
-  font-family: "Marcellus", Georgia, serif;
-  font-weight: 400;
+  font-family: "Archivo", sans-serif;
+  font-weight: 700;
   font-size: var(--text-xxl);
+  font-variant-numeric: tabular-nums;
   color: var(--primary);
   border-top: 1px solid var(--border);
   margin-top: var(--space-xs);

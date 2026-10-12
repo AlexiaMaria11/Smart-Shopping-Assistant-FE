@@ -37,7 +37,12 @@ function CartDrawer() {
     cart !== null && cart.items.some((i) => i.quantity > i.availableStock);
 
   return (
-    <Drawer anchor="right" open={open} onClose={closeCart}>
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={closeCart}
+      slotProps={{ paper: { className: "cart-drawer-paper" } }}
+    >
       <Box className="cart-drawer">
         <Box className="cart-header">
           <Box className="cart-header-info">
@@ -58,14 +63,12 @@ function CartDrawer() {
 
         {isEmpty ? (
           <Box className="cart-empty">
-            <Box className="cart-empty-icon">
-              <ShoppingCartOutlinedIcon className="cart-empty-icon-svg" />
-            </Box>
+            <ShoppingCartOutlinedIcon className="cart-empty-icon-svg" />
             <Typography className="cart-empty-title">
-              Your cart is empty
+              The cart is empty
             </Typography>
             <Typography className="cart-empty-desc">
-              Browse our collection and add something you love.
+              Browse the collection and add a piece you love.
             </Typography>
           </Box>
         ) : (
@@ -171,7 +174,7 @@ function CartDrawer() {
 
               {cart!.freeShippingRemaining > 0 && (
                 <Box className="cart-free-shipping">
-                  <LocalShippingOutlinedIcon sx={{ fontSize: 18 }} />
+                  <LocalShippingOutlinedIcon sx={{ fontSize: 16 }} />
                   Add {cart!.freeShippingRemainingLabel} more for free delivery
                 </Box>
               )}

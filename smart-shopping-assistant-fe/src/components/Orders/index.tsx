@@ -38,8 +38,17 @@ function Orders() {
           <LoadingState />
         ) : orders.length === 0 ? (
           <Box className="orders-empty">
-            <Typography sx={{ mb: 2 }}>You have not placed any orders yet.</Typography>
-            <Button component={Link} to="/shop" variant="contained" color="primary">
+            <Typography className="orders-empty-title">No orders yet</Typography>
+            <Typography sx={{ mb: 2 }}>
+              Nothing has been ordered from the collection yet.
+            </Typography>
+            <Button
+              component={Link}
+              to="/shop"
+              variant="contained"
+              color="primary"
+              className="orders-primary-btn"
+            >
               Start shopping
             </Button>
           </Box>

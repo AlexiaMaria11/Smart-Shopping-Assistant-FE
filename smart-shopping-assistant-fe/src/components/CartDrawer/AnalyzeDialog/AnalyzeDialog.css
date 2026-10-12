@@ -1,3 +1,16 @@
+/* The AI analysis dialog is optional and Operate-flavoured: squared, hairline,
+   a flat burgundy title region instead of the gradient banner it used to have. */
+
+.analyze-dialog-paper .MuiDialogTitle-root {
+  background: var(--primary-dark) !important;
+  color: var(--white) !important;
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: var(--text-title) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
 /* ── Loading state ── */
 .analyze-loading {
   padding: 40px 0 24px;
@@ -12,8 +25,8 @@
 }
 
 .analyze-progress {
-  height: 6px !important;
-  border-radius: var(--radius-pill) !important;
+  height: 3px !important;
+  border-radius: 0 !important;
 }
 
 /* ── Summary block ── */
@@ -32,6 +45,7 @@
 
 .analyze-savings-chip {
   align-self: flex-start;
+  border-radius: 0 !important;
 }
 
 .analyze-no-suggestions {
@@ -47,10 +61,28 @@
   align-self: flex-start;
 }
 
-/* ── Suggestion cards ── */
+/* Every outlined/contained button in this dialog is square, per the house's
+   button grammar — no pill, no corner radius. */
+.analyze-square-btn {
+  border-radius: 0 !important;
+}
+
+.analyze-done-btn {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.analyze-done-btn:hover {
+  background: var(--primary-dark) !important;
+}
+
+/* ── Suggestion cards: squared, hairline, no shadow ── */
 .suggestion-card {
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: var(--space-md);
   background: var(--white);
   transition: border-color 0.2s ease, background 0.2s ease;
@@ -84,9 +116,10 @@
 }
 
 .suggestion-card-price {
-  font-family: "Marcellus", Georgia, serif !important;
-  font-weight: 400 !important;
+  font-family: "Archivo", sans-serif !important;
+  font-weight: 600 !important;
   font-size: var(--text-lg) !important;
+  font-variant-numeric: tabular-nums;
   color: var(--primary) !important;
   white-space: nowrap;
 }
@@ -101,6 +134,7 @@
 
 .suggestion-savings-chip {
   margin-bottom: var(--space-sm) !important;
+  border-radius: 0 !important;
 }
 
 .suggestion-card-actions {

@@ -52,6 +52,7 @@ function PackageActions({ orderId, status, companyId, onUpdated, onError }: Pack
           color="primary"
           disabled={busy}
           onClick={() => update(next.status)}
+          className="orders-primary-btn"
         >
           {next.label}
         </Button>
@@ -63,6 +64,7 @@ function PackageActions({ orderId, status, companyId, onUpdated, onError }: Pack
           color="error"
           disabled={busy}
           onClick={() => update(OrderStatus.Cancelled)}
+          className="orders-square-btn"
         >
           Cancel package
         </Button>

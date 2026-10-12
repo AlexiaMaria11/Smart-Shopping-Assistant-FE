@@ -79,6 +79,7 @@ function Register() {
               color="primary"
               size="large"
               disabled={saving}
+              className="auth-submit-btn"
             >
               Create account
             </Button>

@@ -135,9 +135,15 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
       .length ?? 0;
 
   return (
-    <Dialog open onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog
+      open
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      slotProps={{ paper: { className: "analyze-dialog-paper" } }}
+    >
       <DialogTitle>
-        <AutoAwesomeIcon sx={{ color: "var(--gold)", fontSize: "var(--icon-md)" }} />
+        <AutoAwesomeIcon sx={{ color: "var(--accent)", fontSize: "var(--icon-md)" }} />
         AI Cart Analysis
       </DialogTitle>
 
@@ -192,7 +198,7 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
                     size="small"
                     startIcon={<AddShoppingCartIcon />}
                     onClick={handleApproveAll}
-                    className="analyze-approve-all-btn"
+                    className="analyze-approve-all-btn analyze-square-btn"
                   >
                     Approve all ({pendingCount})
                   </Button>
@@ -236,6 +242,7 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
                               color="success"
                               startIcon={<CheckCircleOutlineIcon />}
                               onClick={() => handleApprove(suggestion)}
+                              className="analyze-square-btn"
                             >
                               Approve
                             </Button>
@@ -245,6 +252,7 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
                               color="error"
                               startIcon={<CancelOutlinedIcon />}
                               onClick={() => handleDecline(suggestion)}
+                              className="analyze-square-btn"
                             >
                               Decline
                             </Button>
@@ -297,7 +305,12 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose} variant="contained" color="primary">
+        <Button
+          onClick={onClose}
+          variant="contained"
+          color="primary"
+          className="analyze-done-btn"
+        >
           Done
         </Button>
       </DialogActions>

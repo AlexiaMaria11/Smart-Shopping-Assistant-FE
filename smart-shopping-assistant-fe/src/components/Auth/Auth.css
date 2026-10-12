@@ -1,3 +1,8 @@
+/* Auth is an Operate surface: signing in or registering, not browsing a
+   sheet of plates. It carries the house's palette, Marcellus/Archivo
+   pairing and square corners, but stays a plain working form — a hairline
+   border instead of a card shadow, no lift on hover. */
+
 .auth-page {
   min-height: calc(100vh - 72px);
   background: var(--cream);
@@ -12,8 +17,7 @@
   max-width: 440px;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius-xxl);
-  box-shadow: var(--shadow-md);
+  border-radius: 0;
   padding: 36px 32px 32px;
 }
 
@@ -24,6 +28,8 @@
 .auth-title {
   font-family: "Marcellus", Georgia, serif !important;
   font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--text-primary);
   font-size: var(--text-headline) !important;
 }
@@ -32,7 +38,7 @@
   font-family: "Archivo", sans-serif !important;
   font-size: var(--text-body) !important;
   color: var(--text-secondary);
-  margin: 6px 0 24px !important;
+  margin: 10px 0 24px !important;
 }
 
 .auth-section-label {
@@ -40,7 +46,7 @@
   font-size: var(--text-xs) !important;
   font-weight: 600 !important;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em;
   color: var(--text-secondary);
   margin-top: var(--space-xs) !important;
 }
@@ -66,9 +72,9 @@
 .auth-demo {
   margin-top: 22px;
   padding: 14px 16px;
-  border-radius: var(--radius-md);
-  background: var(--accent-pale);
-  border: 1px dashed var(--accent-light);
+  border-radius: 0;
+  background: var(--cream-dark);
+  border: 1px dashed var(--border);
   font-family: "Archivo", sans-serif;
   font-size: var(--text-xs);
   color: var(--text-secondary);
@@ -87,4 +93,33 @@
 
 .auth-demo button:hover {
   text-decoration: underline;
+}
+
+/* Every field on this surface takes the house's squared outline */
+.auth-card .MuiOutlinedInput-root {
+  border-radius: 0;
+}
+
+/* The house's flat, square primary action */
+.auth-submit-btn {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em;
+  padding: 14px 22px !important;
+  transition: background 0.2s ease !important;
+}
+
+.auth-submit-btn:hover {
+  background: var(--primary-dark) !important;
+}
+
+.auth-submit-btn.Mui-disabled {
+  background: var(--border) !important;
+  color: var(--text-secondary) !important;
 }

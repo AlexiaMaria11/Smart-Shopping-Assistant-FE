@@ -7,7 +7,7 @@ import "../Auth.css";
 
 const demoAccounts = [
   { label: "Customer", email: "client@smartshop.ro", password: "Client1234" },
-  { label: "Seller (TechNova)", email: "contact@technova.ro", password: "Seller1234" },
+  { label: "Seller (Teilor)", email: "contact@teilor.ro", password: "Seller1234" },
   { label: "Admin", email: "admin@smartshop.ro", password: "Admin1234" },
 ];
 
@@ -73,6 +73,7 @@ function Login() {
               color="primary"
               size="large"
               disabled={saving}
+              className="auth-submit-btn"
             >
               Sign in
             </Button>

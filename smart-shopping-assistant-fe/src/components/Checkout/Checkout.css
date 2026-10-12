@@ -1,3 +1,8 @@
+/* Checkout is an Operate surface: a shopper finishing a purchase, not
+   browsing a sheet of plates. It carries the house's burgundy/cream palette,
+   Marcellus/Archivo pairing and square corners, but stays a plain working
+   form — hairlines instead of card borders+shadows, no lift on hover. */
+
 .checkout-page {
   background: var(--cream);
   min-height: 100vh;
@@ -6,6 +11,8 @@
 .checkout-title {
   font-family: "Marcellus", Georgia, serif !important;
   font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--text-primary);
   margin-bottom: var(--space-lg) !important;
 }
@@ -17,11 +24,17 @@
   align-items: start;
 }
 
+/* Every field on this surface takes the house's squared outline, the same
+   as the quantity stepper on the product page. */
+.checkout-page .MuiOutlinedInput-root {
+  border-radius: 0;
+}
+
 .checkout-section,
 .checkout-summary {
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: var(--space-lg);
 }
 
@@ -37,7 +50,10 @@
 .checkout-section-title {
   font-family: "Marcellus", Georgia, serif !important;
   font-weight: 400 !important;
-  font-size: var(--text-xxl) !important;
+  font-size: var(--text-title) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-primary) !important;
   margin-bottom: 18px !important;
 }
 
@@ -75,9 +91,9 @@
 
 .checkout-test-cards {
   padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--accent-light);
-  background: var(--accent-pale);
+  border-radius: 0;
+  border: 1px dashed var(--border);
+  background: var(--cream-dark);
 }
 
 .checkout-summary-item {
@@ -90,6 +106,7 @@
 .checkout-summary-item .MuiTypography-root {
   font-family: "Archivo", sans-serif;
   font-size: var(--text-body);
+  font-variant-numeric: tabular-nums;
 }
 
 .checkout-summary-name {
@@ -105,9 +122,10 @@
 }
 
 .checkout-summary-total .MuiTypography-root {
-  font-family: "Marcellus", Georgia, serif;
-  font-weight: 400;
+  font-family: "Archivo", sans-serif;
+  font-weight: 700;
   font-size: var(--text-xxl);
+  font-variant-numeric: tabular-nums;
   color: var(--primary);
 }
 
@@ -115,6 +133,30 @@
   height: 1px;
   background: var(--border);
   margin: 10px 0;
+}
+
+/* The house's flat, square primary action */
+.checkout-square-btn {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em;
+  padding: 14px 22px !important;
+  transition: background 0.2s ease !important;
+}
+
+.checkout-square-btn:hover {
+  background: var(--primary-dark) !important;
+}
+
+.checkout-square-btn.Mui-disabled {
+  background: var(--border) !important;
+  color: var(--text-secondary) !important;
 }
 
 @media (max-width: 900px) {

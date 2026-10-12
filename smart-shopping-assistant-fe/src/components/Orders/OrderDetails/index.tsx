@@ -112,7 +112,12 @@ function OrderDetails() {
   return (
     <Box className="orders-page">
       <Container maxWidth="lg" sx={{ py: 5 }}>
-        <Button component={Link} to={backLink} startIcon={<ArrowBackIcon />} sx={{ mb: 2, px: 1 }}>
+        <Button
+          component={Link}
+          to={backLink}
+          startIcon={<ArrowBackIcon sx={{ fontSize: "var(--icon-xs) !important" }} />}
+          className="orders-back-btn"
+        >
           Back to orders
         </Button>
 
@@ -254,6 +259,7 @@ function OrderDetails() {
                 color="error"
                 onClick={handleCancel}
                 disabled={cancelling}
+                className="orders-square-btn"
               >
                 Cancel order
               </Button>

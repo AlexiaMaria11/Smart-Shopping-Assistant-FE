@@ -67,13 +67,19 @@ function Checkout() {
     return (
       <Container maxWidth="sm" sx={{ py: 8, textAlign: "center" }}>
         <Typography variant="h5" className="checkout-title">
-          Your cart is empty
+          The cart is empty
         </Typography>
         <Typography sx={{ color: "var(--text-secondary)", my: 2 }}>
-          Add a few products before going to checkout.
+          Add a piece from the collection before going to checkout.
         </Typography>
-        <Button component={Link} to="/shop" variant="contained" color="primary">
-          Back to the shop
+        <Button
+          component={Link}
+          to="/shop"
+          variant="contained"
+          color="primary"
+          className="checkout-square-btn"
+        >
+          Back to the collection
         </Button>
       </Container>
     );
@@ -334,6 +340,7 @@ function Checkout() {
               color="primary"
               size="large"
               disabled={placing}
+              className="checkout-square-btn"
               sx={{ mt: 2 }}
             >
               {placing ? "Placing order…" : "Place order"}
