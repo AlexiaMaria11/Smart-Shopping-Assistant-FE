@@ -1,0 +1,106 @@
+/* "My store" — seller operator screen, restyled into the lookbook grammar:
+   square corners, hairlines instead of boxed borders, burgundy for the
+   committed regions, Marcellus for titles, Archivo tabular figures. Scoped
+   to this component only (does not touch the shared Sellers.css, which the
+   public seller directory and storefront page still use). */
+
+.seller-store-page {
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.seller-store-hero {
+  height: 200px;
+  background-color: var(--cream-dark);
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+}
+
+.seller-store-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-top: -40px;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.seller-store-logo {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 0 !important;
+  border: 3px solid var(--white);
+  box-shadow: none !important;
+  font-size: var(--text-display) !important;
+  background-color: var(--primary) !important;
+}
+
+.seller-store-info {
+  flex: 1;
+  min-width: 240px;
+  padding-bottom: 4px;
+}
+
+.seller-store-name {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  color: var(--text-primary);
+}
+
+.seller-store-meta {
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.seller-store-edit-btn {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-width: 1px !important;
+}
+
+.seller-store-about {
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-md) !important;
+  color: var(--text-secondary);
+  max-width: 760px;
+  margin-bottom: var(--space-xl) !important;
+  line-height: 1.7 !important;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border);
+}
+
+.seller-store-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.seller-store-actions .MuiButton-root {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.seller-store-actions .MuiButton-containedPrimary {
+  background: var(--primary) !important;
+  background-image: none !important;
+}
+
+.seller-store-actions .MuiButton-containedPrimary:hover {
+  background: var(--primary-dark) !important;
+}
+
+.seller-store-actions .MuiButton-outlinedPrimary {
+  border-width: 1px !important;
+}
+
+.seller-store-actions .MuiButton-text {
+  color: var(--text-secondary) !important;
+}
+
+.seller-store-actions .MuiButton-text:hover {
+  color: var(--primary) !important;
+  background: transparent !important;
+}

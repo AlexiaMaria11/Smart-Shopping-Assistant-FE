@@ -13,7 +13,7 @@ import {
 import ErrorAlert from "../common/ErrorAlert";
 import LoadingState from "../common/LoadingState";
 import PackageActions from "../Orders/PackageActions";
-import "../Orders/Orders.css";
+import "./SellerOrders.css";
 
 type Filter = "todo" | "shipped" | "done";
 
@@ -48,20 +48,30 @@ function SellerOrders() {
   );
   const visible = orders.filter((o) => FILTERS[filter].includes(o.status));
 
+  const EMPTY_MESSAGES: Record<Filter, string> = {
+    todo: "No orders waiting to be prepared.",
+    shipped: "No packages on the way.",
+    done: "No finished orders yet.",
+  };
+
   function replaceOrder(updated: Order) {
     setOrders((current) => current.map((o) => (o.id === updated.id ? updated : o)));
     setError("");
   }
 
   return (
-    <Box className="orders-page">
+    <Box className="seller-orders-page">
       <Container maxWidth="md" sx={{ py: 5 }}>
-        <Typography variant="h4" className="orders-title">
+        <Typography variant="h4" className="seller-orders-title">
           Orders to fulfil
         </Typography>
         <ErrorAlert message={error} />
 
-        <Tabs value={filter} onChange={(_, value) => setFilter(value)} sx={{ mb: 3 }}>
+        <Tabs
+          value={filter}
+          onChange={(_, value) => setFilter(value)}
+          className="seller-orders-tabs"
+        >
           <Tab value="todo" label={`To prepare (${counts.todo})`} />
           <Tab value="shipped" label={`On the way (${counts.shipped})`} />
           <Tab value="done" label={`Finished (${counts.done})`} />
@@ -70,22 +80,23 @@ function SellerOrders() {
         {loading ? (
           <LoadingState />
         ) : visible.length === 0 ? (
-          <Typography className="orders-empty">Nothing here right now.</Typography>
+          <Typography className="seller-orders-empty">{EMPTY_MESSAGES[filter]}</Typography>
         ) : (
           visible.map((order) => (
-            <Box key={order.id} className="order-card">
-              <Box className="order-card-header">
+            <Box key={order.id} className="seller-order-panel">
+              <Box className="seller-order-panel-header">
                 <Box>
-                  <Typography className="order-number">
+                  <Typography className="seller-order-number">
                     <Link to={`/orders/${order.id}`}>Order {order.number}</Link>
                   </Typography>
-                  <Typography className="order-meta">
+                  <Typography className="seller-order-meta">
                     {formatDate(order.createdAt)} · {order.shippingFullName}, {order.shippingCity} (
                     {order.shippingCounty})
                   </Typography>
                 </Box>
                 <Chip
                   size="small"
+                  className="seller-order-status"
                   label={ORDER_STATUS_LABELS[order.status]}
                   color={ORDER_STATUS_COLORS[order.status]}
                 />
@@ -94,31 +105,33 @@ function SellerOrders() {
               {order.items.map((item) => (
                 <Box
                   key={item.id}
-                  className={`order-line${item.status === OrderStatus.Cancelled ? " order-line--cancelled" : ""}`}
+                  className={`seller-order-line${item.status === OrderStatus.Cancelled ? " seller-order-line--cancelled" : ""}`}
                 >
-                  <img src={item.imageUrl} alt={item.productName} className="order-thumb" />
-                  <Typography className="order-line-name">
+                  <img src={item.imageUrl} alt={item.productName} className="seller-order-thumb" />
+                  <Typography className="seller-order-line-name">
                     {item.quantity} ×{" "}
                     {item.productId === null ? (
                       item.productName
                     ) : (
-                      <Link to={`/products/${item.productId}`} className="order-line-link">
+                      <Link to={`/products/${item.productId}`} className="seller-order-line-link">
                         {item.productName}
                       </Link>
                     )}
                   </Typography>
-                  <Typography className="order-line-price">{money(item.lineTotal)}</Typography>
+                  <Typography className="seller-order-line-price">{money(item.lineTotal)}</Typography>
                 </Box>
               ))}
 
-              <Box className="order-card-header" sx={{ mt: 1.5 }}>
-                <Typography className="order-total">{money(order.total)}</Typography>
-                <PackageActions
-                  orderId={order.id}
-                  status={order.status}
-                  onUpdated={replaceOrder}
-                  onError={setError}
-                />
+              <Box className="seller-order-footer">
+                <Typography className="seller-order-total">{money(order.total)}</Typography>
+                <Box className="seller-order-actions">
+                  <PackageActions
+                    orderId={order.id}
+                    status={order.status}
+                    onUpdated={replaceOrder}
+                    onError={setError}
+                  />
+                </Box>
               </Box>
             </Box>
           ))

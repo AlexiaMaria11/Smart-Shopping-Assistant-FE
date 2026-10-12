@@ -8,7 +8,7 @@ import { CompanyStatus, type Company } from "../shared/types/Company";
 import CompanyFormDialog from "../Companies/CompanyFormDialog";
 import ErrorAlert from "../common/ErrorAlert";
 import LoadingState from "../common/LoadingState";
-import "../Sellers/Sellers.css";
+import "./SellerStore.css";
 
 const STATUS_MESSAGES: Record<CompanyStatus, { severity: "info" | "success" | "error" | "warning"; text: string }> = {
   [CompanyStatus.Pending]: {
@@ -64,26 +64,26 @@ function SellerStore() {
   const status = STATUS_MESSAGES[company.status];
 
   return (
-    <Box className="sellers-page">
+    <Box className="seller-store-page">
       <Box
-        className="seller-hero"
+        className="seller-store-hero"
         sx={{ backgroundImage: company.bannerUrl ? `url(${company.bannerUrl})` : undefined }}
       />
       <Container maxWidth="lg" sx={{ pb: 6 }}>
-        <Box className="seller-header">
+        <Box className="seller-store-header">
           <Avatar
             src={company.logoUrl}
             alt={company.name}
             variant="rounded"
-            className="seller-header-logo"
+            className="seller-store-logo"
           >
             {company.name[0]}
           </Avatar>
-          <Box className="seller-header-info">
-            <Typography variant="h4" className="seller-header-name">
+          <Box className="seller-store-info">
+            <Typography variant="h4" className="seller-store-name">
               {company.name}
             </Typography>
-            <Typography sx={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
+            <Typography className="seller-store-meta">
               {company.productCount} products · {company.commissionPercent}% commission per sale
             </Typography>
           </Box>
@@ -91,6 +91,7 @@ function SellerStore() {
             variant="outlined"
             color="primary"
             startIcon={<EditIcon />}
+            className="seller-store-edit-btn"
             onClick={() => setEditing(true)}
           >
             Edit store details
@@ -98,15 +99,15 @@ function SellerStore() {
         </Box>
 
         <ErrorAlert message={error} />
-        <Alert severity={status.severity} sx={{ mb: 3 }}>
+        <Alert severity={status.severity} sx={{ mb: 3, borderRadius: 0 }}>
           {status.text}
         </Alert>
 
-        <Typography className="seller-about">
-          {company.description || "Add a short description so customers know what you sell."}
+        <Typography className="seller-store-about">
+          {company.description || "Add a short description so customers know what designs you carry."}
         </Typography>
 
-        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+        <Box className="seller-store-actions">
           <Button component={Link} to="/seller/orders" variant="contained" color="primary">
             Orders to fulfil
           </Button>

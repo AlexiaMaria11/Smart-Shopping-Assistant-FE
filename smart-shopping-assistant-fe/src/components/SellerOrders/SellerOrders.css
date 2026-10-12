@@ -1,0 +1,185 @@
+/* Seller package-level order view — an Operate-mode screen restyled into the
+   lookbook grammar: square corners, hairlines instead of boxed/shadowed
+   panels, burgundy for the page title and the primary action, Archivo
+   tabular figures for prices. Scoped to this component (does not touch the
+   shared Orders.css used by the customer-facing order pages). */
+
+.seller-orders-page {
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.seller-orders-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  color: var(--primary) !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: var(--space-lg) !important;
+}
+
+.seller-orders-tabs {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-lg) !important;
+  min-height: 0 !important;
+}
+
+.seller-orders-tabs .MuiTab-root {
+  font-family: "Archivo", sans-serif;
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  min-height: 0;
+  padding: 10px 18px;
+}
+
+.seller-orders-tabs .MuiTab-root.Mui-selected {
+  color: var(--primary);
+}
+
+.seller-orders-tabs .MuiTabs-indicator {
+  background-color: var(--primary);
+  height: 2px;
+  border-radius: 0;
+}
+
+.seller-orders-empty {
+  text-align: center;
+  padding: 64px 0;
+  color: var(--text-secondary);
+  font-family: "Archivo", sans-serif;
+  border-top: 1px solid var(--border);
+}
+
+.seller-order-panel {
+  display: block;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 18px 22px;
+  margin-bottom: var(--space-md);
+}
+
+.seller-order-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.seller-order-number {
+  font-family: "Archivo", sans-serif !important;
+  font-weight: 700 !important;
+  font-size: var(--text-lg) !important;
+  color: var(--text-primary);
+}
+
+.seller-order-number a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.seller-order-number a:hover {
+  text-decoration: underline;
+}
+
+.seller-order-meta {
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.seller-order-status {
+  border-radius: 0 !important;
+  font-family: "Archivo", sans-serif !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.seller-order-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.seller-order-line--cancelled {
+  opacity: 0.55;
+}
+
+.seller-order-line--cancelled .seller-order-line-name {
+  text-decoration: line-through;
+}
+
+.seller-order-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 0;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--cream-dark);
+}
+
+.seller-order-line-name {
+  flex: 1;
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-body) !important;
+}
+
+.seller-order-line-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.seller-order-line-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.seller-order-line-price {
+  font-family: "Archivo", sans-serif !important;
+  font-size: var(--text-body) !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.seller-order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.seller-order-total {
+  font-family: "Archivo", sans-serif !important;
+  font-weight: 700 !important;
+  font-size: var(--text-xl) !important;
+  letter-spacing: 0.01em;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.seller-order-actions .MuiButton-root {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.seller-order-actions .MuiButton-containedPrimary:not(.Mui-disabled) {
+  background: var(--primary) !important;
+  background-image: none !important;
+}
+
+.seller-order-actions .MuiButton-containedPrimary:not(.Mui-disabled):hover {
+  background: var(--primary-dark) !important;
+}
