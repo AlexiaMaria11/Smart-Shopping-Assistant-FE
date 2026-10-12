@@ -228,7 +228,7 @@ Both ship from Google Fonts in `index.html`: `Archivo:wght@400;500;600;700` and 
 - **Plate Name** (Marcellus 400, 0.88rem, line-height 1.3, two-line clamp): the name in a plate's credit line; 1rem and white on the lead.
 - **Body** (Archivo 400, 0.88rem, line-height 1.6; 1.75 for the product description, capped at 68ch): prose, descriptions, control text.
 - **Label** (Archivo 500–600, 0.72rem, tracking 0.12–0.18em, uppercase): houses, folios, stock notes, navigation items, section labels, button text, the gallery counter.
-- **Figure** (Archivo 600, 0.82rem, `font-variant-numeric: tabular-nums`): the price in a credit line. The product page's large price is the one exception — Marcellus 400 at 1.5rem, also tabular.
+- **Figure** (Archivo 600, 0.82rem, `font-variant-numeric: tabular-nums`): the price in a credit line, and at `var(--text-amount)` for the product page's large price — same family, no exception, so digits stay unambiguous at any size.
 
 ### Named Rules
 **The One Weight Rule.** Marcellus ships at weight 400 and only 400. The family has a single weight, so every rule that once asked for 600 or 700 had the request stripped rather than letting the browser synthesize a fake bold. Emphasis in the house voice comes from size, tracking and case — never from weight. Weights 500/600/700 belong to Archivo alone.

@@ -28,6 +28,8 @@ import Orders from "./components/Orders";
 import OrderDetails from "./components/Orders/OrderDetails";
 import SellerOrders from "./components/SellerOrders";
 import AdminOrders from "./components/AdminOrders";
+import SellerDashboard from "./components/SellerDashboard";
+import AdminDashboard from "./components/AdminDashboard";
 
 const adminOnly = [Role.Admin];
 const sellerOnly = [Role.Seller];
@@ -66,6 +68,10 @@ function App() {
               />
 
               <Route
+                path="/admin/dashboard"
+                element={<RequireRole roles={adminOnly}><AdminDashboard /></RequireRole>}
+              />
+              <Route
                 path="/admin/companies"
                 element={<RequireRole roles={adminOnly}><Companies /></RequireRole>}
               />
@@ -86,6 +92,10 @@ function App() {
                 element={<RequireRole roles={adminOnly}><Promotions /></RequireRole>}
               />
 
+              <Route
+                path="/seller/dashboard"
+                element={<RequireRole roles={sellerOnly}><SellerDashboard /></RequireRole>}
+              />
               <Route
                 path="/seller/store"
                 element={<RequireRole roles={sellerOnly}><SellerStore /></RequireRole>}

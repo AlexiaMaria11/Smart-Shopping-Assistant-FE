@@ -1,0 +1,12 @@
+.seller-dashboard-page {
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.seller-dashboard-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  color: var(--primary) !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: var(--space-lg) !important;
+}

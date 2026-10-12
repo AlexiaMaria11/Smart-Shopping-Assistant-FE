@@ -157,9 +157,10 @@
 }
 
 .product-detail-price {
-  font-family: "Marcellus", Georgia, serif !important;
+  font-family: "Archivo", Inter, system-ui, sans-serif !important;
   font-size: var(--text-amount) !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
   line-height: 1 !important;
   font-variant-numeric: tabular-nums;
   color: var(--text-primary) !important;

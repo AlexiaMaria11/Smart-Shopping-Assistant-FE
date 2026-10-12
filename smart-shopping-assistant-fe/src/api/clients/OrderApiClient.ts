@@ -1,10 +1,17 @@
 import { toOrder, type Order } from "../../components/shared/types/Order";
+import {
+  toAdminStats,
+  toSellerStats,
+  type AdminStats,
+  type SellerStats,
+} from "../../components/shared/types/Stats";
 import { http } from "../base/http";
 import type {
   CheckoutInput,
   OrderModel,
   OrderStatus,
 } from "../models/OrderModel";
+import type { AdminStatsModel, SellerStatsModel } from "../models/StatsModel";
 
 export const ordersApi = {
   place: async (data: CheckoutInput): Promise<Order> => {
@@ -15,6 +22,12 @@ export const ordersApi = {
   },
   getForSeller: async (): Promise<Order[]> => {
     return (await http.get<OrderModel[]>("/orders/seller")).map(toOrder);
+  },
+  getSellerStats: async (): Promise<SellerStats> => {
+    return toSellerStats(await http.get<SellerStatsModel>("/orders/seller/stats"));
+  },
+  getAdminStats: async (): Promise<AdminStats> => {
+    return toAdminStats(await http.get<AdminStatsModel>("/orders/admin/stats"));
   },
   getAll: async (): Promise<Order[]> => {
     return (await http.get<OrderModel[]>("/orders")).map(toOrder);

@@ -1,0 +1,25 @@
+.admin-dashboard-page {
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.admin-dashboard-title {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-weight: 400 !important;
+  color: var(--primary) !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: var(--space-lg) !important;
+}
+
+.dashboard-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 700px) {
+  .dashboard-two-col {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
