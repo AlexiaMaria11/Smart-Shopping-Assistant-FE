@@ -5,9 +5,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { galleryOf, LOW_STOCK_THRESHOLD, type Product } from "../shared/types/Product";
-import { useCart } from "../../context/CartContext/cart-context";
-import { useFavorites } from "../../context/FavoritesContext/favorites-context";
+import { galleryOf, LOW_STOCK_THRESHOLD, type Product } from "../../shared/types/Product";
+import { useCart } from "../../../context/CartContext/cart-context";
+import { useFavorites } from "../../../context/FavoritesContext/favorites-context";
 import "./ProductLook.css";
 
 interface ProductLookProps {

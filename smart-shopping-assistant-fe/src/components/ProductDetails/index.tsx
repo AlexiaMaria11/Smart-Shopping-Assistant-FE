@@ -33,7 +33,7 @@ import { useCart } from "../../context/CartContext/cart-context";
 import { useFavorites } from "../../context/FavoritesContext/favorites-context";
 import ErrorAlert from "../common/ErrorAlert";
 import LoadingState from "../common/LoadingState";
-import ProductLook from "../Shop/ProductLook";
+import ProductLook from "../common/ProductLook";
 import ProductGallery from "./ProductGallery";
 import "./ProductDetails.css";
 

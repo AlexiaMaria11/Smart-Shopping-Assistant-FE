@@ -126,6 +126,7 @@ function FormDialog({
               type="submit"
               variant="contained"
               color="primary"
+              className="form-dialog-submit"
               disabled={saving || !dirty}
               startIcon={saving ? <CircularProgress size={16} color="inherit" /> : undefined}
             >

@@ -21,7 +21,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import type { Product } from "../shared/types/Product";
 import { productsApi } from "../../api/clients/ProductApiClient";
-import ProductLook from "./ProductLook";
+import ProductLook from "../common/ProductLook";
 import "./Shop.css";
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "name-desc";

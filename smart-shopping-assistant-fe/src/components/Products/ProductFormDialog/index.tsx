@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Box,
-  Card,
-  CardContent,
-  CardMedia,
   Checkbox,
   Chip,
   FormControl,
@@ -17,7 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
-import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { productsApi } from "../../../api/clients/ProductApiClient";
 import { categoriesApi } from "../../../api/clients/CategoryApiClient";
@@ -35,7 +31,7 @@ import FormDialog from "../../common/FormDialog";
 import FormSection from "../../common/FormDialog/FormSection";
 import ProductImagesField, { type ImageRow } from "./ProductImagesField";
 import { counterHelper, counterHelperProps, isDirty } from "../../common/FormDialog/formHelpers";
-import "../../common/ProductCard/ProductCard.css";
+import "../../common/ProductLook/ProductLook.css";
 
 const NAME_MAX = 200;
 const DESCRIPTION_MAX = 1000;
@@ -77,7 +73,8 @@ function validate(form: ProductForm): Errors {
   return errors;
 }
 
-// The card exactly as customers will see it in the shop
+// The plate exactly as it will sit in the lookbook, so the preview never
+// diverges from what the catalogue actually renders.
 function mainImageUrl(images: ImageRow[]): string {
   const main = images.find((image) => image.isMain) ?? images[0];
   return (main?.url ?? "").trim();
@@ -91,50 +88,40 @@ function ProductPreview({ form, sellerName }: { form: ProductForm; sellerName: s
   const price = Number(form.price);
 
   return (
-    <Card
-      sx={{ pointerEvents: "none" }}
-      className={outOfStock ? "product-card--sold-out" : undefined}
-    >
-      <Box className="card-image-wrap">
-        {outOfStock && <Box className="product-stock-badge">Out of stock</Box>}
-        {lowStock && (
-          <Box className="product-stock-badge product-stock-badge--low">Only {stock} left</Box>
-        )}
+    <Box className="look" sx={{ pointerEvents: "none" }}>
+      <Box className="look-frame">
         {imageUrl !== "" ? (
-          <CardMedia component="img" height="170" image={imageUrl} alt="" sx={{ objectFit: "cover" }} />
+          <img src={imageUrl} alt="" className="look-img" />
         ) : (
           <Box
             sx={{
-              height: 170,
+              position: "absolute",
+              inset: 0,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "var(--cream-dark)",
               color: "var(--accent)",
             }}
           >
             <ImageOutlinedIcon fontSize="large" />
           </Box>
         )}
+        {outOfStock && <span className="look-tissue">Sold out</span>}
       </Box>
-      <CardContent sx={{ p: 2 }}>
-        <Typography className="product-card-name">{form.name.trim() || "Product name"}</Typography>
-        {sellerName && (
-          <span className="product-card-seller">
-            <StorefrontOutlinedIcon className="product-card-seller-icon" />
-            {sellerName}
-          </span>
-        )}
-        <Typography className="product-card-desc">
-          {form.description.trim() || "A short description of the product."}
-        </Typography>
-        <Box className="product-card-divider" />
-        <Box className="product-card-price-row">
-          <Typography className="price-tag">{price > 0 ? price.toFixed(2) : "0.00"}</Typography>
-          <Typography className="product-card-currency">RON</Typography>
+      <Box className="look-credit">
+        <Box className="look-title">
+          <span className="look-name">{form.name.trim() || "Piece name"}</span>
         </Box>
-      </CardContent>
-    </Card>
+        <Box className="look-credit-line">
+          <span className="look-house">{sellerName || "House"}</span>
+          <Typography component="span" className="look-price">
+            {price > 0 ? price.toFixed(2) : "0.00"}
+            <span className="look-currency">RON</span>
+          </Typography>
+        </Box>
+        {lowStock && <span className="look-last">Last {stock}</span>}
+      </Box>
+    </Box>
   );
 }
 

@@ -339,8 +339,8 @@ const theme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: "var(--radius-xxl)",
-          boxShadow: "var(--shadow-dialog)",
+          borderRadius: 0,
+          boxShadow: "none",
           overflow: "hidden",
           border: "1px solid var(--border)",
         },
