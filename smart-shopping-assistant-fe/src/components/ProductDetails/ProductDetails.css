@@ -96,6 +96,40 @@
   color: var(--text-primary) !important;
 }
 
+.product-detail-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 6px;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.product-detail-rating-count {
+  font-size: var(--text-xxs);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.product-detail-rating:hover .product-detail-rating-count {
+  color: var(--primary);
+}
+
+.product-detail-rating--empty {
+  margin-top: var(--space-sm);
+  font-size: var(--text-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+}
+
+.product-detail-rating--empty:hover {
+  color: var(--primary);
+}
+
 .product-detail-seller {
   display: inline-flex;
   align-items: center;
@@ -302,6 +336,148 @@
   font-size: var(--text-body) !important;
   line-height: 1.75 !important;
   color: var(--text-primary) !important;
+}
+
+/* Reviews: the same block rhythm as Description — a hairline opens it, Marcellus
+   names the section, Archivo carries every figure and control. */
+.reviews-section {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border);
+  max-width: 68ch;
+}
+
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.reviews-average {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-display) !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  font-variant-numeric: tabular-nums;
+  color: var(--primary) !important;
+}
+
+.reviews-count {
+  font-size: var(--text-xxs) !important;
+  font-weight: 500 !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary) !important;
+  margin-top: 3px !important;
+}
+
+.reviews-empty {
+  margin-top: var(--space-md) !important;
+  font-size: var(--text-body) !important;
+  color: var(--text-secondary) !important;
+}
+
+.reviews-list {
+  margin-top: var(--space-lg);
+}
+
+.review-row {
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--border);
+}
+
+.review-row:first-of-type {
+  border-top: none;
+}
+
+.review-row-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.review-date {
+  font-size: var(--text-xxs) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary) !important;
+}
+
+.review-delete {
+  margin-left: auto !important;
+  color: var(--text-secondary) !important;
+}
+
+.review-delete:hover {
+  color: var(--primary) !important;
+}
+
+.review-author {
+  font-family: "Marcellus", Georgia, serif !important;
+  font-size: var(--text-body) !important;
+  color: var(--text-primary) !important;
+  margin-top: 6px !important;
+}
+
+.review-comment {
+  font-size: var(--text-sm) !important;
+  line-height: 1.6 !important;
+  color: var(--text-secondary) !important;
+  margin-top: 4px !important;
+}
+
+.review-form {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+.review-form .star-rating {
+  margin-top: var(--space-sm);
+}
+
+.review-comment-field {
+  margin-top: var(--space-md) !important;
+}
+
+.review-comment-field .MuiOutlinedInput-root {
+  border-radius: 0;
+  background: var(--white);
+}
+
+.review-submit-btn {
+  margin-top: var(--space-md) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+  color: var(--white) !important;
+  font-size: var(--text-xxs) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em;
+  padding: 12px 24px !important;
+}
+
+.review-submit-btn:hover {
+  background: var(--primary-dark) !important;
+}
+
+.review-submit-btn.Mui-disabled {
+  background: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+.review-error {
+  margin-top: var(--space-sm) !important;
+  font-size: var(--text-xs) !important;
+  color: var(--error) !important;
+}
+
+.reviews-hint {
+  margin-top: var(--space-md) !important;
+  font-size: var(--text-xs) !important;
+  color: var(--text-secondary) !important;
 }
 
 @media (max-width: 900px) {

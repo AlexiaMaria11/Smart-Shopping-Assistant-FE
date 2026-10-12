@@ -34,7 +34,9 @@ import { useFavorites } from "../../context/FavoritesContext/favorites-context";
 import ErrorAlert from "../common/ErrorAlert";
 import LoadingState from "../common/LoadingState";
 import ProductLook from "../common/ProductLook";
+import StarRating from "../common/StarRating";
 import ProductGallery from "./ProductGallery";
+import ReviewsSection from "./ReviewsSection";
 import "./ProductDetails.css";
 
 // Everything that was loaded for one product id. Keeping the id next to the data means
@@ -151,6 +153,19 @@ function ProductDetails() {
               {product.name}
             </Typography>
 
+            {product.averageRating !== null ? (
+              <a href="#reviews" className="product-detail-rating">
+                <StarRating value={product.averageRating} />
+                <span className="product-detail-rating-count">
+                  {product.averageRating.toFixed(1)} ({product.reviewCount})
+                </span>
+              </a>
+            ) : (
+              <a href="#reviews" className="product-detail-rating product-detail-rating--empty">
+                No reviews yet
+              </a>
+            )}
+
             {product.companySlug && (
               <Link to={`/sellers/${product.companySlug}`} className="product-detail-seller">
                 <StorefrontOutlinedIcon sx={{ fontSize: 17 }} />
@@ -254,6 +269,8 @@ function ProductDetails() {
             </Typography>
           </Box>
         )}
+
+        <ReviewsSection productId={product.id} />
 
         {similar.length > 0 && (
           <Box sx={{ mt: 5 }}>

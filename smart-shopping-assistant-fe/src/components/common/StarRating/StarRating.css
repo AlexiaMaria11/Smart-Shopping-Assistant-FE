@@ -1,0 +1,16 @@
+/* Burgundy stars, square — the house's own mark, not MUI's default gold pill */
+.star-rating .MuiRating-iconFilled {
+  color: var(--primary);
+}
+
+.star-rating .MuiRating-iconEmpty {
+  color: var(--border);
+}
+
+.star-rating .MuiRating-iconHover {
+  color: var(--primary-dark);
+}
+
+.star-rating.Mui-readOnly {
+  pointer-events: none;
+}

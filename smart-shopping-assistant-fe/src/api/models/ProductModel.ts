@@ -19,6 +19,8 @@ export interface ProductModel {
   companySlug: string;
   categories?: CategoryModel[];
   images?: ProductImageModel[];
+  averageRating?: number;
+  reviewCount?: number;
 }
 
 export interface ProductImageInput {

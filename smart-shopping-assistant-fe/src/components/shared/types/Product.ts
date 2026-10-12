@@ -23,6 +23,8 @@ export interface Product {
   companySlug: string;
   categories: Category[];
   images: ProductImage[];
+  averageRating: number | null;
+  reviewCount: number;
 }
 
 export function toProductImage(dto: ProductImageModel): ProductImage {
@@ -47,6 +49,8 @@ export function toProduct(dto: ProductModel): Product {
     companySlug: dto.companySlug,
     categories: dto.categories?.map(toCategory) ?? [],
     images: dto.images?.map(toProductImage) ?? [],
+    averageRating: dto.averageRating ?? null,
+    reviewCount: dto.reviewCount ?? 0,
   };
 }
 
