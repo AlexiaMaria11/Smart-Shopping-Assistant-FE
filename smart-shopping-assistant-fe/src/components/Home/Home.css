@@ -18,7 +18,7 @@
   color: var(--text-primary);
   margin-bottom: 20px;
   font-size: var(--text-display);
-  letter-spacing: -0.015em;
+  letter-spacing: 0.01em;
 }
 
 .home-hero-title em {
@@ -32,34 +32,12 @@
   }
 }
 
-/* The system's one ornament, spent once on this page */
+/* The system's one ornament: a single hairline, the way a plate draws one */
 .home-accent-rule {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.home-accent-line {
+  width: 64px;
   height: 1px;
-  width: 36px;
-}
-
-.home-accent-line--left {
-  background: linear-gradient(90deg, transparent, var(--accent));
-}
-
-.home-accent-line--right {
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-.home-accent-diamond {
-  width: 5px;
-  height: 5px;
-  background: var(--accent);
-  transform: rotate(45deg);
-  flex-shrink: 0;
+  background: var(--border);
+  margin: 0 auto 24px;
 }
 
 .home-hero-subtitle {
@@ -71,10 +49,18 @@
   margin: 0 auto var(--space-xl);
 }
 
-/* The one CTA, sized from the scale instead of an inline override */
+/* The one CTA, flat burgundy — square corners, no gradient, no shadow */
 .home-cta {
-  padding: 12px 40px !important;
+  padding: 14px 40px !important;
   font-size: var(--text-md) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--primary) !important;
+}
+
+.home-cta:hover {
+  background: var(--primary-dark) !important;
+  box-shadow: none !important;
 }
 
 /* ── Shared section heading ── */
@@ -84,7 +70,7 @@
   color: var(--text-primary) !important;
   font-size: var(--text-headline) !important;
   line-height: 1.2 !important;
-  letter-spacing: -0.015em;
+  letter-spacing: 0.01em;
 }
 
 @media (min-width: 900px) {
@@ -93,7 +79,7 @@
   }
 }
 
-/* ── From the shop ── */
+/* ── From the collection ── */
 .home-shelf {
   background: var(--cream-dark);
   padding-top: 72px;
@@ -123,17 +109,8 @@
   color: var(--primary-dark);
 }
 
-.home-shelf-grid {
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-}
-
 .home-shelf-skeleton {
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--white);
+  background: var(--cream-dark);
 }
 
 /* ── How it works ── */
@@ -166,16 +143,15 @@
   margin-top: var(--space-md);
 }
 
-/* The package split, drawn rather than described */
+/* The package split, drawn rather than described: one flat burgundy region,
+   per the Region Commitment Rule, with hairlines standing in for the
+   borders/shadows a card would have used. */
 .home-split {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-card);
+  background: var(--primary);
   padding: var(--space-lg);
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
 .home-split-order {
@@ -183,32 +159,16 @@
   font-family: "Marcellus", Georgia, serif;
   font-size: var(--text-xxl);
   font-weight: 400;
-  color: var(--primary);
-  padding: var(--space-sm) var(--space-md);
-  border: 1.5px solid var(--accent-light);
-  border-radius: var(--radius-md);
-  background: var(--accent-pale);
+  color: var(--white);
+  padding-right: var(--space-lg);
+  border-right: 1px solid rgba(var(--white-rgb), 0.3);
 }
 
 .home-split-fan {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
   flex: 1;
   min-width: 0;
-  position: relative;
-  padding-left: var(--space-md);
-}
-
-/* The bracket that turns three stacked rows into one order fanning out */
-.home-split-fan::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 14px;
-  bottom: 14px;
-  width: 1px;
-  background: var(--accent);
 }
 
 .home-split-package {
@@ -216,17 +176,18 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-xs);
-  padding: 7px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xs);
-  background: var(--cream);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
 }
 
-.home-split-shop {
-  font-family: "Archivo", sans-serif;
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-primary);
+.home-split-package:last-child {
+  border-bottom: none;
+}
+
+.home-split-house {
+  font-family: "Marcellus", Georgia, serif;
+  font-size: var(--text-sm);
+  color: var(--white);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -236,7 +197,9 @@
   font-family: "Archivo", sans-serif;
   font-size: var(--text-xxs);
   font-weight: 600;
-  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(var(--white-rgb), 0.75);
   white-space: nowrap;
 }
 
@@ -314,11 +277,10 @@
     align-items: stretch;
   }
 
-  .home-split-fan {
-    padding-left: 0;
-  }
-
-  .home-split-fan::before {
-    display: none;
+  .home-split-order {
+    padding-right: 0;
+    padding-bottom: var(--space-sm);
+    border-right: none;
+    border-bottom: 1px solid rgba(var(--white-rgb), 0.3);
   }
 }

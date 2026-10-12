@@ -15,8 +15,8 @@ function Footer() {
           <Box>
             <Typography className="site-footer-brand">Smart Shop</Typography>
             <Typography className="site-footer-note">
-              A marketplace where independent shops share one catalogue and one
-              checkout.
+              Designer fashion from independent houses, shown in one collection
+              and settled in one checkout.
             </Typography>
           </Box>
 

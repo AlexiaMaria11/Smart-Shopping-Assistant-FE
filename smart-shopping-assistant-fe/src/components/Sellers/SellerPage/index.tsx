@@ -9,7 +9,7 @@ import type { Company } from "../../shared/types/Company";
 import type { Product } from "../../shared/types/Product";
 import LoadingState from "../../common/LoadingState";
 import ErrorAlert from "../../common/ErrorAlert";
-import ProductCard from "../../common/ProductCard";
+import ProductLook from "../../common/ProductLook";
 import "../Sellers.css";
 
 function SellerPage() {
@@ -52,7 +52,7 @@ function SellerPage() {
           <Avatar
             src={company.logoUrl}
             alt={company.name}
-            variant="rounded"
+            variant="square"
             className="seller-header-logo"
           >
             {company.name[0]}
@@ -91,11 +91,11 @@ function SellerPage() {
         )}
 
         <Typography className="seller-section-title">
-          Products ({products.length})
+          Pieces ({products.length})
         </Typography>
-        <Box className="product-grid">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} hideSeller />
+        <Box className="look-grid">
+          {products.map((product, index) => (
+            <ProductLook key={product.id} product={product} plate={index + 1} />
           ))}
         </Box>
       </Container>

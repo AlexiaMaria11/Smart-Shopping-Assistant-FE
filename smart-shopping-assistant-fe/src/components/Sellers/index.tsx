@@ -24,10 +24,11 @@ function Sellers() {
     <Box className="sellers-page">
       <Container maxWidth="lg" sx={{ pt: 5, pb: 6 }}>
         <Typography variant="h4" className="sellers-title">
-          Our sellers
+          The houses
         </Typography>
         <Typography className="sellers-subtitle">
-          Every product on Smart Shop is sold and shipped by one of these companies.
+          Every piece in the collection comes from one of these houses, each
+          selling under its own name and shipping its own package.
         </Typography>
 
         <ErrorAlert message={error} />
@@ -48,7 +49,7 @@ function Sellers() {
                 <Avatar
                   src={company.logoUrl}
                   alt={company.name}
-                  variant="rounded"
+                  variant="square"
                   className="seller-card-logo"
                 >
                   {company.name[0]}
@@ -60,7 +61,7 @@ function Sellers() {
                   </Typography>
                   <Typography className="seller-card-meta">
                     {company.productCount}{" "}
-                    {company.productCount === 1 ? "product" : "products"}
+                    {company.productCount === 1 ? "piece" : "pieces"}
                   </Typography>
                 </Box>
               </Link>

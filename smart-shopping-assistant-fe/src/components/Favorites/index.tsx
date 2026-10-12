@@ -3,7 +3,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useEffect, useMemo, useState } from "react";
 import type { Product } from "../shared/types/Product";
 import { favoritesApi } from "../../api/clients/FavoritesApiClient";
-import ProductCard from "../common/ProductCard";
+import ProductLook from "../common/ProductLook";
 import { useFavorites } from "../../context/FavoritesContext/favorites-context";
 import "./Favorites.css";
 
@@ -35,7 +35,7 @@ function Favorites() {
           {!loading && favoriteProducts.length > 0 && (
             <Typography className="favorites-count">
               {favoriteProducts.length}{" "}
-              {favoriteProducts.length === 1 ? "item" : "items"}
+              {favoriteProducts.length === 1 ? "piece" : "pieces"}
             </Typography>
           )}
         </Box>
@@ -50,16 +50,16 @@ function Favorites() {
               <FavoriteOutlinedIcon className="favorites-empty-icon-svg" />
             </Box>
             <Typography className="favorites-empty-title">
-              No favorites yet
+              Nothing saved yet
             </Typography>
             <Typography className="favorites-empty-subtitle">
-              Tap the heart on any product to save it here.
+              Tap the heart on any piece to keep it here.
             </Typography>
           </Box>
         ) : (
-          <Box className="favorites-grid">
-            {favoriteProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <Box className="look-grid">
+            {favoriteProducts.map((product, index) => (
+              <ProductLook key={product.id} product={product} plate={index + 1} />
             ))}
           </Box>
         )}

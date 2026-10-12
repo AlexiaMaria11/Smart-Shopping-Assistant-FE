@@ -42,9 +42,7 @@
 .favorites-empty-icon {
   width: 72px;
   height: 72px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-pale), var(--cream-dark));
-  border: 1.5px solid var(--accent-light);
+  background: var(--cream-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,13 +66,5 @@
   color: var(--accent-dark);
 }
 
-/* ── Grid ── */
-.favorites-grid {
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-}
-
-/* Re-use Shop card classes: product-card-name, product-card-desc,
-   product-card-divider, product-card-price-row, product-card-currency,
-   price-tag, card-image-wrap, product-fav-btn are in Shop.css / index.css */
+/* The grid itself is the shared .look-grid in src/index.css, so every plate
+   grid in the app — Shop, a seller page, this one — reads as the same book. */
