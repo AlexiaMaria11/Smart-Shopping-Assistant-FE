@@ -121,7 +121,7 @@ function NavBar() {
             )}
 
             <Link to="/" className="navbar-wordmark">
-              Smart Shop
+              Maison
             </Link>
 
             {!isMobile ? (

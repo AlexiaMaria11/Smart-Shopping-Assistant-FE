@@ -43,7 +43,7 @@ function Login() {
         <Typography className="auth-subtitle">
           {from
             ? "You need an account to keep a cart and a list of favorites."
-            : "Welcome back to Smart Shop."}
+            : "Welcome back to Maison."}
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit}>
@@ -83,7 +83,7 @@ function Login() {
         <Typography className="auth-footer">
           No account yet? <Link to="/register" state={location.state}>Create one</Link>
           <br />
-          Want to sell on Smart Shop? <Link to="/register/seller">Register your company</Link>
+          Want to sell on Maison? <Link to="/register/seller">Register your company</Link>
         </Typography>
 
         {import.meta.env.DEV && (

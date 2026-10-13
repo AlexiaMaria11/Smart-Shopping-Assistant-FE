@@ -48,7 +48,7 @@ function SellerRegister() {
     <Box className="auth-page">
       <Box className="auth-card auth-card--wide">
         <Typography variant="h4" className="auth-title">
-          Sell on Smart Shop
+          Sell on Maison
         </Typography>
         <Typography className="auth-subtitle">
           Register your company and start adding products right away. Your store

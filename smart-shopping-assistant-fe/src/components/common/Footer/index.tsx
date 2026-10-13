@@ -13,7 +13,7 @@ function Footer() {
       <Container maxWidth="lg">
         <Box className="site-footer-row">
           <Box>
-            <Typography className="site-footer-brand">Smart Shop</Typography>
+            <Typography className="site-footer-brand">Maison</Typography>
             <Typography className="site-footer-note">
               Designer fashion from independent houses, shown in one collection
               and settled in one checkout.

@@ -1,5 +1,5 @@
 ---
-name: Smart Shop
+name: Maison
 description: A multi-seller fashion catalogue set as a house's printed lookbook — burgundy committed at region scale, photographs on bare cream paper, one hairline per plate.
 colors:
   burgundy: "#722F37"
@@ -158,7 +158,7 @@ components:
     height: "80px"
 ---
 
-# Design System: Smart Shop
+# Design System: Maison
 
 ## Overview
 

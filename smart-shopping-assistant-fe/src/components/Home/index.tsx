@@ -205,7 +205,7 @@ function Home() {
             View the collection
           </Button>
           <Typography className="home-close-sell">
-            Have a house of your own? Open your store on Smart Shop — your
+            Have a house of your own? Open your store on Maison — your
             pieces, your stock, your promotions, and your own packages to
             ship. New houses are reviewed before they go live.{" "}
             <Link to="/register/seller" className="home-sell-link">

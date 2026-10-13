@@ -85,7 +85,7 @@ product variants with their own stock; a seller dashboard; an admin dashboard.
 
 ## Brand Commitments
 
-- The name **Smart Shopping Assistant**, shown in the product as **Smart Shop**.
+- Shown in the product as **Maison**.
 - English interface copy.
 - MUI as the component library.
 - **Burgundy and cream.** Pinned by the user on 2026-10-11 and binding on every
